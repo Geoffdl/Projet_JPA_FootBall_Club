@@ -2,60 +2,31 @@ package fr.diginamic.geoff.builder;
 
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.exception.CsvFormatException;
-import fr.diginamic.geoff.parser.CsvDataParser;
 import fr.diginamic.geoff.utils.Deserializer;
 
-import java.io.IOException;
 import java.time.Year;
 import java.util.List;
 
-import static java.lang.Integer.parseInt;
+import static fr.diginamic.geoff.utils.DTOUtils.splitDataSourceIntoArray;
 
-public class PlayerDTOBuilder
+
+public class PlayerDTOBuilder implements DTOBuilder<PlayerDTO>
 {
 
-    private final String dataSource;
-
-    public PlayerDTOBuilder(String dataSource)
+    public PlayerDTOBuilder()
     {
-        this.dataSource = dataSource;
     }
 
-    /**
-     * @return
-     */
-    public List<PlayerDTO> createPlayerDTO()
+    @Override
+    public void setAttributes(PlayerDTO playerDTO, String line)
     {
-
-        List<String> lines = CsvDataParser.readFile(dataSource);
-        lines.removeFirst();
-
-
-        return lines.stream()
-                .map(l ->
-                {
-                    PlayerDTO playerDTO = new PlayerDTO();
-                    setAttributes(playerDTO, l);
-                    return playerDTO;
-                })
-                .toList();
-    }
-
-    private void setAttributes(PlayerDTO playerDTO, String l)
-    {
-        l = l.trim();
-        String[] parts = l.split(",");
-        if (parts.length != 23)
-        {
-            throw new CsvFormatException(String.format("Attribute mismatch expected size %d, actual %d", 21, parts.length));
-
-        }
+        String[] parts = splitDataSourceIntoArray(line, PlayerDTO.class.getDeclaredFields().length);
 
         playerDTO.setPlayerId(Deserializer.stringToInt(parts[0]));
         playerDTO.setFirstName(parts[1]);
         playerDTO.setLastName(parts[2]);
         playerDTO.setName(parts[3]);
-        playerDTO.setLastSeason(Year.of(parseInt(parts[4])));
+        playerDTO.setLastSeason(Year.of(Deserializer.stringToInt(parts[4])));
         playerDTO.setCurrentClubId(Deserializer.stringToInt(parts[5]));
         playerDTO.setPlayerCode(parts[6]);
         playerDTO.setCountryOfBirth(parts[7]);
@@ -67,7 +38,7 @@ public class PlayerDTOBuilder
         playerDTO.setFoot(parts[13]);
         playerDTO.setHeightInCm(Deserializer.stringToInt(parts[14]));
         playerDTO.setMarketValueInEur(Deserializer.stringToInt(parts[15]));
-        playerDTO.setHighestMaketValue(Deserializer.stringToInt(parts[16]));
+        playerDTO.setHighestMarketValue(Deserializer.stringToInt(parts[16]));
         playerDTO.setContractExpirationDate(Deserializer.stringToLocalDateTime(parts[17]));
         playerDTO.setAgentName(parts[18]);
         playerDTO.setImageUrl(parts[19]);
@@ -76,5 +47,9 @@ public class PlayerDTOBuilder
         playerDTO.setCurrentClubName(parts[22]);
     }
 
-
+    @Override
+    public PlayerDTO createInstance()
+    {
+        return new PlayerDTO();
+    }
 }

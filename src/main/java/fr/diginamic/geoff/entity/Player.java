@@ -34,18 +34,23 @@ public class Player
     @ManyToOne
     @JoinColumn(name = "country_birth_id", referencedColumnName = "country_id")
     private Country countryOfBirth;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "picture_url_id", referencedColumnName = "url_id")
-    private Url pictureUrlId;
-    @ManyToOne
+    private Url pictureUrl;
+    @OneToOne
     @JoinColumn(name = "url_id", referencedColumnName = "url_id")
-    private Url dataUrlId;
+    private Url dataUrl;
     @ManyToOne
     @JoinColumn(name = "agent_id", referencedColumnName = "agent_id")
-    private Agent agentId;
+    private Agent agent;
 
-    @OneToMany(mappedBy = "player")
-    private Set<GameEvent> gameEvents;
+    @OneToMany(mappedBy = "playerMain")
+    private Set<GameEvent> gameEventsMain;
+    @OneToMany(mappedBy = "playerIn")
+    private Set<GameEvent> gameEventsIn;
+    @OneToMany(mappedBy = "playerAssist")
+    private Set<GameEvent> gameEventsAssist;
+
     @OneToMany(mappedBy = "player")
     private Set<GameAppearance> appearances;
     @OneToMany(mappedBy = "player")
@@ -57,9 +62,8 @@ public class Player
     {
     }
 
-    public Player(Long playerId, String firstName, String lastName, String playerCode, LocalDate dateOfBirth, int height, String shooting_foot, String positionFavored, LocalDate contractExpirationDate, Club currentClub, City cityOfBirth, Country countryOfCitizenship, Country countryOfBirth, Url pictureUrlId, Url dataUrlId, Agent agentId, Set<GameEvent> gameEvents, Set<GameAppearance> appearances, Set<PlayerValuation> valuations, Set<GameLineup> gameLineups)
+    public Player(String firstName, String lastName, String playerCode, LocalDate dateOfBirth, int height, String shooting_foot, String positionFavored, LocalDate contractExpirationDate, Club currentClub, City cityOfBirth, Country countryOfCitizenship, Country countryOfBirth, Url pictureUrl, Url dataUrl, Agent agent, Set<GameEvent> gameEventsMain, Set<GameEvent> gameEventsIn, Set<GameEvent> gameEventsAssist, Set<GameAppearance> appearances, Set<PlayerValuation> valuations, Set<GameLineup> gameLineups)
     {
-        this.playerId = playerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.playerCode = playerCode;
@@ -72,10 +76,12 @@ public class Player
         this.cityOfBirth = cityOfBirth;
         this.countryOfCitizenship = countryOfCitizenship;
         this.countryOfBirth = countryOfBirth;
-        this.pictureUrlId = pictureUrlId;
-        this.dataUrlId = dataUrlId;
-        this.agentId = agentId;
-        this.gameEvents = gameEvents;
+        this.pictureUrl = pictureUrl;
+        this.dataUrl = dataUrl;
+        this.agent = agent;
+        this.gameEventsMain = gameEventsMain;
+        this.gameEventsIn = gameEventsIn;
+        this.gameEventsAssist = gameEventsAssist;
         this.appearances = appearances;
         this.valuations = valuations;
         this.gameLineups = gameLineups;
@@ -332,83 +338,123 @@ public class Player
     }
 
     /**
-     * Gets pictureUrlId for the class Player
+     * Gets pictureUrl for the class Player
      *
-     * @return value of pictureUrlId
+     * @return value of pictureUrl
      */
-    public Url getPictureUrlId()
+    public Url getPictureUrl()
     {
-        return pictureUrlId;
+        return pictureUrl;
     }
 
     /**
-     * Sets pictureUrlId for the class Player.
+     * Sets pictureUrl for the class Player.
      *
-     * @param pictureUrlId value of pictureUrlId
+     * @param pictureUrl value of pictureUrl
      */
-    public void setPictureUrlId(Url pictureUrlId)
+    public void setPictureUrl(Url pictureUrl)
     {
-        this.pictureUrlId = pictureUrlId;
+        this.pictureUrl = pictureUrl;
     }
 
     /**
-     * Gets dataUrlId for the class Player
+     * Gets dataUrl for the class Player
      *
-     * @return value of dataUrlId
+     * @return value of dataUrl
      */
-    public Url getDataUrlId()
+    public Url getDataUrl()
     {
-        return dataUrlId;
+        return dataUrl;
     }
 
     /**
-     * Sets dataUrlId for the class Player.
+     * Sets dataUrl for the class Player.
      *
-     * @param dataUrlId value of dataUrlId
+     * @param dataUrl value of dataUrl
      */
-    public void setDataUrlId(Url dataUrlId)
+    public void setDataUrl(Url dataUrl)
     {
-        this.dataUrlId = dataUrlId;
+        this.dataUrl = dataUrl;
     }
 
     /**
-     * Gets agentId for the class Player
+     * Gets agent for the class Player
      *
-     * @return value of agentId
+     * @return value of agent
      */
-    public Agent getAgentId()
+    public Agent getAgent()
     {
-        return agentId;
+        return agent;
     }
 
     /**
-     * Sets agentId for the class Player.
+     * Sets agent for the class Player.
      *
-     * @param agentId value of agentId
+     * @param agent value of agent
      */
-    public void setAgentId(Agent agentId)
+    public void setAgent(Agent agent)
     {
-        this.agentId = agentId;
+        this.agent = agent;
     }
 
     /**
-     * Gets gameEvents for the class Player
+     * Gets gameEventsMain for the class Player
      *
-     * @return value of gameEvents
+     * @return value of gameEventsMain
      */
-    public Set<GameEvent> getGameEvents()
+    public Set<GameEvent> getGameEventsMain()
     {
-        return gameEvents;
+        return gameEventsMain;
     }
 
     /**
-     * Sets gameEvents for the class Player.
+     * Sets gameEventsMain for the class Player.
      *
-     * @param gameEvents value of gameEvents
+     * @param gameEventsMain value of gameEventsMain
      */
-    public void setGameEvents(Set<GameEvent> gameEvents)
+    public void setGameEventsMain(Set<GameEvent> gameEventsMain)
     {
-        this.gameEvents = gameEvents;
+        this.gameEventsMain = gameEventsMain;
+    }
+
+    /**
+     * Gets gameEventsIn for the class Player
+     *
+     * @return value of gameEventsIn
+     */
+    public Set<GameEvent> getGameEventsIn()
+    {
+        return gameEventsIn;
+    }
+
+    /**
+     * Sets gameEventsIn for the class Player.
+     *
+     * @param gameEventsIn value of gameEventsIn
+     */
+    public void setGameEventsIn(Set<GameEvent> gameEventsIn)
+    {
+        this.gameEventsIn = gameEventsIn;
+    }
+
+    /**
+     * Gets gameEventsAssist for the class Player
+     *
+     * @return value of gameEventsAssist
+     */
+    public Set<GameEvent> getGameEventsAssist()
+    {
+        return gameEventsAssist;
+    }
+
+    /**
+     * Sets gameEventsAssist for the class Player.
+     *
+     * @param gameEventsAssist value of gameEventsAssist
+     */
+    public void setGameEventsAssist(Set<GameEvent> gameEventsAssist)
+    {
+        this.gameEventsAssist = gameEventsAssist;
     }
 
     /**
@@ -470,4 +516,5 @@ public class Player
     {
         this.gameLineups = gameLineups;
     }
+
 }

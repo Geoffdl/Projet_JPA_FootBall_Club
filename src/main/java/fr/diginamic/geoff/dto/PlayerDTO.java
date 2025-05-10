@@ -2,7 +2,6 @@ package fr.diginamic.geoff.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Year;
 
 public class PlayerDTO
@@ -22,8 +21,8 @@ public class PlayerDTO
     private String position;
     private String foot;
     private int heightInCm;
-    private int marketValueInEur;
-    private double highestMaketValue;
+    private double marketValueInEur;
+    private double highestMarketValue;
     private LocalDateTime contractExpirationDate;
     private String agentName;
     private String imageUrl;
@@ -34,6 +33,33 @@ public class PlayerDTO
 
     public PlayerDTO()
     {
+    }
+
+    public PlayerDTO(int playerId, String firstName, String lastName, String name, Year lastSeason, int currentClubId, String playerCode, String countryOfBirth, String cityOfBirth, String countryOfCitizenship, LocalDate dateOfBirth, String subPosition, String position, String foot, int heightInCm, double marketValueInEur, double highestMarketValue, LocalDateTime contractExpirationDate, String agentName, String imageUrl, String url, String currentClubDomesticCompetitionId, String currentClubName)
+    {
+        this.playerId = playerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.name = name;
+        this.lastSeason = lastSeason;
+        this.currentClubId = currentClubId;
+        this.playerCode = playerCode;
+        this.countryOfBirth = countryOfBirth;
+        this.cityOfBirth = cityOfBirth;
+        this.countryOfCitizenship = countryOfCitizenship;
+        this.dateOfBirth = dateOfBirth;
+        this.subPosition = subPosition;
+        this.position = position;
+        this.foot = foot;
+        this.heightInCm = heightInCm;
+        this.marketValueInEur = marketValueInEur;
+        this.highestMarketValue = highestMarketValue;
+        this.contractExpirationDate = contractExpirationDate;
+        this.agentName = agentName;
+        this.imageUrl = imageUrl;
+        this.url = url;
+        this.currentClubDomesticCompetitionId = currentClubDomesticCompetitionId;
+        this.currentClubName = currentClubName;
     }
 
     /**
@@ -361,7 +387,7 @@ public class PlayerDTO
      *
      * @return value of marketValueInEur
      */
-    public int getMarketValueInEur()
+    public double getMarketValueInEur()
     {
         return marketValueInEur;
     }
@@ -371,7 +397,7 @@ public class PlayerDTO
      *
      * @param marketValueInEur value of marketValueInEur
      */
-    public void setMarketValueInEur(int marketValueInEur)
+    public void setMarketValueInEur(double marketValueInEur)
     {
         this.marketValueInEur = marketValueInEur;
     }
@@ -381,19 +407,19 @@ public class PlayerDTO
      *
      * @return value of highestMaketValue
      */
-    public double getHighestMaketValue()
+    public double getHighestMarketValue()
     {
-        return highestMaketValue;
+        return highestMarketValue;
     }
 
     /**
      * Sets highestMaketValue for the class PlayerDTO.
      *
-     * @param highestMaketValue value of highestMaketValue
+     * @param highestMarketValue value of highestMaketValue
      */
-    public void setHighestMaketValue(double highestMaketValue)
+    public void setHighestMarketValue(double highestMarketValue)
     {
-        this.highestMaketValue = highestMaketValue;
+        this.highestMarketValue = highestMarketValue;
     }
 
     /**

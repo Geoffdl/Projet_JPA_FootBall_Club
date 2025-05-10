@@ -2,23 +2,41 @@ package fr.diginamic.geoff.utils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 
 import static java.lang.Integer.parseInt;
 
 public class Deserializer
 {
-    public static int stringToInt(String part) {
+    public static int stringToInt(String part)
+    {
         return parseInt(part);
     }
 
-    public static LocalDate stringToLocalDate(String parts) {
+    public static double stringToDouble(String part) {return Double.parseDouble(part);}
+
+    public static LocalDate stringToLocalDate(String parts)
+    {
 
         return LocalDate.parse(parts.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
 
-    public static LocalDateTime stringToLocalDateTime(String part) {
+    public static LocalDateTime stringToLocalDateTime(String part)
+    {
         return LocalDateTime.parse(part.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    public static Year stringToYear(String part)
+    {
+        return Year.of(stringToInt(part));
+    }
+
+    public static boolean stringToBoolean(String part)
+    {
+
+        return stringToInt(part) != 0;
+
     }
 }
