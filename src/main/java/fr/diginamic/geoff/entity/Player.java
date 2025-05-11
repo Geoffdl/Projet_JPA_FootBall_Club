@@ -3,6 +3,7 @@ package fr.diginamic.geoff.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -20,7 +21,7 @@ public class Player
     private int height;
     private String shooting_foot;
     private String positionFavored;
-    private LocalDate contractExpirationDate;
+    private LocalDateTime contractExpirationDate;
 
     @ManyToOne
     @JoinColumn(name = "club_id", referencedColumnName = "club_id")
@@ -62,30 +63,7 @@ public class Player
     {
     }
 
-    public Player(String firstName, String lastName, String playerCode, LocalDate dateOfBirth, int height, String shooting_foot, String positionFavored, LocalDate contractExpirationDate, Club currentClub, City cityOfBirth, Country countryOfCitizenship, Country countryOfBirth, Url pictureUrl, Url dataUrl, Agent agent, Set<GameEvent> gameEventsMain, Set<GameEvent> gameEventsIn, Set<GameEvent> gameEventsAssist, Set<GameAppearance> appearances, Set<PlayerValuation> valuations, Set<GameLineup> gameLineups)
-    {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.playerCode = playerCode;
-        this.dateOfBirth = dateOfBirth;
-        this.height = height;
-        this.shooting_foot = shooting_foot;
-        this.positionFavored = positionFavored;
-        this.contractExpirationDate = contractExpirationDate;
-        this.currentClub = currentClub;
-        this.cityOfBirth = cityOfBirth;
-        this.countryOfCitizenship = countryOfCitizenship;
-        this.countryOfBirth = countryOfBirth;
-        this.pictureUrl = pictureUrl;
-        this.dataUrl = dataUrl;
-        this.agent = agent;
-        this.gameEventsMain = gameEventsMain;
-        this.gameEventsIn = gameEventsIn;
-        this.gameEventsAssist = gameEventsAssist;
-        this.appearances = appearances;
-        this.valuations = valuations;
-        this.gameLineups = gameLineups;
-    }
+
 
     /**
      * Gets playerId for the class Player
@@ -242,7 +220,7 @@ public class Player
      *
      * @return value of contractExpirationDate
      */
-    public LocalDate getContractExpirationDate()
+    public LocalDateTime getContractExpirationDate()
     {
         return contractExpirationDate;
     }
@@ -252,7 +230,7 @@ public class Player
      *
      * @param contractExpirationDate value of contractExpirationDate
      */
-    public void setContractExpirationDate(LocalDate contractExpirationDate)
+    public void setContractExpirationDate(LocalDateTime contractExpirationDate)
     {
         this.contractExpirationDate = contractExpirationDate;
     }

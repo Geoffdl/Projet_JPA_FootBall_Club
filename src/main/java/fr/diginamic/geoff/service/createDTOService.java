@@ -9,12 +9,22 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ *
+ */
 public class createDTOService
 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(createDTOService.class);
 
 
+    /**
+     *
+     * @param fileUrl
+     * @param dtoBuilder
+     * @return
+     * @param <T>
+     */
     public <T> List<T> createListOfDTO(String fileUrl, DTOBuilder<T> dtoBuilder)
     {
         List<String> lines = CsvDataParser.readFile(fileUrl);
