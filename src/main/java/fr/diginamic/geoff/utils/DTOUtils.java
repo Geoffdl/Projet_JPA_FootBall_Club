@@ -6,7 +6,7 @@ public class DTOUtils
 {
     public static String[] splitDataSourceIntoArray(String line, int expectedLength) throws CsvFormatException {
 
-        line = line.trim();
+        line = line.replaceAll("\"[^\"]+,[^\"]+\"", "");        line = line.trim();
         String[] parts = line.split(",");
         if (parts.length != expectedLength)
         {

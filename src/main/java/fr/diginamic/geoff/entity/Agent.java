@@ -2,6 +2,7 @@ package fr.diginamic.geoff.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,19 +13,14 @@ public class Agent
     @Column(name = "agent_id")
     private Long agentId;
 
+    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy = "agent")
-    private Set<Player> players;
+    private Set<Player> players = new HashSet<>();
 
     public Agent()
     {
-    }
-
-    public Agent( String name, Set<Player> players)
-    {
-        this.name = name;
-        this.players = players;
     }
 
     /**

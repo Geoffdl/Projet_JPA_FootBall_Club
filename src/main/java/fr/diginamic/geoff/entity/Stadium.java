@@ -2,6 +2,7 @@ package fr.diginamic.geoff.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,25 +13,20 @@ public class Stadium
     @Column(name = "stadium_id")
     private Long stadiumId;
 
+    @Column(unique = true)
     private String name;
+
     private int seats;
 
     @OneToMany(mappedBy = "stadium")
-    private Set<Game> games;
+    private Set<Game> games = new HashSet<>();
+    ;
     @ManyToOne
     @JoinColumn(name = "club_id", referencedColumnName = "club_id")
     private Club club;
 
     public Stadium()
     {
-    }
-
-    public Stadium(String name, int seats, Set<Game> games, Club club)
-    {
-        this.name = name;
-        this.seats = seats;
-        this.games = games;
-        this.club = club;
     }
 
     /**

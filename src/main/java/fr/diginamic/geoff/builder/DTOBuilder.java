@@ -2,11 +2,14 @@ package fr.diginamic.geoff.builder;
 
 import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.exception.CsvFormatException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public interface DTOBuilder<T>
 {
+    static final Logger LOGGER = LoggerFactory.getLogger(DTOBuilder.class);
 
     /**
      * @param lines
@@ -14,13 +17,23 @@ public interface DTOBuilder<T>
      */
     default List<T> buildDTOList(List<String> lines)
     {
-        lines.removeFirst();
-        return lines.stream()
+        if (lines == null)
+        {
+            return List.of();
+        }
+
+        return lines.stream().skip(1)
                 .map(l ->
                 {
+
                     T entityDTO = createInstance();
-                    setAttributes(entityDTO, l);
-                    return entityDTO;
+                    try {
+                        setAttributes(entityDTO, l);
+                        return entityDTO;
+                    } catch (CsvFormatException e) {
+                        LOGGER.debug("skipping line {} : {}", l, e.getMessage());
+                        return null;
+                    }
                 })
                 .toList();
     }

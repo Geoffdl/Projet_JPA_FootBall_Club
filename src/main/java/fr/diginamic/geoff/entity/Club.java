@@ -2,6 +2,7 @@ package fr.diginamic.geoff.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,6 +12,9 @@ public class Club
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "club_id")
     private Long clubId;
+
+    @Column(name = "source_id", unique = true)
+    private Long sourceId;
 
     @Column(name = "club_code")
     private String clubCode;
@@ -32,25 +36,12 @@ public class Club
     private Stadium homeStadium;
 
     @OneToMany(mappedBy = "currentClub")
-    private Set<Player> players;
+    private Set<Player> players = new HashSet<>();
     @OneToMany(mappedBy = "club")
-    private Set<ClubGame> clubGames;
+    private Set<ClubGame> clubGames= new HashSet<>();
 
     public Club()
     {
-    }
-
-    public Club(String clubCode, String clubName, int transferRecord, Country country, Url url, Competition domesticCompetition, Stadium homeStadium, Set<Player> players, Set<ClubGame> clubGames)
-    {
-        this.clubCode = clubCode;
-        this.clubName = clubName;
-        this.transferRecord = transferRecord;
-        this.country = country;
-        this.url = url;
-        this.domesticCompetition = domesticCompetition;
-        this.homeStadium = homeStadium;
-        this.players = players;
-        this.clubGames = clubGames;
     }
 
     /**
@@ -61,6 +52,26 @@ public class Club
     public Long getClubId()
     {
         return clubId;
+    }
+
+    /**
+     * Gets sourceId for the class Club
+     *
+     * @return value of sourceId
+     */
+    public Long getSourceId()
+    {
+        return sourceId;
+    }
+
+    /**
+     * Sets sourceId for the class Club.
+     *
+     * @param sourceId value of sourceId
+     */
+    public void setSourceId(Long sourceId)
+    {
+        this.sourceId = sourceId;
     }
 
     /**

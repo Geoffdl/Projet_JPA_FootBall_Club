@@ -1,5 +1,6 @@
 package fr.diginamic.geoff.entity;
 
+import fr.diginamic.geoff.entity.compositeid.GamePlayerId;
 import fr.diginamic.geoff.entity.lookup.Lineup;
 import jakarta.persistence.*;
 
@@ -7,10 +8,11 @@ import jakarta.persistence.*;
 @Table(name = "game_lineup")
 public class GameLineup
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "game_lineup_id")
-    private Long gameLineupId;
+    @EmbeddedId
+    private GamePlayerId gameLineupId;
+
+    @Column(name = "source_id", unique = true)
+    private String sourceId;
 
     private Lineup startingLineup;
     private int playerNumber;
@@ -18,9 +20,173 @@ public class GameLineup
     private String position;
 
     @ManyToOne
-    @JoinColumn(name = "player_id", referencedColumnName = "player_id")
+    @MapsId("playerId")
     private Player player;
     @ManyToOne
-    @JoinColumn(name = "game_id", referencedColumnName = "game_id")
+    @MapsId("gameId")
     private Game game;
+
+    public GameLineup()
+    {
+    }
+
+    /**
+     * Gets gameLineupId for the class GameLineup
+     *
+     * @return value of gameLineupId
+     */
+    public GamePlayerId getGameLineupId()
+    {
+        return gameLineupId;
+    }
+
+    /**
+     * Sets gameLineupId for the class GameLineup.
+     *
+     * @param gameLineupId value of gameLineupId
+     */
+    public void setGameLineupId(GamePlayerId gameLineupId)
+    {
+        this.gameLineupId = gameLineupId;
+    }
+
+    /**
+     * Gets sourceId for the class GameLineup
+     *
+     * @return value of sourceId
+     */
+    public String getSourceId()
+    {
+        return sourceId;
+    }
+
+    /**
+     * Sets sourceId for the class GameLineup.
+     *
+     * @param sourceId value of sourceId
+     */
+    public void setSourceId(String sourceId)
+    {
+        this.sourceId = sourceId;
+    }
+
+    /**
+     * Gets startingLineup for the class GameLineup
+     *
+     * @return value of startingLineup
+     */
+    public Lineup getStartingLineup()
+    {
+        return startingLineup;
+    }
+
+    /**
+     * Sets startingLineup for the class GameLineup.
+     *
+     * @param startingLineup value of startingLineup
+     */
+    public void setStartingLineup(Lineup startingLineup)
+    {
+        this.startingLineup = startingLineup;
+    }
+
+    /**
+     * Gets playerNumber for the class GameLineup
+     *
+     * @return value of playerNumber
+     */
+    public int getPlayerNumber()
+    {
+        return playerNumber;
+    }
+
+    /**
+     * Sets playerNumber for the class GameLineup.
+     *
+     * @param playerNumber value of playerNumber
+     */
+    public void setPlayerNumber(int playerNumber)
+    {
+        this.playerNumber = playerNumber;
+    }
+
+    /**
+     * Gets isTeamCaptain for the class GameLineup
+     *
+     * @return value of isTeamCaptain
+     */
+    public boolean isTeamCaptain()
+    {
+        return isTeamCaptain;
+    }
+
+    /**
+     * Sets isTeamCaptain for the class GameLineup.
+     *
+     * @param teamCaptain value of isTeamCaptain
+     */
+    public void setTeamCaptain(boolean teamCaptain)
+    {
+        isTeamCaptain = teamCaptain;
+    }
+
+    /**
+     * Gets position for the class GameLineup
+     *
+     * @return value of position
+     */
+    public String getPosition()
+    {
+        return position;
+    }
+
+    /**
+     * Sets position for the class GameLineup.
+     *
+     * @param position value of position
+     */
+    public void setPosition(String position)
+    {
+        this.position = position;
+    }
+
+    /**
+     * Gets player for the class GameLineup
+     *
+     * @return value of player
+     */
+    public Player getPlayer()
+    {
+        return player;
+    }
+
+    /**
+     * Sets player for the class GameLineup.
+     *
+     * @param player value of player
+     */
+    public void setPlayer(Player player)
+    {
+        this.player = player;
+    }
+
+    /**
+     * Gets game for the class GameLineup
+     *
+     * @return value of game
+     */
+    public Game getGame()
+    {
+        return game;
+    }
+
+    /**
+     * Sets game for the class GameLineup.
+     *
+     * @param game value of game
+     */
+    public void setGame(Game game)
+    {
+        this.game = game;
+    }
 }

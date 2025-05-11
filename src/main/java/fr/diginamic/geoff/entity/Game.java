@@ -3,6 +3,7 @@ package fr.diginamic.geoff.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -13,18 +14,19 @@ public class Game
     @Column(name = "game_id")
     private Long gameId;
 
+    @Column(name = "source_id", unique = true)
+    private Long sourceId;
+
     private LocalDate gameDate;
     private int attendanceCount;
     private String refereeName;
     private int homeTeamScore;
     private int awayTeamScore;
 
-    @ManyToOne
-    @JoinColumn(name = "home_team_id", referencedColumnName = "club_game_id")
-    private ClubGame homeTeam;
-    @ManyToOne
-    @JoinColumn(name = "away_team_id", referencedColumnName = "club_game_id")
-    private ClubGame awayTeam;
+    @OneToMany(mappedBy = "game")
+    private Set<ClubGame> clubGames = new HashSet<>();
+
+
     @ManyToOne
     @JoinColumn(name = "stadiumd_id", referencedColumnName = "stadium_id")
     private Stadium stadium;
@@ -34,27 +36,14 @@ public class Game
 
 
     @OneToMany(mappedBy = "game")
-    private Set<GameEvent> gameEvents;
+    private Set<GameEvent> gameEvents = new HashSet<>();;
     @OneToMany(mappedBy = "game")
-    private Set<GameAppearance> gameAppearances;
+    private Set<GameAppearance> gameAppearances = new HashSet<>();;
+    @OneToMany(mappedBy = "game")
+    private Set<GameLineup> gameLineups = new HashSet<>();
 
     public Game()
     {
-    }
-
-    public Game(LocalDate gameDate, int attendanceCount, String refereeName, int homeTeamScore, int awayTeamScore, ClubGame homeTeam, ClubGame awayTeam, Stadium stadium, CompetitionRound round, Set<GameEvent> gameEvents, Set<GameAppearance> gameAppearances)
-    {
-        this.gameDate = gameDate;
-        this.attendanceCount = attendanceCount;
-        this.refereeName = refereeName;
-        this.homeTeamScore = homeTeamScore;
-        this.awayTeamScore = awayTeamScore;
-        this.homeTeam = homeTeam;
-        this.awayTeam = awayTeam;
-        this.stadium = stadium;
-        this.round = round;
-        this.gameEvents = gameEvents;
-        this.gameAppearances = gameAppearances;
     }
 
     /**
@@ -65,6 +54,26 @@ public class Game
     public Long getGameId()
     {
         return gameId;
+    }
+
+    /**
+     * Gets sourceId for the class Game
+     *
+     * @return value of sourceId
+     */
+    public Long getSourceId()
+    {
+        return sourceId;
+    }
+
+    /**
+     * Sets sourceId for the class Game.
+     *
+     * @param sourceId value of sourceId
+     */
+    public void setSourceId(Long sourceId)
+    {
+        this.sourceId = sourceId;
     }
 
     /**
@@ -168,46 +177,6 @@ public class Game
     }
 
     /**
-     * Gets homeTeam for the class Game
-     *
-     * @return value of homeTeam
-     */
-    public ClubGame getHomeTeam()
-    {
-        return homeTeam;
-    }
-
-    /**
-     * Sets homeTeam for the class Game.
-     *
-     * @param homeTeam value of homeTeam
-     */
-    public void setHomeTeam(ClubGame homeTeam)
-    {
-        this.homeTeam = homeTeam;
-    }
-
-    /**
-     * Gets awayTeam for the class Game
-     *
-     * @return value of awayTeam
-     */
-    public ClubGame getAwayTeam()
-    {
-        return awayTeam;
-    }
-
-    /**
-     * Sets awayTeam for the class Game.
-     *
-     * @param awayTeam value of awayTeam
-     */
-    public void setAwayTeam(ClubGame awayTeam)
-    {
-        this.awayTeam = awayTeam;
-    }
-
-    /**
      * Gets stadium for the class Game
      *
      * @return value of stadium
@@ -285,5 +254,25 @@ public class Game
     public void setGameAppearances(Set<GameAppearance> gameAppearances)
     {
         this.gameAppearances = gameAppearances;
+    }
+
+    /**
+     * Gets gameLineups for the class Game
+     *
+     * @return value of gameLineups
+     */
+    public Set<GameLineup> getGameLineups()
+    {
+        return gameLineups;
+    }
+
+    /**
+     * Sets gameLineups for the class Game.
+     *
+     * @param gameLineups value of gameLineups
+     */
+    public void setGameLineups(Set<GameLineup> gameLineups)
+    {
+        this.gameLineups = gameLineups;
     }
 }

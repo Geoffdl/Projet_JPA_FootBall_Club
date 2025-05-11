@@ -1,5 +1,6 @@
 package fr.diginamic.geoff.entity;
 
+import fr.diginamic.geoff.entity.lookup.EntityType;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,7 +13,8 @@ public class Url
 
     private String url;
 
-    private String entityType;
+    @Enumerated(EnumType.STRING)
+    private EntityType entityType;
 
     @OneToOne(mappedBy = "url")
     private Club club;
@@ -25,12 +27,6 @@ public class Url
 
     public Url()
     {
-    }
-
-    public Url(String url, String entityType)
-    {
-        this.url = url;
-        this.entityType = entityType;
     }
 
     /**
@@ -68,7 +64,7 @@ public class Url
      *
      * @return value of entityType
      */
-    public String getEntityType()
+    public EntityType getEntityType()
     {
         return entityType;
     }
@@ -78,7 +74,7 @@ public class Url
      *
      * @param entityType value of entityType
      */
-    public void setEntityType(String entityType)
+    public void setEntityType(EntityType entityType)
     {
         this.entityType = entityType;
     }

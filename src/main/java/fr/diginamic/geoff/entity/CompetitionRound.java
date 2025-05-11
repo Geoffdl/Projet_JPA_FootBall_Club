@@ -3,6 +3,7 @@ package fr.diginamic.geoff.entity;
 import jakarta.persistence.*;
 
 import java.time.Year;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,7 +19,7 @@ public class CompetitionRound
     private String round;
 
     @OneToMany(mappedBy = "round")
-    private Set<Game> games;
+    private Set<Game> games = new HashSet<>();;
     @ManyToOne
     @JoinColumn(name = "competition_id", referencedColumnName = "competition_id")
     private Competition competition;
@@ -27,16 +28,8 @@ public class CompetitionRound
     {
     }
 
-    public CompetitionRound(Year season, String round, Set<Game> games, Competition competition)
-    {
-        this.season = season;
-        this.round = round;
-        this.games = games;
-        this.competition = competition;
-    }
-
     /**
-     * Gets roundId for the class Round
+     * Gets roundId for the class CompetitionRound
      *
      * @return value of roundId
      */
@@ -46,7 +39,7 @@ public class CompetitionRound
     }
 
     /**
-     * Gets season for the class Round
+     * Gets season for the class CompetitionRound
      *
      * @return value of season
      */
@@ -56,7 +49,7 @@ public class CompetitionRound
     }
 
     /**
-     * Sets season for the class Round.
+     * Sets season for the class CompetitionRound.
      *
      * @param season value of season
      */
@@ -66,7 +59,7 @@ public class CompetitionRound
     }
 
     /**
-     * Gets round for the class Round
+     * Gets round for the class CompetitionRound
      *
      * @return value of round
      */
@@ -76,7 +69,7 @@ public class CompetitionRound
     }
 
     /**
-     * Sets round for the class Round.
+     * Sets round for the class CompetitionRound.
      *
      * @param round value of round
      */
@@ -86,7 +79,7 @@ public class CompetitionRound
     }
 
     /**
-     * Gets games for the class Round
+     * Gets games for the class CompetitionRound
      *
      * @return value of games
      */
@@ -96,7 +89,7 @@ public class CompetitionRound
     }
 
     /**
-     * Sets games for the class Round.
+     * Sets games for the class CompetitionRound.
      *
      * @param games value of games
      */
@@ -106,7 +99,7 @@ public class CompetitionRound
     }
 
     /**
-     * Gets competition for the class Round
+     * Gets competition for the class CompetitionRound
      *
      * @return value of competition
      */
@@ -116,7 +109,7 @@ public class CompetitionRound
     }
 
     /**
-     * Sets competition for the class Round.
+     * Sets competition for the class CompetitionRound.
      *
      * @param competition value of competition
      */

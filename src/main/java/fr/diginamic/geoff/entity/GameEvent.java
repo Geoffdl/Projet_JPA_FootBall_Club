@@ -1,5 +1,6 @@
 package fr.diginamic.geoff.entity;
 
+import fr.diginamic.geoff.entity.compositeid.GamePlayerId;
 import fr.diginamic.geoff.entity.lookup.EventType;
 import jakarta.persistence.*;
 
@@ -7,20 +8,21 @@ import jakarta.persistence.*;
 @Table(name = "game_event")
 public class GameEvent
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "game_event_id")
-    private Long gameEventId;
+    @EmbeddedId
+    private GamePlayerId gameEventId;
+
+    @Column(name = "source_id", unique = true)
+    private String sourceId;
 
     private int eventMinute;
     private EventType eventType;
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "game_id", referencedColumnName = "game_id")
+    @MapsId("gameId")
     private Game game;
     @ManyToOne
-    @JoinColumn(name = "main_player_id", referencedColumnName = "player_id")
+    @MapsId("playerId")
     private Player playerMain;
     @ManyToOne
     @JoinColumn(name = "player_in_id", referencedColumnName = "player_id")
@@ -34,25 +36,34 @@ public class GameEvent
     {
     }
 
-    public GameEvent(int eventMinute, EventType eventType, String description, Game game, Player playerMain, Player playerIn, Player playerAssist)
-    {
-        this.eventMinute = eventMinute;
-        this.eventType = eventType;
-        this.description = description;
-        this.game = game;
-        this.playerMain = playerMain;
-        this.playerIn = playerIn;
-        this.playerAssist = playerAssist;
-    }
-
     /**
      * Gets gameEventId for the class GameEvent
      *
      * @return value of gameEventId
      */
-    public Long getGameEventId()
+    public GamePlayerId getGameEventId()
     {
         return gameEventId;
+    }
+
+    /**
+     * Gets sourceId for the class GameEvent
+     *
+     * @return value of sourceId
+     */
+    public String getSourceId()
+    {
+        return sourceId;
+    }
+
+    /**
+     * Sets sourceId for the class GameEvent.
+     *
+     * @param sourceId value of sourceId
+     */
+    public void setSourceId(String sourceId)
+    {
+        this.sourceId = sourceId;
     }
 
     /**

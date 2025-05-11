@@ -12,20 +12,19 @@ import java.util.List;
 /**
  *
  */
-public class createDTOService
+public class DTOCreationService
 {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(createDTOService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DTOCreationService.class);
 
 
     /**
-     *
      * @param fileUrl
      * @param dtoBuilder
-     * @return
      * @param <T>
+     * @return
      */
-    public <T> List<T> createListOfDTO(String fileUrl, DTOBuilder<T> dtoBuilder)
+    private <T> List<T> createListOfDTO(String fileUrl, DTOBuilder<T> dtoBuilder)
     {
         List<String> lines = CsvDataParser.readFile(fileUrl);
         try

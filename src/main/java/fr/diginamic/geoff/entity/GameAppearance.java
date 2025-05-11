@@ -1,15 +1,17 @@
 package fr.diginamic.geoff.entity;
 
+import fr.diginamic.geoff.entity.compositeid.GamePlayerId;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "game_appearance")
 public class GameAppearance
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "game_appearance_id")
-    private Long gameAppearanceId;
+    @EmbeddedId
+    private GamePlayerId gameAppearanceId;
+
+    @Column(name = "source_id", unique = true)
+    private Long sourceId;
 
     private int yellowCards;
     private int redCards;
@@ -18,25 +20,14 @@ public class GameAppearance
     private int minutes_played;
 
     @ManyToOne
-    @JoinColumn(name = "game_id", referencedColumnName = "game_id")
+    @MapsId("gameId")
     private Game game;
     @ManyToOne
-    @JoinColumn(name = "player_id", referencedColumnName = "player_id")
+    @MapsId("playerId")
     private Player player;
 
     public GameAppearance()
     {
-    }
-
-    public GameAppearance(int yellowCards, int redCards, int goals, int assists, int minutes_played, Game game, Player player)
-    {
-        this.yellowCards = yellowCards;
-        this.redCards = redCards;
-        this.goals = goals;
-        this.assists = assists;
-        this.minutes_played = minutes_played;
-        this.game = game;
-        this.player = player;
     }
 
     /**
@@ -44,9 +35,29 @@ public class GameAppearance
      *
      * @return value of gameAppearanceId
      */
-    public Long getGameAppearanceId()
+    public GamePlayerId getGameAppearanceId()
     {
         return gameAppearanceId;
+    }
+
+    /**
+     * Gets sourceId for the class GameAppearance
+     *
+     * @return value of sourceId
+     */
+    public Long getSourceId()
+    {
+        return sourceId;
+    }
+
+    /**
+     * Sets sourceId for the class GameAppearance.
+     *
+     * @param sourceId value of sourceId
+     */
+    public void setSourceId(Long sourceId)
+    {
+        this.sourceId = sourceId;
     }
 
     /**

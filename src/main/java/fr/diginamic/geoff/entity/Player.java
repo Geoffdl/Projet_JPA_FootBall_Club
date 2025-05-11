@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,14 +12,18 @@ import java.util.Set;
 public class Player
 {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "player_id")
     private Long playerId;
+
+    @Column(name = "source_id", unique = true)
+    private Long sourceId;
 
     private String firstName;
     private String lastName;
     private String playerCode;
     private LocalDate dateOfBirth;
-    private int height;
+    private Integer height;
     private String shooting_foot;
     private String positionFavored;
     private LocalDateTime contractExpirationDate;
@@ -46,24 +51,22 @@ public class Player
     private Agent agent;
 
     @OneToMany(mappedBy = "playerMain")
-    private Set<GameEvent> gameEventsMain;
+    private Set<GameEvent> gameEventsMain = new HashSet<>();;
     @OneToMany(mappedBy = "playerIn")
-    private Set<GameEvent> gameEventsIn;
+    private Set<GameEvent> gameEventsIn = new HashSet<>();;
     @OneToMany(mappedBy = "playerAssist")
-    private Set<GameEvent> gameEventsAssist;
+    private Set<GameEvent> gameEventsAssist = new HashSet<>();;
 
     @OneToMany(mappedBy = "player")
-    private Set<GameAppearance> appearances;
+    private Set<GameAppearance> appearances = new HashSet<>();;
     @OneToMany(mappedBy = "player")
-    private Set<PlayerValuation> valuations;
+    private Set<PlayerValuation> valuations = new HashSet<>();;
     @OneToMany(mappedBy = "player")
-    private Set<GameLineup> gameLineups;
+    private Set<GameLineup> gameLineups = new HashSet<>();;
 
     public Player()
     {
     }
-
-
 
     /**
      * Gets playerId for the class Player
@@ -73,6 +76,26 @@ public class Player
     public Long getPlayerId()
     {
         return playerId;
+    }
+
+    /**
+     * Gets sourceId for the class Player
+     *
+     * @return value of sourceId
+     */
+    public Long getSourceId()
+    {
+        return sourceId;
+    }
+
+    /**
+     * Sets sourceId for the class Player.
+     *
+     * @param sourceId value of sourceId
+     */
+    public void setSourceId(Long sourceId)
+    {
+        this.sourceId = sourceId;
     }
 
     /**
@@ -160,7 +183,7 @@ public class Player
      *
      * @return value of height
      */
-    public int getHeight()
+    public Integer getHeight()
     {
         return height;
     }
@@ -170,7 +193,7 @@ public class Player
      *
      * @param height value of height
      */
-    public void setHeight(int height)
+    public void setHeight(Integer height)
     {
         this.height = height;
     }
@@ -495,4 +518,34 @@ public class Player
         this.gameLineups = gameLineups;
     }
 
+    @Override
+    public String toString()
+    {
+        final StringBuilder sb = new StringBuilder("Player{");
+        sb.append("playerId=").append(playerId);
+        sb.append(", sourceId=").append(sourceId);
+        sb.append(", firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", playerCode='").append(playerCode).append('\'');
+        sb.append(", dateOfBirth=").append(dateOfBirth);
+        sb.append(", height=").append(height);
+        sb.append(", shooting_foot='").append(shooting_foot).append('\'');
+        sb.append(", positionFavored='").append(positionFavored).append('\'');
+        sb.append(", contractExpirationDate=").append(contractExpirationDate);
+        sb.append(", currentClub=").append(currentClub);
+        sb.append(", cityOfBirth=").append(cityOfBirth);
+        sb.append(", countryOfCitizenship=").append(countryOfCitizenship);
+        sb.append(", countryOfBirth=").append(countryOfBirth);
+        sb.append(", pictureUrl=").append(pictureUrl);
+        sb.append(", dataUrl=").append(dataUrl);
+        sb.append(", agent=").append(agent);
+        sb.append(", gameEventsMain=").append(gameEventsMain);
+        sb.append(", gameEventsIn=").append(gameEventsIn);
+        sb.append(", gameEventsAssist=").append(gameEventsAssist);
+        sb.append(", appearances=").append(appearances);
+        sb.append(", valuations=").append(valuations);
+        sb.append(", gameLineups=").append(gameLineups);
+        sb.append('}');
+        return sb.toString();
+    }
 }

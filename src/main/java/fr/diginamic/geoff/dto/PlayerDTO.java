@@ -6,12 +6,12 @@ import java.time.Year;
 
 public class PlayerDTO
 {
-    private int playerId;
+    private Long playerId;
     private String firstName;
     private String lastName;
     private String name;
     private Year lastSeason;
-    private int currentClubId;
+    private Long currentClubId;
     private String playerCode;
     private String countryOfBirth;
     private String cityOfBirth;
@@ -35,32 +35,6 @@ public class PlayerDTO
     {
     }
 
-    public PlayerDTO(int playerId, String firstName, String lastName, String name, Year lastSeason, int currentClubId, String playerCode, String countryOfBirth, String cityOfBirth, String countryOfCitizenship, LocalDate dateOfBirth, String subPosition, String position, String foot, int heightInCm, double marketValueInEur, double highestMarketValue, LocalDateTime contractExpirationDate, String agentName, String imageUrl, String url, String currentClubDomesticCompetitionId, String currentClubName)
-    {
-        this.playerId = playerId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.name = name;
-        this.lastSeason = lastSeason;
-        this.currentClubId = currentClubId;
-        this.playerCode = playerCode;
-        this.countryOfBirth = countryOfBirth;
-        this.cityOfBirth = cityOfBirth;
-        this.countryOfCitizenship = countryOfCitizenship;
-        this.dateOfBirth = dateOfBirth;
-        this.subPosition = subPosition;
-        this.position = position;
-        this.foot = foot;
-        this.heightInCm = heightInCm;
-        this.marketValueInEur = marketValueInEur;
-        this.highestMarketValue = highestMarketValue;
-        this.contractExpirationDate = contractExpirationDate;
-        this.agentName = agentName;
-        this.imageUrl = imageUrl;
-        this.url = url;
-        this.currentClubDomesticCompetitionId = currentClubDomesticCompetitionId;
-        this.currentClubName = currentClubName;
-    }
 
     /**
      * Gets url for the class PlayerDTO
@@ -87,7 +61,7 @@ public class PlayerDTO
      *
      * @return value of playerId
      */
-    public int getPlayerId()
+    public Long getPlayerId()
     {
         return playerId;
     }
@@ -97,7 +71,7 @@ public class PlayerDTO
      *
      * @param playerId value of playerId
      */
-    public void setPlayerId(int playerId)
+    public void setPlayerId(Long playerId)
     {
         this.playerId = playerId;
     }
@@ -187,7 +161,7 @@ public class PlayerDTO
      *
      * @return value of currentClubId
      */
-    public int getCurrentClubId()
+    public Long getCurrentClubId()
     {
         return currentClubId;
     }
@@ -197,7 +171,7 @@ public class PlayerDTO
      *
      * @param currentClubId value of currentClubId
      */
-    public void setCurrentClubId(int currentClubId)
+    public void setCurrentClubId(Long currentClubId)
     {
         this.currentClubId = currentClubId;
     }

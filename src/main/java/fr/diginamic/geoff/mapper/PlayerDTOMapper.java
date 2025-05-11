@@ -17,6 +17,7 @@ public class PlayerDTOMapper
 
     public Player mapToPlayer(Player player)
     {
+        player.setSourceId(playerDTO.getPlayerId());
         player.setFirstName(playerDTO.getFirstName());
         player.setLastName(playerDTO.getLastName());
         player.setPlayerCode(playerDTO.getPlayerCode());
@@ -47,9 +48,20 @@ public class PlayerDTOMapper
         return url;
     }
 
+    public Country mapToCountryBirth(Country country){
+        country.setNom(playerDTO.getCountryOfBirth());
+        return country;
+    }
+    public Country mapToCountryCitizenship(Country country){
+        country.setNom(playerDTO.getCountryOfCitizenship());
+        return country;
+    }
+
     public Club mapToClub(Club club)
     {
+        club.setSourceId(playerDTO.getCurrentClubId());
         club.setClubName(playerDTO.getCurrentClubName());
+
         return club;
     }
 }

@@ -1,5 +1,7 @@
 package fr.diginamic.geoff.entity;
 
+import fr.diginamic.geoff.entity.compositeid.ClubGameId;
+import fr.diginamic.geoff.entity.compositeid.ClubPlayerId;
 import fr.diginamic.geoff.entity.lookup.Side;
 import jakarta.persistence.*;
 
@@ -10,10 +12,8 @@ import java.util.Set;
 @Table(name = "club_game")
 public class ClubGame
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "club_game_id")
-    private Long clubGameId;
+    @EmbeddedId
+    private ClubGameId clubGameId;
 
     @Enumerated(EnumType.STRING)
     private Side side;
@@ -25,11 +25,11 @@ public class ClubGame
     private String tacticalFormation;
 
     @ManyToOne
-    @JoinColumn(name = "game_id", referencedColumnName = "game_id")
+    @MapsId("gameId")
     private Game game;
 
     @ManyToOne
-    @JoinColumn(name = "club_id", referencedColumnName = "club_id")
+    @MapsId("clubId")
     private Club club;
 
 
@@ -37,5 +37,113 @@ public class ClubGame
     {
     }
 
+    /**
+     * Gets clubGameId for the class ClubGame
+     *
+     * @return value of clubGameId
+     */
+    public ClubGameId getClubGameId()
+    {
+        return clubGameId;
+    }
 
+    /**
+     * Gets side for the class ClubGame
+     *
+     * @return value of side
+     */
+    public Side getSide()
+    {
+        return side;
+    }
+
+    /**
+     * Sets side for the class ClubGame.
+     *
+     * @param side value of side
+     */
+    public void setSide(Side side)
+    {
+        this.side = side;
+    }
+
+    /**
+     * Gets managerName for the class ClubGame
+     *
+     * @return value of managerName
+     */
+    public String getManagerName()
+    {
+        return managerName;
+    }
+
+    /**
+     * Sets managerName for the class ClubGame.
+     *
+     * @param managerName value of managerName
+     */
+    public void setManagerName(String managerName)
+    {
+        this.managerName = managerName;
+    }
+
+    /**
+     * Gets tacticalFormation for the class ClubGame
+     *
+     * @return value of tacticalFormation
+     */
+    public String getTacticalFormation()
+    {
+        return tacticalFormation;
+    }
+
+    /**
+     * Sets tacticalFormation for the class ClubGame.
+     *
+     * @param tacticalFormation value of tacticalFormation
+     */
+    public void setTacticalFormation(String tacticalFormation)
+    {
+        this.tacticalFormation = tacticalFormation;
+    }
+
+    /**
+     * Gets game for the class ClubGame
+     *
+     * @return value of game
+     */
+    public Game getGame()
+    {
+        return game;
+    }
+
+    /**
+     * Sets game for the class ClubGame.
+     *
+     * @param game value of game
+     */
+    public void setGame(Game game)
+    {
+        this.game = game;
+    }
+
+    /**
+     * Gets club for the class ClubGame
+     *
+     * @return value of club
+     */
+    public Club getClub()
+    {
+        return club;
+    }
+
+    /**
+     * Sets club for the class ClubGame.
+     *
+     * @param club value of club
+     */
+    public void setClub(Club club)
+    {
+        this.club = club;
+    }
 }

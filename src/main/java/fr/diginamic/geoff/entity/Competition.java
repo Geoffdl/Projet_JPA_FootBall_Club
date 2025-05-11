@@ -2,6 +2,7 @@ package fr.diginamic.geoff.entity;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,6 +12,9 @@ public class Competition
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "competition_id")
     private Long competitionId;
+
+    @Column(name = "source_id", unique = true, length = 10)
+    private String sourceId;
 
     @Column(name = "competition_code")
     private String competitionCode;
@@ -36,26 +40,12 @@ public class Competition
     private Country country;
 
     @OneToMany(mappedBy = "domesticCompetition")
-    private Set<Club> clubs;
+    private Set<Club> clubs = new HashSet<>();;
     @OneToMany(mappedBy = "competition")
-    private Set<CompetitionRound> rounds;
+    private Set<CompetitionRound> rounds = new HashSet<>();;
 
     public Competition()
     {
-    }
-
-    public Competition(String competitionCode, String competitionName, String competitionType, String competitionSubtype, String domesticLeagueCode, String confederation, Url url, Country country, Set<Club> clubs, Set<CompetitionRound> rounds)
-    {
-        this.competitionCode = competitionCode;
-        this.competitionName = competitionName;
-        this.competitionType = competitionType;
-        this.competitionSubtype = competitionSubtype;
-        this.domesticLeagueCode = domesticLeagueCode;
-        this.confederation = confederation;
-        this.url = url;
-        this.country = country;
-        this.clubs = clubs;
-        this.rounds = rounds;
     }
 
     /**
@@ -66,6 +56,26 @@ public class Competition
     public Long getCompetitionId()
     {
         return competitionId;
+    }
+
+    /**
+     * Gets sourceId for the class Competition
+     *
+     * @return value of sourceId
+     */
+    public String getSourceId()
+    {
+        return sourceId;
+    }
+
+    /**
+     * Sets sourceId for the class Competition.
+     *
+     * @param sourceId value of sourceId
+     */
+    public void setSourceId(String sourceId)
+    {
+        this.sourceId = sourceId;
     }
 
     /**
