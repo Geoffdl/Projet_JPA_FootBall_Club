@@ -1,6 +1,7 @@
 package fr.diginamic.geoff.service.entity;
 
 import fr.diginamic.geoff.dao.CompetitionDao;
+import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.dto.GameDTO;
 import fr.diginamic.geoff.entity.Competition;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
@@ -32,4 +33,6 @@ public class CompetitionService
 
         return competition;
     }
+
+    public Competition findOrCreateCompetitionFromCompetitionDTO(CompetitionDTO dto) {}
 }

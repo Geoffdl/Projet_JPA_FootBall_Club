@@ -5,6 +5,9 @@ import jakarta.persistence.Embeddable;
 
 import java.util.Objects;
 
+/**
+ *
+ */
 @Embeddable
 public class ClubGameId
 {

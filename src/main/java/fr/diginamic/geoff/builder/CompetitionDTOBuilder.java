@@ -1,11 +1,10 @@
 package fr.diginamic.geoff.builder;
 
 import fr.diginamic.geoff.dto.CompetitionDTO;
-import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.exception.CsvFormatException;
-import static fr.diginamic.geoff.utils.Deserializer.*;
-import static fr.diginamic.geoff.utils.DTOUtils.*;
-import java.util.List;
+
+import static fr.diginamic.geoff.utils.DTOUtils.splitDataSourceIntoArray;
+import static fr.diginamic.geoff.utils.Deserializer.stringToLong;
 
 public class CompetitionDTOBuilder implements DTOBuilder<CompetitionDTO>
 {
@@ -23,7 +22,7 @@ public class CompetitionDTOBuilder implements DTOBuilder<CompetitionDTO>
         entity.setName(parts[2]);
         entity.setSubType(parts[3]);
         entity.setType(parts[4]);
-        entity.setCountryId(stringToInt(parts[5]));
+        entity.setCountryId(stringToLong(parts[5]));
         entity.setCountryName(parts[6]);
         entity.setDomesticLeagueCode(parts[7]);
         entity.setConfederation(parts[8]);

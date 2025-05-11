@@ -7,8 +7,15 @@ import java.time.format.DateTimeFormatter;
 
 import static java.lang.Integer.parseInt;
 
+/**
+ *
+ */
 public class Deserializer
 {
+    /**
+     * @param part
+     * @return
+     */
     public static int stringToInt(String part)
     {
         if (part == null || part.trim().isEmpty())
@@ -19,6 +26,10 @@ public class Deserializer
         return parseInt(part);
     }
 
+    /**
+     * @param part
+     * @return
+     */
     public static Long stringToLong(String part)
     {
         if (part == null || part.trim().isEmpty())
@@ -29,6 +40,10 @@ public class Deserializer
         return Long.parseLong(part);
     }
 
+    /**
+     * @param part
+     * @return
+     */
     public static double stringToDouble(String part)
     {
         if (part == null || part.trim().isEmpty())
@@ -39,6 +54,10 @@ public class Deserializer
         return Double.parseDouble(part);
     }
 
+    /**
+     * @param part
+     * @return
+     */
     public static LocalDate stringToLocalDate(String part)
     {
         if (part == null || part.trim().isEmpty())
@@ -51,6 +70,10 @@ public class Deserializer
     }
 
 
+    /**
+     * @param part
+     * @return
+     */
     public static LocalDateTime stringToLocalDateTime(String part)
     {
         if (part == null || part.trim().isEmpty())
@@ -62,6 +85,10 @@ public class Deserializer
         return LocalDateTime.parse(part.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
+    /**
+     * @param part
+     * @return
+     */
     public static Year stringToYear(String part)
     {
         if (part == null || part.trim().isEmpty())
@@ -73,6 +100,10 @@ public class Deserializer
         return Year.of(stringToInt(part));
     }
 
+    /**
+     * @param part
+     * @return
+     */
     public static boolean stringToBoolean(String part)
     {
         if (part == null || part.trim().isEmpty())

@@ -5,6 +5,9 @@ import fr.diginamic.geoff.entity.*;
 import fr.diginamic.geoff.entity.compositeid.ClubGameId;
 import fr.diginamic.geoff.entity.lookup.Side;
 
+/**
+ *
+ */
 public class GameDTOMapper
 {
     private final GameDTO dto;

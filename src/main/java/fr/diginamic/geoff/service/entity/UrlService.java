@@ -1,6 +1,7 @@
 package fr.diginamic.geoff.service.entity;
 
 import fr.diginamic.geoff.dao.UrlDao;
+import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Url;
 import fr.diginamic.geoff.entity.lookup.EntityType;
@@ -61,4 +62,5 @@ public class UrlService
         return url;
     }
 
+    public Url findOrCreateCompetitionUrl(CompetitionDTO dto) {}
 }

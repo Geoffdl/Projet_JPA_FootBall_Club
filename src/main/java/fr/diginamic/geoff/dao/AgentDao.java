@@ -7,6 +7,7 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
+
 public class AgentDao
 {
     private final EntityManager em;

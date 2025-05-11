@@ -1,6 +1,7 @@
 package fr.diginamic.geoff.service.entity;
 
 import fr.diginamic.geoff.dao.CountryDao;
+import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Country;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
@@ -55,4 +56,6 @@ public class CountryService
         countryDao.save(country);
         return country;
     }
+
+    public Country findOrCreateCompetitionCountry(CompetitionDTO dto) {}
 }

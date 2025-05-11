@@ -7,7 +7,7 @@ public class CompetitionDTO
     private String name;
     private String subType;
     private String type;
-    private int countryId;
+    private Long countryId;
     private String countryName;
     private String domesticLeagueCode;
     private String confederation;
@@ -17,7 +17,7 @@ public class CompetitionDTO
     {
     }
 
-    public CompetitionDTO(String competitionId, String competitionCode, String name, String subType, String type, int countryId, String countryName, String domesticLeagueCode, String confederation, String url)
+    public CompetitionDTO(String competitionId, String competitionCode, String name, String subType, String type, Long countryId, String countryName, String domesticLeagueCode, String confederation, String url)
     {
         this.competitionId = competitionId;
         this.competitionCode = competitionCode;
@@ -136,7 +136,7 @@ public class CompetitionDTO
      *
      * @return value of countryId
      */
-    public int getCountryId()
+    public Long getCountryId()
     {
         return countryId;
     }
@@ -146,7 +146,7 @@ public class CompetitionDTO
      *
      * @param countryId value of countryId
      */
-    public void setCountryId(int countryId)
+    public void setCountryId(Long countryId)
     {
         this.countryId = countryId;
     }

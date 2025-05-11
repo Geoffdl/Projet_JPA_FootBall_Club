@@ -23,19 +23,15 @@ public class ClubGameService
 
     public ClubGame findOrCreateClubGame(GameDTO dto, boolean isHome, ClubService clubService, Game game)
     {
-        Long gameId = dto.getGameId();
-        Long clubId = dto.getAwayClubId();
-        if (isHome)
-        {
-            clubId = dto.getHomeClubId();
-        }
+        Club club = clubService.findOrCreateClubFromHomeGame(dto, isHome);
+        
 
-        Optional<ClubGame> clubGameOptional = clubGameDao.findByGameIdAndClubId(gameId, clubId);
+        Optional<ClubGame> clubGameOptional = clubGameDao.findByGameIdAndClubId(game.getGameId(), club.getClubId());
         if (clubGameOptional.isPresent())
         {
             return clubGameOptional.get();
         }
-        Club club = clubService.findOrCreateClubFromHomeGame(dto, isHome);
+
         ClubGame clubGame = factory.createClubGame(dto, isHome, club, game);
         clubGame.setClub(club);
         clubGameDao.save(clubGame);

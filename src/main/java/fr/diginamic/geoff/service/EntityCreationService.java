@@ -97,7 +97,27 @@ public class EntityCreationService
         //creating sequence
         treatPlayerDTO();
         treatGameDTO();
+        treatCompetitionDTO();
 
+    }
+
+    private void treatCompetitionDTO()
+    {
+        for (CompetitionDTO dto : competitionDTOList)
+        {
+            runInTransaction(() ->
+            {
+                Competition competition = competitionService.findOrCreateCompetitionFromCompetitionDTO(dto);
+                Country country = countryService.findOrCreateCompetitionCountry(dto);
+                Url url = urlService.findOrCreateCompetitionUrl(dto);
+
+                competition.setUrl(url);
+                competition.setCountry(country);
+                em.persist(competition);
+
+            }, em);
+        }
+        em.clear();
     }
 
 
@@ -124,10 +144,11 @@ public class EntityCreationService
                 player.setCountryOfBirth(countryBirth);
                 player.setCountryOfCitizenship(countryCitizenship);
                 em.persist(player);
-                em.clear();
+
             }, em);
-            em.clear();
+
         }
+        em.clear();
     }
 
     private void treatGameDTO()
@@ -147,10 +168,12 @@ public class EntityCreationService
 
                 game.setStadium(stadium);
                 game.setRound(round);
-
                 competition.getRounds().add(round);
 
                 em.persist(competition);
+
+                round.setCompetition(competition);
+
                 em.persist(game);
                 em.persist(clubAway);
                 em.persist(clubHome);
@@ -176,7 +199,7 @@ public class EntityCreationService
      */
     private void initializeDtoLists()
     {
-//        this.competitionDTOList = dtoListCreator.createListOfCompetitionDTO("data/1.competitions.csv");
+        this.competitionDTOList = dtoListCreator.createListOfCompetitionDTO("data/1.competitions.csv");
 //        this.clubDTOList = dtoListCreator.createListOfClubDTO("data/2.clubs.csv");
         this.playerDTOList = dtoListCreator.createListOfPlayerDTO("data/3.players.csv");
 //        this.playerValuationList = dtoListCreator.createListOfPlayerValuation("data/4.player_valuations.csv");
@@ -191,11 +214,13 @@ public class EntityCreationService
      */
     private void limitListSize()
     {
-//        competitionDTOList = competitionDTOList.stream().limit(1000).toList();
+        int size = 300;
+
+        competitionDTOList = competitionDTOList.stream().limit(size).toList();
 //        clubDTOList = clubDTOList.stream().limit(1000).toList();
-        playerDTOList = playerDTOList.stream().limit(500).toList();
+        playerDTOList = playerDTOList.stream().limit(size).toList();
 //        playerValuationList = playerValuationList.stream().limit(1000).toList();
-        gameDTOList = gameDTOList.stream().limit(500).toList();
+        gameDTOList = gameDTOList.stream().limit(size).toList();
 //        gameEventDTOList = gameEventDTOList.stream().limit(1000).toList();
 //        gameLineupDTOList = gameLineupDTOList.stream().limit(1000).toList();
 //        appearanceDTOList = appearanceDTOList.stream().limit(1000).toList();
