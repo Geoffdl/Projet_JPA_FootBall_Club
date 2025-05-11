@@ -13,13 +13,13 @@ public class GameDTOBuilder implements DTOBuilder<GameDTO>
     {
         String[] parts = DTOUtils.splitDataSourceIntoArray(line, GameDTO.class.getDeclaredFields().length);
 
-        entity.setGameId(stringToInt(parts[0]));
+        entity.setGameId(stringToLong(parts[0]));
         entity.setCompetitionId(parts[1]);
         entity.setSeason(stringToYear(parts[2]));
         entity.setRound(parts[3]);
         entity.setDate(stringToLocalDate(parts[4]));
-        entity.setHomeClubId(stringToInt(parts[5]));
-        entity.setAwayClubId(stringToInt(parts[6]));
+        entity.setHomeClubId(stringToLong(parts[5]));
+        entity.setAwayClubId(stringToLong(parts[6]));
         entity.setHomeClubGoals(stringToInt(parts[7]));
         entity.setAwayClubGoals(stringToInt(parts[8]));
         entity.setHomeClubPosition(stringToInt(parts[9]));

@@ -17,18 +17,23 @@ public class Game
     @Column(name = "source_id", unique = true)
     private Long sourceId;
 
+    @Column(name = "game_date")
     private LocalDate gameDate;
-    private int attendanceCount;
+    @Column(name = "attendance")
+    private Integer attendanceCount;
+    @Column(name = "referee")
     private String refereeName;
-    private int homeTeamScore;
-    private int awayTeamScore;
+    @Column(name = "home_team_score")
+    private Integer homeTeamScore;
+    @Column(name = "away_team_score")
+    private Integer awayTeamScore;
 
     @OneToMany(mappedBy = "game")
     private Set<ClubGame> clubGames = new HashSet<>();
 
 
     @ManyToOne
-    @JoinColumn(name = "stadiumd_id", referencedColumnName = "stadium_id")
+    @JoinColumn(name = "stadium_id", referencedColumnName = "stadium_id")
     private Stadium stadium;
     @ManyToOne
     @JoinColumn(name = "round_id", referencedColumnName = "round_id")
@@ -44,16 +49,6 @@ public class Game
 
     public Game()
     {
-    }
-
-    /**
-     * Gets gameId for the class Game
-     *
-     * @return value of gameId
-     */
-    public Long getGameId()
-    {
-        return gameId;
     }
 
     /**
@@ -101,7 +96,7 @@ public class Game
      *
      * @return value of attendanceCount
      */
-    public int getAttendanceCount()
+    public Integer getAttendanceCount()
     {
         return attendanceCount;
     }
@@ -111,7 +106,7 @@ public class Game
      *
      * @param attendanceCount value of attendanceCount
      */
-    public void setAttendanceCount(int attendanceCount)
+    public void setAttendanceCount(Integer attendanceCount)
     {
         this.attendanceCount = attendanceCount;
     }
@@ -141,7 +136,7 @@ public class Game
      *
      * @return value of homeTeamScore
      */
-    public int getHomeTeamScore()
+    public Integer getHomeTeamScore()
     {
         return homeTeamScore;
     }
@@ -151,7 +146,7 @@ public class Game
      *
      * @param homeTeamScore value of homeTeamScore
      */
-    public void setHomeTeamScore(int homeTeamScore)
+    public void setHomeTeamScore(Integer homeTeamScore)
     {
         this.homeTeamScore = homeTeamScore;
     }
@@ -161,7 +156,7 @@ public class Game
      *
      * @return value of awayTeamScore
      */
-    public int getAwayTeamScore()
+    public Integer getAwayTeamScore()
     {
         return awayTeamScore;
     }
@@ -171,9 +166,29 @@ public class Game
      *
      * @param awayTeamScore value of awayTeamScore
      */
-    public void setAwayTeamScore(int awayTeamScore)
+    public void setAwayTeamScore(Integer awayTeamScore)
     {
         this.awayTeamScore = awayTeamScore;
+    }
+
+    /**
+     * Gets clubGames for the class Game
+     *
+     * @return value of clubGames
+     */
+    public Set<ClubGame> getClubGames()
+    {
+        return clubGames;
+    }
+
+    /**
+     * Sets clubGames for the class Game.
+     *
+     * @param clubGames value of clubGames
+     */
+    public void setClubGames(Set<ClubGame> clubGames)
+    {
+        this.clubGames = clubGames;
     }
 
     /**
@@ -275,4 +290,15 @@ public class Game
     {
         this.gameLineups = gameLineups;
     }
+
+    /**
+     * Gets gameId for the class Game
+     *
+     * @return value of gameId
+     */
+    public Long getGameId()
+    {
+        return gameId;
+    }
+
 }

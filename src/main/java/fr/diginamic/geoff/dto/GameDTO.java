@@ -5,21 +5,21 @@ import java.time.Year;
 
 public class GameDTO
 {
-    private int gameId;
+    private Long gameId;
     private String competitionId;
     private Year season;
     private String round;
     private LocalDate date;
-    private int homeClubId;
-    private int awayClubId;
-    private int homeClubGoals;
-    private int awayClubGoals;
-    private int homeClubPosition;
-    private int awayClubPosition;
+    private Long homeClubId;
+    private Long awayClubId;
+    private Integer homeClubGoals;
+    private Integer awayClubGoals;
+    private Integer homeClubPosition;
+    private Integer awayClubPosition;
     private String homeClubManagerName;
     private String awayClubManagerName;
     private String stadiumName;
-    private int attendance;
+    private Integer attendance;
     private String refereeName;
     private String url;
     private String homeClubFormation;
@@ -38,7 +38,7 @@ public class GameDTO
      *
      * @return value of gameId
      */
-    public int getGameId()
+    public Long getGameId()
     {
         return gameId;
     }
@@ -48,7 +48,7 @@ public class GameDTO
      *
      * @param gameId value of gameId
      */
-    public void setGameId(int gameId)
+    public void setGameId(Long gameId)
     {
         this.gameId = gameId;
     }
@@ -138,7 +138,7 @@ public class GameDTO
      *
      * @return value of homeClubId
      */
-    public int getHomeClubId()
+    public Long getHomeClubId()
     {
         return homeClubId;
     }
@@ -148,7 +148,7 @@ public class GameDTO
      *
      * @param homeClubId value of homeClubId
      */
-    public void setHomeClubId(int homeClubId)
+    public void setHomeClubId(Long homeClubId)
     {
         this.homeClubId = homeClubId;
     }
@@ -158,7 +158,7 @@ public class GameDTO
      *
      * @return value of awayClubId
      */
-    public int getAwayClubId()
+    public Long getAwayClubId()
     {
         return awayClubId;
     }
@@ -168,7 +168,7 @@ public class GameDTO
      *
      * @param awayClubId value of awayClubId
      */
-    public void setAwayClubId(int awayClubId)
+    public void setAwayClubId(Long awayClubId)
     {
         this.awayClubId = awayClubId;
     }
@@ -178,7 +178,7 @@ public class GameDTO
      *
      * @return value of homeClubGoals
      */
-    public int getHomeClubGoals()
+    public Integer getHomeClubGoals()
     {
         return homeClubGoals;
     }
@@ -188,7 +188,7 @@ public class GameDTO
      *
      * @param homeClubGoals value of homeClubGoals
      */
-    public void setHomeClubGoals(int homeClubGoals)
+    public void setHomeClubGoals(Integer homeClubGoals)
     {
         this.homeClubGoals = homeClubGoals;
     }
@@ -198,7 +198,7 @@ public class GameDTO
      *
      * @return value of awayClubGoals
      */
-    public int getAwayClubGoals()
+    public Integer getAwayClubGoals()
     {
         return awayClubGoals;
     }
@@ -208,7 +208,7 @@ public class GameDTO
      *
      * @param awayClubGoals value of awayClubGoals
      */
-    public void setAwayClubGoals(int awayClubGoals)
+    public void setAwayClubGoals(Integer awayClubGoals)
     {
         this.awayClubGoals = awayClubGoals;
     }
@@ -218,7 +218,7 @@ public class GameDTO
      *
      * @return value of homeClubPosition
      */
-    public int getHomeClubPosition()
+    public Integer getHomeClubPosition()
     {
         return homeClubPosition;
     }
@@ -228,7 +228,7 @@ public class GameDTO
      *
      * @param homeClubPosition value of homeClubPosition
      */
-    public void setHomeClubPosition(int homeClubPosition)
+    public void setHomeClubPosition(Integer homeClubPosition)
     {
         this.homeClubPosition = homeClubPosition;
     }
@@ -238,7 +238,7 @@ public class GameDTO
      *
      * @return value of awayClubPosition
      */
-    public int getAwayClubPosition()
+    public Integer getAwayClubPosition()
     {
         return awayClubPosition;
     }
@@ -248,15 +248,15 @@ public class GameDTO
      *
      * @param awayClubPosition value of awayClubPosition
      */
-    public void setAwayClubPosition(int awayClubPosition)
+    public void setAwayClubPosition(Integer awayClubPosition)
     {
         this.awayClubPosition = awayClubPosition;
     }
 
     /**
-     * Gets homeClubMangerName for the class GameDTO
+     * Gets homeClubManagerName for the class GameDTO
      *
-     * @return value of homeClubMangerName
+     * @return value of homeClubManagerName
      */
     public String getHomeClubManagerName()
     {
@@ -264,9 +264,9 @@ public class GameDTO
     }
 
     /**
-     * Sets homeClubMangerName for the class GameDTO.
+     * Sets homeClubManagerName for the class GameDTO.
      *
-     * @param homeClubManagerName value of homeClubMangerName
+     * @param homeClubManagerName value of homeClubManagerName
      */
     public void setHomeClubManagerName(String homeClubManagerName)
     {
@@ -318,7 +318,7 @@ public class GameDTO
      *
      * @return value of attendance
      */
-    public int getAttendance()
+    public Integer getAttendance()
     {
         return attendance;
     }
@@ -328,7 +328,7 @@ public class GameDTO
      *
      * @param attendance value of attendance
      */
-    public void setAttendance(int attendance)
+    public void setAttendance(Integer attendance)
     {
         this.attendance = attendance;
     }

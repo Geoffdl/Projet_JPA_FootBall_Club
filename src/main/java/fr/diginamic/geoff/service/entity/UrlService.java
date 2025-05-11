@@ -1,8 +1,7 @@
-package fr.diginamic.geoff.service;
+package fr.diginamic.geoff.service.entity;
 
 import fr.diginamic.geoff.dao.UrlDao;
 import fr.diginamic.geoff.dto.PlayerDTO;
-import fr.diginamic.geoff.entity.Url;
 import fr.diginamic.geoff.entity.Url;
 import fr.diginamic.geoff.entity.lookup.EntityType;
 import fr.diginamic.geoff.utils.JpaEntityFactory;

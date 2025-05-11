@@ -2,9 +2,9 @@ package fr.diginamic.geoff.dao;
 
 import fr.diginamic.geoff.entity.Country;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
+import java.util.List;
 import java.util.Optional;
 
 public class CountryDao
@@ -16,7 +16,8 @@ public class CountryDao
         this.em = em;
     }
 
-    public void save(Country country) {
+    public void save(Country country)
+    {
         em.persist(country);
 
     }
@@ -27,17 +28,17 @@ public class CountryDao
         {
             return Optional.empty();
         }
-        try
-        {
-            TypedQuery<Country> query = em.createQuery(
-                    "SELECT p FROM Country p WHERE p.nom= :nom", Country.class);
-            query.setParameter("nom", nom);
 
-            return Optional.of(query.getSingleResult());
-        } catch (NoResultException e)
+        TypedQuery<Country> query = em.createQuery(
+                "SELECT p FROM Country p WHERE p.nom= :nom", Country.class);
+        query.setParameter("nom", nom);
+
+        List<Country> countryList = query.getResultList();
+        if (!countryList.isEmpty())
         {
-            return Optional.empty();
+            return Optional.of(countryList.getFirst());
         }
+        return Optional.empty();
     }
 
 

@@ -22,7 +22,7 @@ public class PlayerDTOMapper
         player.setLastName(playerDTO.getLastName());
         player.setPlayerCode(playerDTO.getPlayerCode());
         player.setDateOfBirth(playerDTO.getDateOfBirth());
-        player.setShooting_foot(playerDTO.getFoot());
+        player.setShootingFoot(playerDTO.getFoot());
         player.setHeight(playerDTO.getHeightInCm());
         player.setPositionFavored(playerDTO.getPosition());
         player.setContractExpirationDate(playerDTO.getContractExpirationDate());

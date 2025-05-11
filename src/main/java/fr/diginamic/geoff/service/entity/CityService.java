@@ -1,8 +1,7 @@
-package fr.diginamic.geoff.service;
+package fr.diginamic.geoff.service.entity;
 
 import fr.diginamic.geoff.dao.CityDao;
 import fr.diginamic.geoff.dto.PlayerDTO;
-import fr.diginamic.geoff.entity.Agent;
 import fr.diginamic.geoff.entity.City;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
 

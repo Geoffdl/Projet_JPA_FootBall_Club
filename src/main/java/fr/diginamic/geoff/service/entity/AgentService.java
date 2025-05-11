@@ -1,13 +1,11 @@
-package fr.diginamic.geoff.service;
+package fr.diginamic.geoff.service.entity;
 
 import fr.diginamic.geoff.dao.AgentDao;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Agent;
-import fr.diginamic.geoff.entity.Player;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
 
 import java.util.Optional;
-import java.util.Set;
 
 public class AgentService
 {

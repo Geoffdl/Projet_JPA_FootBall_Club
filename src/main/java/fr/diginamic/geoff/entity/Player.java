@@ -19,13 +19,21 @@ public class Player
     @Column(name = "source_id", unique = true)
     private Long sourceId;
 
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    @Column(name = "player_code")
     private String playerCode;
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
+    @Column(name = "height")
     private Integer height;
-    private String shooting_foot;
+    @Column(name = "shooting_foot")
+    private String shootingFoot;
+    @Column(name = "position_favored")
     private String positionFavored;
+    @Column(name = "contract_expiration_date")
     private LocalDateTime contractExpirationDate;
 
     @ManyToOne
@@ -51,18 +59,18 @@ public class Player
     private Agent agent;
 
     @OneToMany(mappedBy = "playerMain")
-    private Set<GameEvent> gameEventsMain = new HashSet<>();;
+    private Set<GameEvent> gameEventsMain = new HashSet<>();
     @OneToMany(mappedBy = "playerIn")
-    private Set<GameEvent> gameEventsIn = new HashSet<>();;
+    private Set<GameEvent> gameEventsIn = new HashSet<>();
     @OneToMany(mappedBy = "playerAssist")
-    private Set<GameEvent> gameEventsAssist = new HashSet<>();;
+    private Set<GameEvent> gameEventsAssist = new HashSet<>();
 
     @OneToMany(mappedBy = "player")
-    private Set<GameAppearance> appearances = new HashSet<>();;
+    private Set<GameAppearance> appearances = new HashSet<>();
     @OneToMany(mappedBy = "player")
-    private Set<PlayerValuation> valuations = new HashSet<>();;
+    private Set<PlayerValuation> valuations = new HashSet<>();
     @OneToMany(mappedBy = "player")
-    private Set<GameLineup> gameLineups = new HashSet<>();;
+    private Set<GameLineup> gameLineups = new HashSet<>();
 
     public Player()
     {
@@ -199,23 +207,23 @@ public class Player
     }
 
     /**
-     * Gets shooting_foot for the class Player
+     * Gets shootingFoot for the class Player
      *
-     * @return value of shooting_foot
+     * @return value of shootingFoot
      */
-    public String getShooting_foot()
+    public String getShootingFoot()
     {
-        return shooting_foot;
+        return shootingFoot;
     }
 
     /**
-     * Sets shooting_foot for the class Player.
+     * Sets shootingFoot for the class Player.
      *
-     * @param shooting_foot value of shooting_foot
+     * @param shootingFoot value of shootingFoot
      */
-    public void setShooting_foot(String shooting_foot)
+    public void setShootingFoot(String shootingFoot)
     {
-        this.shooting_foot = shooting_foot;
+        this.shootingFoot = shootingFoot;
     }
 
     /**
@@ -529,7 +537,7 @@ public class Player
         sb.append(", playerCode='").append(playerCode).append('\'');
         sb.append(", dateOfBirth=").append(dateOfBirth);
         sb.append(", height=").append(height);
-        sb.append(", shooting_foot='").append(shooting_foot).append('\'');
+        sb.append(", shooting_foot='").append(shootingFoot).append('\'');
         sb.append(", positionFavored='").append(positionFavored).append('\'');
         sb.append(", contractExpirationDate=").append(contractExpirationDate);
         sb.append(", currentClub=").append(currentClub);

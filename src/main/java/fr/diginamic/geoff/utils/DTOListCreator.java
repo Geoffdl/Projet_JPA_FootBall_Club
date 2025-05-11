@@ -1,4 +1,4 @@
-package fr.diginamic.geoff.service;
+package fr.diginamic.geoff.utils;
 
 import fr.diginamic.geoff.builder.*;
 import fr.diginamic.geoff.dto.*;
@@ -12,10 +12,10 @@ import java.util.List;
 /**
  *
  */
-public class DTOCreationService
+public class DTOListCreator
 {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DTOCreationService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DTOListCreator.class);
 
 
     /**

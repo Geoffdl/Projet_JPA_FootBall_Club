@@ -1,11 +1,10 @@
 package fr.diginamic.geoff.dao;
 
-import fr.diginamic.geoff.entity.Country;
 import fr.diginamic.geoff.entity.Url;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
+import java.util.List;
 import java.util.Optional;
 
 public class UrlDao
@@ -17,7 +16,8 @@ public class UrlDao
         this.em = em;
     }
 
-    public void save(Url url) {
+    public void save(Url url)
+    {
         em.persist(url);
 
     }
@@ -28,16 +28,16 @@ public class UrlDao
         {
             return Optional.empty();
         }
-        try
-        {
-            TypedQuery<Url> query = em.createQuery(
-                    "SELECT p FROM Url p WHERE p.url= :code", Url.class);
-            query.setParameter("code", code);
 
-            return Optional.of(query.getSingleResult());
-        } catch (NoResultException e)
+        TypedQuery<Url> query = em.createQuery(
+                "SELECT p FROM Url p WHERE p.url= :code", Url.class);
+        query.setParameter("code", code);
+
+        List<Url> list = query.getResultList();
+        if (!list.isEmpty())
         {
-            return Optional.empty();
+            return Optional.of(list.getFirst());
         }
+        return Optional.empty();
     }
 }

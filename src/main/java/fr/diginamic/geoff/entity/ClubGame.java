@@ -1,12 +1,8 @@
 package fr.diginamic.geoff.entity;
 
 import fr.diginamic.geoff.entity.compositeid.ClubGameId;
-import fr.diginamic.geoff.entity.compositeid.ClubPlayerId;
 import fr.diginamic.geoff.entity.lookup.Side;
 import jakarta.persistence.*;
-
-import java.util.Enumeration;
-import java.util.Set;
 
 @Entity
 @Table(name = "club_game")
@@ -45,6 +41,16 @@ public class ClubGame
     public ClubGameId getClubGameId()
     {
         return clubGameId;
+    }
+
+    /**
+     * Sets clubGameId for the class ClubGame.
+     *
+     * @param clubGameId value of clubGameId
+     */
+    public void setClubGameId(ClubGameId clubGameId)
+    {
+        this.clubGameId = clubGameId;
     }
 
     /**

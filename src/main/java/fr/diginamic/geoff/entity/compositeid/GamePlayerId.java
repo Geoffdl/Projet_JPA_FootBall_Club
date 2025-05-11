@@ -3,7 +3,6 @@ package fr.diginamic.geoff.entity.compositeid;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
@@ -13,6 +12,56 @@ public class GamePlayerId
     private Long playerId;
     @Column(name = "game_id")
     private Long gameId;
+
+    public GamePlayerId()
+    {
+    }
+
+    public GamePlayerId(Long playerId, Long gameId)
+    {
+        this.playerId = playerId;
+        this.gameId = gameId;
+    }
+
+    /**
+     * Gets playerId for the class GamePlayerId
+     *
+     * @return value of playerId
+     */
+    public Long getPlayerId()
+    {
+        return playerId;
+    }
+
+    /**
+     * Sets playerId for the class GamePlayerId.
+     *
+     * @param playerId value of playerId
+     */
+    public void setPlayerId(Long playerId)
+    {
+        this.playerId = playerId;
+    }
+
+    /**
+     * Gets gameId for the class GamePlayerId
+     *
+     * @return value of gameId
+     */
+    public Long getGameId()
+    {
+        return gameId;
+    }
+
+    /**
+     * Sets gameId for the class GamePlayerId.
+     *
+     * @param gameId value of gameId
+     */
+    public void setGameId(Long gameId)
+    {
+        this.gameId = gameId;
+    }
 
     @Override
     public boolean equals(Object object)
