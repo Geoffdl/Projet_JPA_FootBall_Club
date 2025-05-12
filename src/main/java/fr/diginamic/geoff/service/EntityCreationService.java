@@ -92,15 +92,36 @@ public class EntityCreationService
         initializeDtoLists();
 
         //for testing purposes
-        limitListSize();
+//        limitListSize();
+
         //creating sequence
         treatPlayerDTO();
         treatGameDTO();
         treatCompetitionDTO();
         treatClubDTO();
         treatGameLineup();
+        treatAppearance();
         treatGameEvent();
 
+    }
+
+    private void treatAppearance()
+    {
+        LOGGER.info("Starting persistence from AppearanceDTO");
+        for (AppearanceDTO dto : appearanceDTOList)
+        {
+            runInTransaction(() ->
+            {
+                Player player = playerService.findForAppearance(dto);
+                Game game = gameService.findForAppearance(dto);
+                if (player != null && game != null)
+                {
+                    GameAppearance gameAppearance = gameAppearanceService.findOrCreate(dto, game, player);
+
+                    em.persist(gameAppearance);
+                }
+            }, em);
+        }
     }
 
     private void treatGameLineup()
@@ -303,8 +324,8 @@ public class EntityCreationService
         this.gameEventDTOList = dtoListCreator.createListOfGameEventDTO("data/6.game_events.csv");
         LOGGER.info("Parsing game_lineups.csv");
         this.gameLineupDTOList = dtoListCreator.createListOfGameLineupDTO("data/7.game_lineups.csv");
-//        LOGGER.info("Parsing appearances.csv");
-//        this.appearanceDTOList = dtoListCreator.createListOfAppearanceDTO("data/8.appearances.csv");
+        LOGGER.info("Parsing appearances.csv");
+        this.appearanceDTOList = dtoListCreator.createListOfAppearanceDTO("data/8.appearances.csv");
     }
 
     /**
@@ -312,7 +333,7 @@ public class EntityCreationService
      */
     private void limitListSize()
     {
-        int size = 20;
+        int size = 30000;
 
         competitionDTOList = competitionDTOList.stream().limit(size).toList();
         clubDTOList = clubDTOList.stream().limit(size).toList();
@@ -321,7 +342,7 @@ public class EntityCreationService
         gameDTOList = gameDTOList.stream().limit(size).toList();
         gameEventDTOList = gameEventDTOList.stream().limit(size).toList();
         gameLineupDTOList = gameLineupDTOList.stream().limit(size).toList();
-//        appearanceDTOList = appearanceDTOList.stream().limit(1000).toList();
+        appearanceDTOList = appearanceDTOList.stream().limit(size).toList();
     }
 
     /**

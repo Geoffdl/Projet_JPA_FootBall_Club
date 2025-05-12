@@ -13,11 +13,11 @@ public class GameAppearance
     @Column(name = "source_id", unique = true)
     private Long sourceId;
 
-    private int yellowCards;
-    private int redCards;
-    private int goals;
-    private int assists;
-    private int minutes_played;
+    private Integer yellowCards;
+    private Integer redCards;
+    private Integer goals;
+    private Integer assists;
+    private Integer minutesPlayed;
 
     @ManyToOne
     @MapsId("gameId")
@@ -38,6 +38,16 @@ public class GameAppearance
     public GamePlayerId getGameAppearanceId()
     {
         return gameAppearanceId;
+    }
+
+    /**
+     * Sets gameAppearanceId for the class GameAppearance.
+     *
+     * @param gameAppearanceId value of gameAppearanceId
+     */
+    public void setGameAppearanceId(GamePlayerId gameAppearanceId)
+    {
+        this.gameAppearanceId = gameAppearanceId;
     }
 
     /**
@@ -65,7 +75,7 @@ public class GameAppearance
      *
      * @return value of yellowCards
      */
-    public int getYellowCards()
+    public Integer getYellowCards()
     {
         return yellowCards;
     }
@@ -75,7 +85,7 @@ public class GameAppearance
      *
      * @param yellowCards value of yellowCards
      */
-    public void setYellowCards(int yellowCards)
+    public void setYellowCards(Integer yellowCards)
     {
         this.yellowCards = yellowCards;
     }
@@ -85,7 +95,7 @@ public class GameAppearance
      *
      * @return value of redCards
      */
-    public int getRedCards()
+    public Integer getRedCards()
     {
         return redCards;
     }
@@ -95,7 +105,7 @@ public class GameAppearance
      *
      * @param redCards value of redCards
      */
-    public void setRedCards(int redCards)
+    public void setRedCards(Integer redCards)
     {
         this.redCards = redCards;
     }
@@ -105,7 +115,7 @@ public class GameAppearance
      *
      * @return value of goals
      */
-    public int getGoals()
+    public Integer getGoals()
     {
         return goals;
     }
@@ -115,7 +125,7 @@ public class GameAppearance
      *
      * @param goals value of goals
      */
-    public void setGoals(int goals)
+    public void setGoals(Integer goals)
     {
         this.goals = goals;
     }
@@ -125,7 +135,7 @@ public class GameAppearance
      *
      * @return value of assists
      */
-    public int getAssists()
+    public Integer getAssists()
     {
         return assists;
     }
@@ -135,29 +145,29 @@ public class GameAppearance
      *
      * @param assists value of assists
      */
-    public void setAssists(int assists)
+    public void setAssists(Integer assists)
     {
         this.assists = assists;
     }
 
     /**
-     * Gets minutes_played for the class GameAppearance
+     * Gets minutesPlayed for the class GameAppearance
      *
-     * @return value of minutes_played
+     * @return value of minutesPlayed
      */
-    public int getMinutes_played()
+    public Integer getMinutesPlayed()
     {
-        return minutes_played;
+        return minutesPlayed;
     }
 
     /**
-     * Sets minutes_played for the class GameAppearance.
+     * Sets minutesPlayed for the class GameAppearance.
      *
-     * @param minutes_played value of minutes_played
+     * @param minutesPlayed value of minutesPlayed
      */
-    public void setMinutes_played(int minutes_played)
+    public void setMinutesPlayed(Integer minutesPlayed)
     {
-        this.minutes_played = minutes_played;
+        this.minutesPlayed = minutesPlayed;
     }
 
     /**

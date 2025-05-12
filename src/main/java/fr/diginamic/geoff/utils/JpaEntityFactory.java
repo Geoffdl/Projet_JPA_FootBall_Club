@@ -161,4 +161,11 @@ public class JpaEntityFactory
         GameLineupDTOMapper mapper = new GameLineupDTOMapper(dto);
         return mapper.mapToGameLineup(gameLineup, game, player);
     }
+
+    public GameAppearance createGameAppearance(AppearanceDTO dto, Game game, Player player)
+    {
+        GameAppearance gameAppearance = new GameAppearance();
+        AppearanceDTOMapper mapper = new AppearanceDTOMapper(dto);
+        return mapper.mapToGameAppearance(gameAppearance, game, player);
+    }
 }

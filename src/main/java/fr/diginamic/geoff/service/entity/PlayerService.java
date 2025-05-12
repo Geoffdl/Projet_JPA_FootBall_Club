@@ -1,6 +1,7 @@
 package fr.diginamic.geoff.service.entity;
 
 import fr.diginamic.geoff.dao.PlayerDao;
+import fr.diginamic.geoff.dto.AppearanceDTO;
 import fr.diginamic.geoff.dto.GameEventDTO;
 import fr.diginamic.geoff.dto.GameLineupDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
@@ -54,6 +55,12 @@ public class PlayerService
     }
 
     public Player findForGameLineup(GameLineupDTO dto)
+    {
+        Optional<Player> playerOptional = playerDao.findBySourceId(dto.getPlayerId());
+        return playerOptional.orElse(null);
+    }
+
+    public Player findForAppearance(AppearanceDTO dto)
     {
         Optional<Player> playerOptional = playerDao.findBySourceId(dto.getPlayerId());
         return playerOptional.orElse(null);

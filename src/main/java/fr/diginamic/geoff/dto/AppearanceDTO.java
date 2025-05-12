@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 public class AppearanceDTO
 {
-    private double appearanceId;
-    private int gameId;
-    private int playerId;
+    private Long appearanceId;
+    private Long gameId;
+    private Long playerId;
     private int playerClubId;
     private int playerCurrentClubId;
     private LocalDate date;
@@ -27,7 +27,7 @@ public class AppearanceDTO
      *
      * @return value of appearanceId
      */
-    public double getAppearanceId()
+    public Long getAppearanceId()
     {
         return appearanceId;
     }
@@ -37,7 +37,7 @@ public class AppearanceDTO
      *
      * @param appearanceId value of appearanceId
      */
-    public void setAppearanceId(double appearanceId)
+    public void setAppearanceId(Long appearanceId)
     {
         this.appearanceId = appearanceId;
     }
@@ -47,7 +47,7 @@ public class AppearanceDTO
      *
      * @return value of gameId
      */
-    public int getGameId()
+    public Long getGameId()
     {
         return gameId;
     }
@@ -57,7 +57,7 @@ public class AppearanceDTO
      *
      * @param gameId value of gameId
      */
-    public void setGameId(int gameId)
+    public void setGameId(Long gameId)
     {
         this.gameId = gameId;
     }
@@ -67,7 +67,7 @@ public class AppearanceDTO
      *
      * @return value of playerId
      */
-    public int getPlayerId()
+    public Long getPlayerId()
     {
         return playerId;
     }
@@ -77,7 +77,7 @@ public class AppearanceDTO
      *
      * @param playerId value of playerId
      */
-    public void setPlayerId(int playerId)
+    public void setPlayerId(Long playerId)
     {
         this.playerId = playerId;
     }
