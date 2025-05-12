@@ -7,18 +7,17 @@ import fr.diginamic.geoff.dto.GameEventDTO;
 import fr.diginamic.geoff.dto.GameLineupDTO;
 import fr.diginamic.geoff.entity.Game;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
 import java.util.Optional;
 
 public class GameService
 {
     private final GameDao gameDao;
-    private final JpaEntityFactory factory;
 
-    public GameService(GameDao gameDao, JpaEntityFactory factory)
+    public GameService(EntityManager em)
     {
-        this.gameDao = gameDao;
-        this.factory = factory;
+        this.gameDao = new GameDao(em);
     }
 
     public Game findOrCreateGame(GameDTO dto)
@@ -30,7 +29,7 @@ public class GameService
             return gameOptional.get();
         }
 
-        Game game = factory.createGame(dto);
+        Game game = JpaEntityFactory.createGame(dto);
         gameDao.save(game);
 
         return game;

@@ -6,6 +6,7 @@ import fr.diginamic.geoff.entity.Game;
 import fr.diginamic.geoff.entity.GameLineup;
 import fr.diginamic.geoff.entity.Player;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
 import java.util.Optional;
 
@@ -13,12 +14,10 @@ public class GameLineupService
 {
 
     private final GameLineupDao gameLineupDao;
-    private final JpaEntityFactory factory;
 
-    public GameLineupService(GameLineupDao gameLineupDao, JpaEntityFactory factory)
+    public GameLineupService(EntityManager em)
     {
-        this.gameLineupDao = gameLineupDao;
-        this.factory = factory;
+        this.gameLineupDao = new GameLineupDao(em);
     }
 
     public GameLineup findOrCreate(GameLineupDTO dto, Game game, Player player)
@@ -29,7 +28,7 @@ public class GameLineupService
         {
             return gameLineupOptional.get();
         }
-        GameLineup gameLineup = factory.createGameLineup(dto, game, player);
+        GameLineup gameLineup = JpaEntityFactory.createGameLineup(dto, game, player);
         return gameLineup;
     }
 }

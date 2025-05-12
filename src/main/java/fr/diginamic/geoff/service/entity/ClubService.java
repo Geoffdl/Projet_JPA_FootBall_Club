@@ -6,18 +6,17 @@ import fr.diginamic.geoff.dto.GameDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Club;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
 import java.util.Optional;
 
 public class ClubService
 {
     private final ClubDao clubDao;
-    private final JpaEntityFactory factory;
 
-    public ClubService(ClubDao clubDao, JpaEntityFactory factory)
+    public ClubService(EntityManager em)
     {
-        this.clubDao = clubDao;
-        this.factory = factory;
+        this.clubDao = new ClubDao(em);
     }
 
     public Club findOrCreateClub(PlayerDTO dto)
@@ -31,7 +30,7 @@ public class ClubService
         {
             return clubOptional.get();
         }
-        Club club = factory.createClub(dto);
+        Club club = JpaEntityFactory.createClub(dto);
         clubDao.save(club);
         return club;
     }
@@ -49,7 +48,7 @@ public class ClubService
             {
                 return clubOptional.get();
             }
-            Club club = factory.createClubFromGame(dto, isHome);
+            Club club = JpaEntityFactory.createClubFromGame(dto, isHome);
             clubDao.save(club);
             return club;
         }
@@ -62,7 +61,7 @@ public class ClubService
         {
             return clubOptional.get();
         }
-        Club club = factory.createClubFromGame(dto, isHome);
+        Club club = JpaEntityFactory.createClubFromGame(dto, isHome);
         clubDao.save(club);
         return club;
     }
@@ -77,7 +76,7 @@ public class ClubService
             clubDao.save(clubOptional.get());
             return clubOptional.get();
         }
-        Club club = factory.createClubFromClub(dto);
+        Club club = JpaEntityFactory.createClubFromClub(dto);
         clubDao.save(club);
         return club;
     }

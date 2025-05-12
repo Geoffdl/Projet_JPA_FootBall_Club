@@ -6,6 +6,7 @@ import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.dto.GameDTO;
 import fr.diginamic.geoff.entity.Competition;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,12 +14,12 @@ import java.util.Optional;
 public class CompetitionService
 {
     private final CompetitionDao competitionDao;
-    private final JpaEntityFactory factory;
 
-    public CompetitionService(CompetitionDao competitionDao, JpaEntityFactory factory)
+
+    public CompetitionService(EntityManager em)
     {
-        this.competitionDao = competitionDao;
-        this.factory = factory;
+        this.competitionDao = new CompetitionDao(em);
+
     }
 
     public Competition findOrCreateCompetition(GameDTO dto)
@@ -30,7 +31,7 @@ public class CompetitionService
             return competitionOptional.get();
         }
 
-        Competition competition = factory.createCompetition(dto);
+        Competition competition = JpaEntityFactory.createCompetition(dto);
         competitionDao.save(competition);
 
         return competition;
@@ -50,7 +51,7 @@ public class CompetitionService
 
             return competitionOptional.get();
         }
-        Competition competition = factory.createCompetitionFromCompetitionDto(dto);
+        Competition competition = JpaEntityFactory.createCompetitionFromCompetitionDto(dto);
         competitionDao.save(competition);
         return competition;
     }

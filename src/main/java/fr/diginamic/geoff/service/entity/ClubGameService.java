@@ -6,6 +6,7 @@ import fr.diginamic.geoff.entity.Club;
 import fr.diginamic.geoff.entity.ClubGame;
 import fr.diginamic.geoff.entity.Game;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,13 +19,10 @@ public class ClubGameService
 
 
     private final ClubGameDao clubGameDao;
-    private final JpaEntityFactory factory;
 
-
-    public ClubGameService(ClubGameDao clubGameDao, JpaEntityFactory factory)
+    public ClubGameService(EntityManager em)
     {
-        this.clubGameDao = clubGameDao;
-        this.factory = factory;
+        this.clubGameDao = new ClubGameDao(em);
     }
 
     public ClubGame findOrCreateClubGame(GameDTO dto, boolean isHome, ClubService clubService, Game game)
@@ -47,7 +45,7 @@ public class ClubGameService
             return clubGameExisting;
         }
 
-        ClubGame clubGame = factory.createClubGame(dto, isHome, club, game);
+        ClubGame clubGame = JpaEntityFactory.createClubGame(dto, isHome, club, game);
         clubGame.setClub(club);
         clubGameDao.save(clubGame);
 

@@ -7,19 +7,18 @@ import fr.diginamic.geoff.dto.GameLineupDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Player;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
 import java.util.Optional;
 
 public class PlayerService
 {
     private final PlayerDao playerDao;
-    private final JpaEntityFactory factory;
 
 
-    public PlayerService(PlayerDao playerDao, JpaEntityFactory factory)
+    public PlayerService(EntityManager em)
     {
-        this.playerDao = playerDao;
-        this.factory = factory;
+        this.playerDao = new PlayerDao(em);
     }
 
 
@@ -36,7 +35,7 @@ public class PlayerService
             return playerOptional.get();
         }
 
-        Player player = factory.createPlayer(dto);
+        Player player = JpaEntityFactory.createPlayer(dto);
         playerDao.save(player);
 
         return player;

@@ -6,19 +6,18 @@ import fr.diginamic.geoff.entity.Game;
 import fr.diginamic.geoff.entity.GameAppearance;
 import fr.diginamic.geoff.entity.Player;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
 import java.util.Optional;
 
 public class GameAppearanceService
 {
     private final GameAppearanceDao gameAppearanceDao;
-    private final JpaEntityFactory factory;
 
-
-    public GameAppearanceService(GameAppearanceDao gameAppearanceDao, JpaEntityFactory factory)
+    public GameAppearanceService(EntityManager em)
     {
-        this.gameAppearanceDao = gameAppearanceDao;
-        this.factory = factory;
+        this.gameAppearanceDao = new GameAppearanceDao(em);
+
     }
 
     public GameAppearance findOrCreate(AppearanceDTO dto, Game game, Player player)
@@ -28,7 +27,7 @@ public class GameAppearanceService
         {
             return gameAppearanceOptional.get();
         }
-        GameAppearance gameAppearance = factory.createGameAppearance(dto, game, player);
+        GameAppearance gameAppearance = JpaEntityFactory.createGameAppearance(dto, game, player);
 
         return gameAppearance;
     }

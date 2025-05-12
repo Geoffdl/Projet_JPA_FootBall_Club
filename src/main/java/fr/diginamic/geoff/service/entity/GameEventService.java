@@ -5,18 +5,18 @@ import fr.diginamic.geoff.dto.GameEventDTO;
 import fr.diginamic.geoff.entity.GameEvent;
 import fr.diginamic.geoff.entity.Player;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
 import java.util.Optional;
 
 public class GameEventService
 {
     private final GameEventDao gameEventDao;
-    private final JpaEntityFactory factory;
 
-    public GameEventService(GameEventDao gameEventDao, JpaEntityFactory factory)
+    public GameEventService(EntityManager em)
     {
-        this.gameEventDao = gameEventDao;
-        this.factory = factory;
+        this.gameEventDao = new GameEventDao(em);
+
     }
 
     public GameEvent findOrCreate(GameEventDTO dto, PlayerService playerService)
@@ -27,7 +27,7 @@ public class GameEventService
             return gameEventOptional.get();
         }
 
-        GameEvent gameEvent = factory.createGameEvent(dto);
+        GameEvent gameEvent = JpaEntityFactory.createGameEvent(dto);
         Long playerInId = dto.getPlayerInId();
         if (playerInId != null)
         {
