@@ -3,11 +3,11 @@ package fr.diginamic.geoff.dto;
 public class GameLineupDTO
 {
     private String gameLineUpsId;
-    private int gameId;
+    private Long gameId;
     private int clubId;
     private String type;
     private int number;
-    private int playerId;
+    private Long playerId;
     private String playerName;
     private boolean teamCaptain;
     private String position;
@@ -41,7 +41,7 @@ public class GameLineupDTO
      *
      * @return value of gameId
      */
-    public int getGameId()
+    public Long getGameId()
     {
         return gameId;
     }
@@ -51,7 +51,7 @@ public class GameLineupDTO
      *
      * @param gameId value of gameId
      */
-    public void setGameId(int gameId)
+    public void setGameId(Long gameId)
     {
         this.gameId = gameId;
     }
@@ -121,7 +121,7 @@ public class GameLineupDTO
      *
      * @return value of playerId
      */
-    public int getPlayerId()
+    public Long getPlayerId()
     {
         return playerId;
     }
@@ -131,7 +131,7 @@ public class GameLineupDTO
      *
      * @param playerId value of playerId
      */
-    public void setPlayerId(int playerId)
+    public void setPlayerId(Long playerId)
     {
         this.playerId = playerId;
     }

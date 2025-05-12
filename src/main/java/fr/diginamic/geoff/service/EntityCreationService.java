@@ -93,20 +93,68 @@ public class EntityCreationService
 
         //for testing purposes
         limitListSize();
-
         //creating sequence
         treatPlayerDTO();
         treatGameDTO();
         treatCompetitionDTO();
         treatClubDTO();
+        treatGameLineup();
         treatGameEvent();
 
     }
 
-    private void treatGameEvent() {}
+    private void treatGameLineup()
+    {
+        LOGGER.info("Starting persistence from GameLineupDTO");
+        for (GameLineupDTO dto : gameLineupDTOList)
+        {
+            runInTransaction(() ->
+            {
+
+                Player player = playerService.findForGameLineup(dto);
+                Game game = gameService.findForGameLineup(dto);
+                if (player != null && game != null)
+                {
+                    GameLineup gameLineup = gameLineUpService.findOrCreate(dto, game, player);
+                    em.persist(gameLineup);
+                }
+
+
+            }, em);
+            em.clear();
+        }
+
+
+    }
+
+    private void treatGameEvent()
+    {
+        LOGGER.info("Starting persistence from GameEventDTO");
+        for (GameEventDTO dto : gameEventDTOList)
+        {
+            runInTransaction(() ->
+            {
+                Player playerMain = playerService.findForGameEvent(dto);
+                Game game = gameService.findForGameEvent(dto);
+
+                if (playerMain != null && game != null)
+                {
+
+                    GameEvent gameEvent = gameEventService.findOrCreate(dto, playerService);
+                    gameEvent.setGame(game);
+                    gameEvent.setPlayerMain(playerMain);
+                    em.persist(gameEvent);
+                }
+
+
+            }, em);
+            em.clear();
+        }
+    }
 
     private void treatClubDTO()
     {
+        LOGGER.info("Starting persistence from ClubDTO");
         for (ClubDTO dto : clubDTOList)
         {
             runInTransaction(() ->
@@ -138,6 +186,7 @@ public class EntityCreationService
 
     private void treatCompetitionDTO()
     {
+        LOGGER.info("Starting persistence from CompetitionDTO");
         for (CompetitionDTO dto : competitionDTOList)
         {
             runInTransaction(() ->
@@ -163,6 +212,7 @@ public class EntityCreationService
 
     private void treatPlayerDTO()
     {
+        LOGGER.info("Starting persistence from PlayerDTO");
         for (PlayerDTO dto : playerDTOList)
         {
             runInTransaction(() ->
@@ -193,7 +243,7 @@ public class EntityCreationService
 
     private void treatGameDTO()
     {
-
+        LOGGER.info("Starting persistence from GameDTO");
         for (GameDTO dto : gameDTOList)
         {
             runInTransaction(() ->
@@ -239,13 +289,21 @@ public class EntityCreationService
      */
     private void initializeDtoLists()
     {
+        LOGGER.info("Parsing competition.csv");
         this.competitionDTOList = dtoListCreator.createListOfCompetitionDTO("data/1.competitions.csv");
+        LOGGER.info("Parsing club.csv");
         this.clubDTOList = dtoListCreator.createListOfClubDTO("data/2.clubs.csv");
+        LOGGER.info("Parsing players.csv");
         this.playerDTOList = dtoListCreator.createListOfPlayerDTO("data/3.players.csv");
+//        LOGGER.info("Parsing player_valuations.csv");
 //        this.playerValuationList = dtoListCreator.createListOfPlayerValuation("data/4.player_valuations.csv");
+        LOGGER.info("Parsing games.csv");
         this.gameDTOList = dtoListCreator.createListOfGameDTO("data/5.games.csv");
-//        this.gameEventDTOList = dtoListCreator.createListOfGameEventDTO("data/6.game_events.csv");
-//        this.gameLineupDTOList = dtoListCreator.createListOfGameLineupDTO("data/7.game_lineups.csv");
+        LOGGER.info("Parsing game_events.csv");
+        this.gameEventDTOList = dtoListCreator.createListOfGameEventDTO("data/6.game_events.csv");
+        LOGGER.info("Parsing game_lineups.csv");
+        this.gameLineupDTOList = dtoListCreator.createListOfGameLineupDTO("data/7.game_lineups.csv");
+//        LOGGER.info("Parsing appearances.csv");
 //        this.appearanceDTOList = dtoListCreator.createListOfAppearanceDTO("data/8.appearances.csv");
     }
 
@@ -254,15 +312,15 @@ public class EntityCreationService
      */
     private void limitListSize()
     {
-        int size = 300;
+        int size = 20;
 
         competitionDTOList = competitionDTOList.stream().limit(size).toList();
         clubDTOList = clubDTOList.stream().limit(size).toList();
         playerDTOList = playerDTOList.stream().limit(size).toList();
-//        playerValuationList = playerValuationList.stream().limit(1000).toList();
+        //playerValuationList = playerValuationList.stream().limit(1000).toList();
         gameDTOList = gameDTOList.stream().limit(size).toList();
-//        gameEventDTOList = gameEventDTOList.stream().limit(1000).toList();
-//        gameLineupDTOList = gameLineupDTOList.stream().limit(1000).toList();
+        gameEventDTOList = gameEventDTOList.stream().limit(size).toList();
+        gameLineupDTOList = gameLineupDTOList.stream().limit(size).toList();
 //        appearanceDTOList = appearanceDTOList.stream().limit(1000).toList();
     }
 

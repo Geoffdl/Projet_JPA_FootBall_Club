@@ -4,6 +4,12 @@ import fr.diginamic.geoff.exception.CsvFormatException;
 
 public class DTOUtils
 {
+    /**
+     * @param line
+     * @param expectedLength
+     * @return
+     * @throws CsvFormatException
+     */
     public static String[] splitDataSourceIntoArray(String line, int expectedLength) throws CsvFormatException
     {
 
@@ -18,6 +24,10 @@ public class DTOUtils
         return parts;
     }
 
+    /**
+     * @param part
+     * @return
+     */
     public static String cleanUpForIntConversion(String part)
     {
         part = part.replace("€", "")
@@ -26,8 +36,8 @@ public class DTOUtils
                 .replace("+", "")
                 .replace(",", ".")
                 .trim();
-
-
         return part;
     }
+
+
 }

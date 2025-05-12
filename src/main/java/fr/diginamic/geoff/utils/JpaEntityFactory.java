@@ -1,14 +1,8 @@
 package fr.diginamic.geoff.utils;
 
-import fr.diginamic.geoff.dto.ClubDTO;
-import fr.diginamic.geoff.dto.CompetitionDTO;
-import fr.diginamic.geoff.dto.GameDTO;
-import fr.diginamic.geoff.dto.PlayerDTO;
+import fr.diginamic.geoff.dto.*;
 import fr.diginamic.geoff.entity.*;
-import fr.diginamic.geoff.mapper.ClubDTOMapper;
-import fr.diginamic.geoff.mapper.CompetitionDTOMapper;
-import fr.diginamic.geoff.mapper.GameDTOMapper;
-import fr.diginamic.geoff.mapper.PlayerDTOMapper;
+import fr.diginamic.geoff.mapper.*;
 
 public class JpaEntityFactory
 {
@@ -152,5 +146,19 @@ public class JpaEntityFactory
         Url url = new Url();
         ClubDTOMapper mapper = new ClubDTOMapper(dto);
         return mapper.mapToUrl(url);
+    }
+
+    public GameEvent createGameEvent(GameEventDTO dto)
+    {
+        GameEvent gameEvent = new GameEvent();
+        GameEventDtoMapper mapper = new GameEventDtoMapper(dto);
+        return mapper.mapToGameEvent(gameEvent);
+    }
+
+    public GameLineup createGameLineup(GameLineupDTO dto, Game game, Player player)
+    {
+        GameLineup gameLineup = new GameLineup();
+        GameLineupDTOMapper mapper = new GameLineupDTOMapper(dto);
+        return mapper.mapToGameLineup(gameLineup, game, player);
     }
 }
