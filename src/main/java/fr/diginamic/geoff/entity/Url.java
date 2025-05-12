@@ -3,6 +3,8 @@ package fr.diginamic.geoff.entity;
 import fr.diginamic.geoff.entity.lookup.EntityType;
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 public class Url
 {
@@ -18,8 +20,8 @@ public class Url
 
     @OneToOne(mappedBy = "url")
     private Club club;
-    @OneToOne(mappedBy = "pictureUrl")
-    private Player playerPicture;
+    @OneToMany(mappedBy = "pictureUrl")
+    private Set<Player> playerPicture;
     @OneToOne(mappedBy = "dataUrl")
     private Player playerData;
     @OneToOne(mappedBy = "url")
@@ -104,7 +106,7 @@ public class Url
      *
      * @return value of playerPicture
      */
-    public Player getPlayerPicture()
+    public Set<Player> getPlayerPicture()
     {
         return playerPicture;
     }
@@ -114,7 +116,7 @@ public class Url
      *
      * @param playerPicture value of playerPicture
      */
-    public void setPlayerPicture(Player playerPicture)
+    public void setPlayerPicture(Set<Player> playerPicture)
     {
         this.playerPicture = playerPicture;
     }

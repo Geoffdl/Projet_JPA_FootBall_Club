@@ -98,7 +98,42 @@ public class EntityCreationService
         treatPlayerDTO();
         treatGameDTO();
         treatCompetitionDTO();
+        treatClubDTO();
+        treatGameEvent();
 
+    }
+
+    private void treatGameEvent() {}
+
+    private void treatClubDTO()
+    {
+        for (ClubDTO dto : clubDTOList)
+        {
+            runInTransaction(() ->
+            {
+                Club club = clubService.findOrCreateClubFromClubDTO(dto);
+                Stadium stadium = stadiumService.findOrCreateStadiumFromClubDTO(dto);
+                Url url = urlService.findOrCreateUrlFromClubDTO(dto);
+
+                club.setUrl(url);
+
+                //not enough data to create here
+                List<Competition> competitionList = competitionService.findFromClubDTO(dto);
+                for (Competition competition : competitionList)
+                {
+                    club.getCompetitions().add(competition);
+
+                }
+                Country country = countryService.findFromClubDTO(dto);
+                if (country != null)
+                {
+                    club.setCountry(country);
+                }
+                club.setHomeStadium(stadium);
+                em.persist(club);
+            }, em);
+        }
+        em.clear();
     }
 
     private void treatCompetitionDTO()
@@ -108,11 +143,16 @@ public class EntityCreationService
             runInTransaction(() ->
             {
                 Competition competition = competitionService.findOrCreateCompetitionFromCompetitionDTO(dto);
-                Country country = countryService.findOrCreateCompetitionCountry(dto);
+                if (dto.getCountryId() != -1)
+                {
+                    Country country = countryService.findOrCreateCompetitionCountry(dto);
+                    competition.setCountry(country);
+                }
+
                 Url url = urlService.findOrCreateCompetitionUrl(dto);
 
                 competition.setUrl(url);
-                competition.setCountry(country);
+
                 em.persist(competition);
 
             }, em);
@@ -130,8 +170,8 @@ public class EntityCreationService
                 City city = cityService.findOrCreateCity(dto);
                 Country countryBirth = countryService.findOrCreateBirthCountry(dto);
                 Country countryCitizenship = countryService.findOrCreateCitizenshipCountry(dto);
-                Url url = urlService.findOrCreateUrl(dto);
-                Url imgUrl = urlService.findOrCreateImageUrl(dto);
+                Url url = urlService.findOrCreateUrl(dto, false);
+                Url imgUrl = urlService.findOrCreateUrl(dto, true);
                 Club club = clubService.findOrCreateClub(dto);
                 Agent agent = agentService.findOrCreateAgent(dto);
                 Player player = playerService.findOrCreatePlayer(dto);
@@ -200,7 +240,7 @@ public class EntityCreationService
     private void initializeDtoLists()
     {
         this.competitionDTOList = dtoListCreator.createListOfCompetitionDTO("data/1.competitions.csv");
-//        this.clubDTOList = dtoListCreator.createListOfClubDTO("data/2.clubs.csv");
+        this.clubDTOList = dtoListCreator.createListOfClubDTO("data/2.clubs.csv");
         this.playerDTOList = dtoListCreator.createListOfPlayerDTO("data/3.players.csv");
 //        this.playerValuationList = dtoListCreator.createListOfPlayerValuation("data/4.player_valuations.csv");
         this.gameDTOList = dtoListCreator.createListOfGameDTO("data/5.games.csv");
@@ -217,7 +257,7 @@ public class EntityCreationService
         int size = 300;
 
         competitionDTOList = competitionDTOList.stream().limit(size).toList();
-//        clubDTOList = clubDTOList.stream().limit(1000).toList();
+        clubDTOList = clubDTOList.stream().limit(size).toList();
         playerDTOList = playerDTOList.stream().limit(size).toList();
 //        playerValuationList = playerValuationList.stream().limit(1000).toList();
         gameDTOList = gameDTOList.stream().limit(size).toList();

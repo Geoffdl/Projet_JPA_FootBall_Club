@@ -42,17 +42,26 @@ public class PlayerDTOMapper
         return city;
     }
 
-    public Url mapToUrl(Url url)
+    public Url mapToUrl(Url url, boolean isImage)
     {
-        url.setUrl(playerDTO.getUrl());
+        if (isImage)
+        {
+            url.setUrl(playerDTO.getImageUrl());
+        } else
+        {
+            url.setUrl(playerDTO.getUrl());
+        }
         return url;
     }
 
-    public Country mapToCountryBirth(Country country){
+    public Country mapToCountryBirth(Country country)
+    {
         country.setNom(playerDTO.getCountryOfBirth());
         return country;
     }
-    public Country mapToCountryCitizenship(Country country){
+
+    public Country mapToCountryCitizenship(Country country)
+    {
         country.setNom(playerDTO.getCountryOfCitizenship());
         return country;
     }

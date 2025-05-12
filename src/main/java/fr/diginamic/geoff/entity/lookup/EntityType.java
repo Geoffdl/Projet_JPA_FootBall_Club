@@ -5,5 +5,6 @@ public enum EntityType
     PLAYER,
     CLUB,
     STADIUM,
-    COUNTRY
+    COUNTRY,
+    COMPETITION
 }

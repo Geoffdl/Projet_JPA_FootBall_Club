@@ -2,6 +2,7 @@ package fr.diginamic.geoff.dao;
 
 import fr.diginamic.geoff.entity.Country;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
@@ -42,4 +43,34 @@ public class CountryDao
     }
 
 
+    public Optional<Country> finBySourceId(Long countryId)
+    {
+        if (countryId == null)
+        {
+            return Optional.empty();
+        }
+        try
+        {
+            TypedQuery<Country> query = em.createQuery("SELECT c FROM Country c WHERE c.sourceId = :sourceId", Country.class);
+            query.setParameter("sourceId", countryId);
+            return Optional.of(query.getSingleResult());
+        } catch (NoResultException e)
+        {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Country> findByCompetitionDomesticId(String domesticCompetitionId)
+    {
+        try
+        {
+            TypedQuery<Country> query = em.createQuery(
+                    "SELECT c FROM Country c LEFT JOIN c.competitions cp WHERE cp.domesticLeagueCode = :domesticCompetitionId", Country.class);
+            query.setParameter("domesticCompetitionId", domesticCompetitionId);
+            return Optional.of(query.getSingleResult());
+        } catch (NoResultException e)
+        {
+            return Optional.empty();
+        }
+    }
 }

@@ -21,24 +21,29 @@ public class Club
     @Column(name = "club_name")
     private String clubName;
     @Column(name = "transfer_record")
-    private int transferRecord;
+    private Double transferRecord;
 
     @ManyToOne
     @JoinColumn(name = "country_id", referencedColumnName = "country_id")
     private Country country;
     @OneToOne
     private Url url;
+    @ManyToMany
+    @JoinTable(
+            name = "club_competition",
+            joinColumns = @JoinColumn(name = "club_id"),
+            inverseJoinColumns = @JoinColumn(name = "competition_id")
+    )
+    private Set<Competition> competitions = new HashSet<>();
+
     @ManyToOne
-    @JoinColumn(name = "domestic_competition_id", referencedColumnName = "competition_id")
-    private Competition domesticCompetition;
-    @ManyToOne
-    @JoinColumn(name = "home_stadium_id", referencedColumnName = "stadium_id")
+    @JoinColumn(name = "home_stadium_id")
     private Stadium homeStadium;
 
     @OneToMany(mappedBy = "currentClub")
     private Set<Player> players = new HashSet<>();
     @OneToMany(mappedBy = "club")
-    private Set<ClubGame> clubGames= new HashSet<>();
+    private Set<ClubGame> clubGames = new HashSet<>();
 
     public Club()
     {
@@ -119,7 +124,7 @@ public class Club
      *
      * @return value of transferRecord
      */
-    public int getTransferRecord()
+    public Double getTransferRecord()
     {
         return transferRecord;
     }
@@ -129,7 +134,7 @@ public class Club
      *
      * @param transferRecord value of transferRecord
      */
-    public void setTransferRecord(int transferRecord)
+    public void setTransferRecord(Double transferRecord)
     {
         this.transferRecord = transferRecord;
     }
@@ -175,23 +180,23 @@ public class Club
     }
 
     /**
-     * Gets domesticCompetition for the class Club
+     * Gets competitions for the class Club
      *
-     * @return value of domesticCompetition
+     * @return value of competitions
      */
-    public Competition getDomesticCompetition()
+    public Set<Competition> getCompetitions()
     {
-        return domesticCompetition;
+        return competitions;
     }
 
     /**
-     * Sets domesticCompetition for the class Club.
+     * Sets competitions for the class Club.
      *
-     * @param domesticCompetition value of domesticCompetition
+     * @param competitions value of competitions
      */
-    public void setDomesticCompetition(Competition domesticCompetition)
+    public void setCompetitions(Set<Competition> competitions)
     {
-        this.domesticCompetition = domesticCompetition;
+        this.competitions = competitions;
     }
 
     /**

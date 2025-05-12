@@ -41,7 +41,7 @@ public class CompetitionDTOMapper
     public Url mapToUrl(Url url)
     {
         url.setUrl(dto.getUrl());
-        url.setEntityType(EntityType.COUNTRY);
+        url.setEntityType(EntityType.COMPETITION);
         return url;
     }
 }

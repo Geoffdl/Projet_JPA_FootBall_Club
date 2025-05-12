@@ -26,7 +26,7 @@ public class CompetitionDTOBuilder implements DTOBuilder<CompetitionDTO>
         entity.setCountryName(parts[6]);
         entity.setDomesticLeagueCode(parts[7]);
         entity.setConfederation(parts[8]);
-        entity.setConfederation(parts[9]);
+        entity.setUrl(parts[9]);
     }
 
     @Override

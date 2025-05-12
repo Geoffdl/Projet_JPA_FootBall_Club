@@ -1,6 +1,7 @@
 package fr.diginamic.geoff.service.entity;
 
 import fr.diginamic.geoff.dao.CountryDao;
+import fr.diginamic.geoff.dto.ClubDTO;
 import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Country;
@@ -57,5 +58,37 @@ public class CountryService
         return country;
     }
 
-    public Country findOrCreateCompetitionCountry(CompetitionDTO dto) {}
+    public Country findOrCreateCompetitionCountry(CompetitionDTO dto)
+    {
+
+        Optional<Country> countryOptional = countryDao.findByNom(dto.getCountryName());
+        if (countryOptional.isPresent() && dto.getCountryId() != -1)
+        {
+            countryOptional.get().setSourceId(dto.getCountryId());
+            countryDao.save(countryOptional.get());
+            return countryOptional.get();
+        }
+
+        countryOptional = countryDao.finBySourceId(dto.getCountryId());
+        if (countryOptional.isPresent() && dto.getCountryId() != -1)
+        {
+            countryOptional.get().setSourceId(dto.getCountryId());
+            countryDao.save(countryOptional.get());
+            return countryOptional.get();
+        }
+
+        Country country = factory.createCountryFromCompetition(dto);
+        countryDao.save(country);
+        return country;
+    }
+
+    public Country findFromClubDTO(ClubDTO dto)
+    {
+        Optional<Country> countryOptional = countryDao.findByCompetitionDomesticId(dto.getDomesticCompetitionId());
+        if (countryOptional.isPresent())
+        {
+            return countryOptional.get();
+        }
+        return null;
+    }
 }

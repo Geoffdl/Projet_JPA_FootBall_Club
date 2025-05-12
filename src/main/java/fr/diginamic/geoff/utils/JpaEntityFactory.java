@@ -1,8 +1,12 @@
 package fr.diginamic.geoff.utils;
 
+import fr.diginamic.geoff.dto.ClubDTO;
+import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.dto.GameDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.*;
+import fr.diginamic.geoff.mapper.ClubDTOMapper;
+import fr.diginamic.geoff.mapper.CompetitionDTOMapper;
 import fr.diginamic.geoff.mapper.GameDTOMapper;
 import fr.diginamic.geoff.mapper.PlayerDTOMapper;
 
@@ -30,11 +34,11 @@ public class JpaEntityFactory
         return mapper.mapToCity(city);
     }
 
-    public Url createUrl(PlayerDTO playerDTO)
+    public Url createUrl(PlayerDTO playerDTO, boolean isImage)
     {
         Url url = new Url();
         PlayerDTOMapper mapper = new PlayerDTOMapper(playerDTO);
-        return mapper.mapToUrl(url);
+        return mapper.mapToUrl(url, isImage);
     }
 
     public Club createClub(PlayerDTO playerDTO)
@@ -51,8 +55,10 @@ public class JpaEntityFactory
         {
             club.setSourceId(gameDTO.getHomeClubId());
             return club;
+        } else
+        {
+            club.setSourceId(gameDTO.getAwayClubId());
         }
-        club.setSourceId(gameDTO.getAwayClubId());
         return club;
     }
 
@@ -104,5 +110,47 @@ public class JpaEntityFactory
         Competition competition = new Competition();
         GameDTOMapper mapper = new GameDTOMapper(dto);
         return mapper.mapToCompetition(competition);
+    }
+
+    public Competition createCompetitionFromCompetitionDto(CompetitionDTO dto)
+    {
+        Competition competition = new Competition();
+        CompetitionDTOMapper mapper = new CompetitionDTOMapper(dto);
+        return mapper.mapToCompetition(competition);
+    }
+
+    public Country createCountryFromCompetition(CompetitionDTO dto)
+    {
+        Country country = new Country();
+        CompetitionDTOMapper mapper = new CompetitionDTOMapper(dto);
+        return mapper.mapToCountry(country);
+    }
+
+    public Url createUrlFromCompetition(CompetitionDTO dto)
+    {
+        Url url = new Url();
+        CompetitionDTOMapper mapper = new CompetitionDTOMapper(dto);
+        return mapper.mapToUrl(url);
+    }
+
+    public Club createClubFromClub(ClubDTO dto)
+    {
+        Club club = new Club();
+        ClubDTOMapper mapper = new ClubDTOMapper(dto);
+        return mapper.mapToClub(club);
+    }
+
+    public Stadium createStadiumFromClub(ClubDTO dto)
+    {
+        Stadium stadium = new Stadium();
+        ClubDTOMapper mapper = new ClubDTOMapper(dto);
+        return mapper.mapToStadium(stadium);
+    }
+
+    public Url createUrlFromClub(ClubDTO dto)
+    {
+        Url url = new Url();
+        ClubDTOMapper mapper = new ClubDTOMapper(dto);
+        return mapper.mapToUrl(url);
     }
 }

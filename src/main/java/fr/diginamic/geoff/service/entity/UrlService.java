@@ -1,6 +1,7 @@
 package fr.diginamic.geoff.service.entity;
 
 import fr.diginamic.geoff.dao.UrlDao;
+import fr.diginamic.geoff.dto.ClubDTO;
 import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Url;
@@ -20,47 +21,58 @@ public class UrlService
         this.factory = factory;
     }
 
-    public Url findOrCreateUrl(PlayerDTO dto)
+    public Url findOrCreateUrl(PlayerDTO dto, boolean isImage)
+    {
+        String urlString;
+        if (isImage)
+        {
+            urlString = dto.getImageUrl();
+        } else
+        {
+            urlString = dto.getUrl();
+        }
+        Optional<Url> urlOptional = urlDao.findByCode(urlString);
+        if (urlOptional.isPresent())
+        {
+            return urlOptional.get();
+        }
+
+        Url url = factory.createUrl(dto, isImage);
+        url.setEntityType(EntityType.PLAYER);
+        urlDao.save(url);
+        return url;
+    }
+
+
+    public Url findOrCreateCompetitionUrl(CompetitionDTO dto)
     {
         if (dto.getUrl() == null)
         {
             return null;
         }
-
         Optional<Url> urlOptional = urlDao.findByCode(dto.getUrl());
-
         if (urlOptional.isPresent())
         {
-            urlOptional.get().setEntityType(EntityType.PLAYER);
             return urlOptional.get();
         }
-
-        Url url = factory.createUrl(dto);
-        url.setEntityType(EntityType.PLAYER);
+        Url url = factory.createUrlFromCompetition(dto);
         urlDao.save(url);
         return url;
     }
 
-    public Url findOrCreateImageUrl(PlayerDTO dto)
+    public Url findOrCreateUrlFromClubDTO(ClubDTO dto)
     {
-        if (dto.getImageUrl() == null)
+        if (dto.getUrl() == null)
         {
             return null;
         }
-
-        Optional<Url> urlOptional = urlDao.findByCode(dto.getImageUrl());
-
+        Optional<Url> urlOptional = urlDao.findByCode(dto.getUrl());
         if (urlOptional.isPresent())
         {
-            urlOptional.get().setEntityType(EntityType.PLAYER);
             return urlOptional.get();
         }
-
-        Url url = factory.createUrl(dto);
-        url.setEntityType(EntityType.PLAYER);
+        Url url = factory.createUrlFromClub(dto);
         urlDao.save(url);
         return url;
     }
-
-    public Url findOrCreateCompetitionUrl(CompetitionDTO dto) {}
 }
