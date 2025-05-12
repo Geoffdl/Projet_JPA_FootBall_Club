@@ -4,18 +4,19 @@ import fr.diginamic.geoff.dao.CompetitionRoundDao;
 import fr.diginamic.geoff.dto.GameDTO;
 import fr.diginamic.geoff.entity.CompetitionRound;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
 import java.util.Optional;
 
 public class CompetitionRoundService
 {
     private final CompetitionRoundDao competitionRoundDao;
-    private final JpaEntityFactory factory;
 
-    public CompetitionRoundService(CompetitionRoundDao competitionRoundDao, JpaEntityFactory factory)
+
+    public CompetitionRoundService(EntityManager em)
     {
-        this.competitionRoundDao = competitionRoundDao;
-        this.factory = factory;
+        this.competitionRoundDao = new CompetitionRoundDao(em);
+
     }
 
     public CompetitionRound findOrCreateCompetitionRound(GameDTO dto)
@@ -27,7 +28,7 @@ public class CompetitionRoundService
             return competitionRoundOptional.get();
         }
 
-        CompetitionRound competitionRound = factory.createCompetitionRound(dto);
+        CompetitionRound competitionRound = JpaEntityFactory.createCompetitionRound(dto);
         competitionRoundDao.save(competitionRound);
 
         return competitionRound;

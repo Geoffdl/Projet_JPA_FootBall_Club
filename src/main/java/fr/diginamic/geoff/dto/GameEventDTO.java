@@ -6,14 +6,14 @@ public class GameEventDTO
 {
     private String gameEventId;
     private LocalDate date;
-    private int gameId;
+    private Long gameId;
     private int minute;
     private String type;
-    private int ClubId;
-    private int playerId;
+    private Long clubId;
+    private Long playerId;
     private String description;
-    private int playerInId;
-    private int playerAssistId;
+    private Long playerInId;
+    private Long playerAssistId;
 
     public GameEventDTO()
     {
@@ -64,7 +64,7 @@ public class GameEventDTO
      *
      * @return value of gameId
      */
-    public int getGameId()
+    public Long getGameId()
     {
         return gameId;
     }
@@ -74,7 +74,7 @@ public class GameEventDTO
      *
      * @param gameId value of gameId
      */
-    public void setGameId(int gameId)
+    public void setGameId(Long gameId)
     {
         this.gameId = gameId;
     }
@@ -120,23 +120,23 @@ public class GameEventDTO
     }
 
     /**
-     * Gets ClubId for the class GameEventDTO
+     * Gets clubId for the class GameEventDTO
      *
-     * @return value of ClubId
+     * @return value of clubId
      */
-    public int getClubId()
+    public Long getClubId()
     {
-        return ClubId;
+        return clubId;
     }
 
     /**
-     * Sets ClubId for the class GameEventDTO.
+     * Sets clubId for the class GameEventDTO.
      *
-     * @param ClubId value of ClubId
+     * @param clubId value of clubId
      */
-    public void setClubId(int clubId)
+    public void setClubId(Long clubId)
     {
-        ClubId = clubId;
+        this.clubId = clubId;
     }
 
     /**
@@ -144,7 +144,7 @@ public class GameEventDTO
      *
      * @return value of playerId
      */
-    public int getPlayerId()
+    public Long getPlayerId()
     {
         return playerId;
     }
@@ -154,7 +154,7 @@ public class GameEventDTO
      *
      * @param playerId value of playerId
      */
-    public void setPlayerId(int playerId)
+    public void setPlayerId(Long playerId)
     {
         this.playerId = playerId;
     }
@@ -184,7 +184,7 @@ public class GameEventDTO
      *
      * @return value of playerInId
      */
-    public int getPlayerInId()
+    public Long getPlayerInId()
     {
         return playerInId;
     }
@@ -194,7 +194,7 @@ public class GameEventDTO
      *
      * @param playerInId value of playerInId
      */
-    public void setPlayerInId(int playerInId)
+    public void setPlayerInId(Long playerInId)
     {
         this.playerInId = playerInId;
     }
@@ -204,7 +204,7 @@ public class GameEventDTO
      *
      * @return value of playerAssistId
      */
-    public int getPlayerAssistId()
+    public Long getPlayerAssistId()
     {
         return playerAssistId;
     }
@@ -214,7 +214,7 @@ public class GameEventDTO
      *
      * @param playerAssistId value of playerAssistId
      */
-    public void setPlayerAssistId(int playerAssistId)
+    public void setPlayerAssistId(Long playerAssistId)
     {
         this.playerAssistId = playerAssistId;
     }

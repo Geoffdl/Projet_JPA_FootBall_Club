@@ -1,22 +1,23 @@
 package fr.diginamic.geoff.service.entity;
 
 import fr.diginamic.geoff.dao.GameDao;
+import fr.diginamic.geoff.dto.AppearanceDTO;
 import fr.diginamic.geoff.dto.GameDTO;
-import fr.diginamic.geoff.entity.Game;
+import fr.diginamic.geoff.dto.GameEventDTO;
+import fr.diginamic.geoff.dto.GameLineupDTO;
 import fr.diginamic.geoff.entity.Game;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
 import java.util.Optional;
 
 public class GameService
 {
     private final GameDao gameDao;
-    private final JpaEntityFactory factory;
 
-    public GameService(GameDao gameDao, JpaEntityFactory factory)
+    public GameService(EntityManager em)
     {
-        this.gameDao = gameDao;
-        this.factory = factory;
+        this.gameDao = new GameDao(em);
     }
 
     public Game findOrCreateGame(GameDTO dto)
@@ -28,9 +29,27 @@ public class GameService
             return gameOptional.get();
         }
 
-        Game game = factory.createGame(dto);
+        Game game = JpaEntityFactory.createGame(dto);
         gameDao.save(game);
 
         return game;
+    }
+
+    public Game findForGameEvent(GameEventDTO dto)
+    {
+        Optional<Game> gameOptional = gameDao.findBySourceId(dto.getGameId());
+        return gameOptional.orElse(null);
+    }
+
+    public Game findForGameLineup(GameLineupDTO dto)
+    {
+        Optional<Game> gameOptional = gameDao.findBySourceId(dto.getGameId());
+        return gameOptional.orElse(null);
+    }
+
+    public Game findForAppearance(AppearanceDTO dto)
+    {
+        Optional<Game> gameOptional = gameDao.findBySourceId(dto.getGameId());
+        return gameOptional.orElse(null);
     }
 }

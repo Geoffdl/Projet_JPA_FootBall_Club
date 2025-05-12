@@ -1,6 +1,5 @@
 package fr.diginamic.geoff.entity;
 
-import fr.diginamic.geoff.entity.compositeid.GamePlayerId;
 import fr.diginamic.geoff.entity.lookup.EventType;
 import jakarta.persistence.*;
 
@@ -8,21 +7,24 @@ import jakarta.persistence.*;
 @Table(name = "game_event")
 public class GameEvent
 {
-    @EmbeddedId
-    private GamePlayerId gameEventId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "source_id", unique = true)
     private String sourceId;
 
     private int eventMinute;
+
+    @Enumerated(EnumType.STRING)
     private EventType eventType;
     private String description;
 
     @ManyToOne
-    @MapsId("gameId")
+    @JoinColumn(name = "game_id", referencedColumnName = "game_id")
     private Game game;
     @ManyToOne
-    @MapsId("playerId")
+    @JoinColumn(name = "player_id", referencedColumnName = "player_id")
     private Player playerMain;
     @ManyToOne
     @JoinColumn(name = "player_in_id", referencedColumnName = "player_id")
@@ -37,14 +39,15 @@ public class GameEvent
     }
 
     /**
-     * Gets gameEventId for the class GameEvent
+     * Gets id for the class GameEvent
      *
-     * @return value of gameEventId
+     * @return value of id
      */
-    public GamePlayerId getGameEventId()
+    public Long getId()
     {
-        return gameEventId;
+        return id;
     }
+
 
     /**
      * Gets sourceId for the class GameEvent

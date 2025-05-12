@@ -2,6 +2,7 @@ package fr.diginamic.geoff.entity;
 
 import fr.diginamic.geoff.entity.compositeid.GamePlayerId;
 import fr.diginamic.geoff.entity.lookup.Lineup;
+import fr.diginamic.geoff.entity.lookup.Position;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,10 +15,13 @@ public class GameLineup
     @Column(name = "source_id", unique = true)
     private String sourceId;
 
-    private Lineup startingLineup;
     private int playerNumber;
     private boolean isTeamCaptain;
-    private String position;
+
+    @Enumerated(EnumType.STRING)
+    private Lineup startingLineup;
+    @Enumerated(EnumType.STRING)
+    private Position position;
 
     @ManyToOne
     @MapsId("playerId")
@@ -135,7 +139,7 @@ public class GameLineup
      *
      * @return value of position
      */
-    public String getPosition()
+    public Position getPosition()
     {
         return position;
     }
@@ -145,7 +149,7 @@ public class GameLineup
      *
      * @param position value of position
      */
-    public void setPosition(String position)
+    public void setPosition(Position position)
     {
         this.position = position;
     }

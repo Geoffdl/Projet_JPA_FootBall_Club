@@ -6,18 +6,18 @@ import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Country;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
 import java.util.Optional;
 
 public class CountryService
 {
     private final CountryDao countryDao;
-    private final JpaEntityFactory factory;
 
-    public CountryService(CountryDao countryDao, JpaEntityFactory factory)
+    public CountryService(EntityManager em)
     {
-        this.countryDao = countryDao;
-        this.factory = factory;
+        this.countryDao = new CountryDao(em);
+
     }
 
     public Country findOrCreateBirthCountry(PlayerDTO dto)
@@ -34,7 +34,7 @@ public class CountryService
             return countryOptional.get();
         }
 
-        Country country = factory.createCountryBirth(dto);
+        Country country = JpaEntityFactory.createCountryBirth(dto);
         countryDao.save(country);
         return country;
     }
@@ -53,7 +53,7 @@ public class CountryService
             return countryOptional.get();
         }
 
-        Country country = factory.createCountryCitizenship(dto);
+        Country country = JpaEntityFactory.createCountryCitizenship(dto);
         countryDao.save(country);
         return country;
     }
@@ -77,7 +77,7 @@ public class CountryService
             return countryOptional.get();
         }
 
-        Country country = factory.createCountryFromCompetition(dto);
+        Country country = JpaEntityFactory.createCountryFromCompetition(dto);
         countryDao.save(country);
         return country;
     }

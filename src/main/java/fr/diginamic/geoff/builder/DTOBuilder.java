@@ -1,6 +1,5 @@
 package fr.diginamic.geoff.builder;
 
-import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.exception.CsvFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,10 +26,12 @@ public interface DTOBuilder<T>
                 {
 
                     T entityDTO = createInstance();
-                    try {
+                    try
+                    {
                         setAttributes(entityDTO, l);
                         return entityDTO;
-                    } catch (CsvFormatException e) {
+                    } catch (CsvFormatException e)
+                    {
                         LOGGER.debug("skipping line {} : {}", l, e.getMessage());
                         return null;
                     }
@@ -38,7 +39,6 @@ public interface DTOBuilder<T>
                 .toList();
     }
 
-    ;
 
     /**
      * @param entity

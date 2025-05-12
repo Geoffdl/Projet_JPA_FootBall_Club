@@ -3,7 +3,7 @@ package fr.diginamic.geoff.builder;
 import fr.diginamic.geoff.dto.AppearanceDTO;
 import fr.diginamic.geoff.exception.CsvFormatException;
 
-import static fr.diginamic.geoff.utils.DTOUtils.*;
+import static fr.diginamic.geoff.utils.DTOUtils.splitDataSourceIntoArray;
 import static fr.diginamic.geoff.utils.Deserializer.*;
 
 public class AppearanceDTOBuilder implements DTOBuilder<AppearanceDTO>
@@ -13,9 +13,9 @@ public class AppearanceDTOBuilder implements DTOBuilder<AppearanceDTO>
     {
         String[] parts = splitDataSourceIntoArray(line, AppearanceDTO.class.getDeclaredFields().length);
 
-        entity.setAppearanceId(stringToDouble(parts[0]));
-        entity.setGameId(stringToInt(parts[1]));
-        entity.setPlayerId(stringToInt(parts[2]));
+        entity.setAppearanceId(stringToLong(parts[0].replace("_", "")));
+        entity.setGameId(stringToLong(parts[1]));
+        entity.setPlayerId(stringToLong(parts[2]));
         entity.setPlayerClubId(stringToInt(parts[3]));
         entity.setPlayerCurrentClubId(stringToInt(parts[4]));
         entity.setDate(stringToLocalDate(parts[5]));
@@ -32,6 +32,6 @@ public class AppearanceDTOBuilder implements DTOBuilder<AppearanceDTO>
     @Override
     public AppearanceDTO createInstance()
     {
-        return null;
+        return new AppearanceDTO();
     }
 }

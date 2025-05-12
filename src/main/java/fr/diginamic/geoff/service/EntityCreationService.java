@@ -1,11 +1,9 @@
 package fr.diginamic.geoff.service;
 
-import fr.diginamic.geoff.dao.*;
 import fr.diginamic.geoff.dto.*;
 import fr.diginamic.geoff.entity.*;
 import fr.diginamic.geoff.service.entity.*;
 import fr.diginamic.geoff.utils.DTOListCreator;
-import fr.diginamic.geoff.utils.JpaEntityFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import org.slf4j.Logger;
@@ -52,38 +50,21 @@ public class EntityCreationService
     {
         this.em = em;
         this.dtoListCreator = dtoListCreator;
-        AgentDao agentDao = new AgentDao(em);
-        PlayerDao playerDao = new PlayerDao(em);
-        CityDao cityDao = new CityDao(em);
-        CountryDao countryDao = new CountryDao(em);
-        UrlDao urlDao = new UrlDao(em);
-        ClubDao clubDao = new ClubDao(em);
-        ClubGameDao clubGameDao = new ClubGameDao(em);
-        CompetitionDao competitionDao = new CompetitionDao(em);
-        CompetitionRoundDao competitionRoundDao = new CompetitionRoundDao(em);
-        GameDao gameDao = new GameDao(em);
-        GameAppearanceDao gameAppearanceDao = new GameAppearanceDao(em);
-        GameEventDao gameEventDao = new GameEventDao(em);
-        GameLineupDao gameLineupDao = new GameLineupDao(em);
-        StadiumDao stadiumDao = new StadiumDao(em);
-        PlayerValuationDao playerValuationDao = new PlayerValuationDao(em);
-
-        JpaEntityFactory factory = new JpaEntityFactory();
-        this.cityService = new CityService(cityDao, factory);
-        this.countryService = new CountryService(countryDao, factory);
-        this.urlService = new UrlService(urlDao, factory);
-        this.clubService = new ClubService(clubDao, factory);
-        this.clubGameService = new ClubGameService(clubGameDao, factory);
-        this.agentService = new AgentService(agentDao, factory);
-        this.playerService = new PlayerService(playerDao, factory);
-        this.competitionService = new CompetitionService(competitionDao, factory);
-        this.competitionRoundService = new CompetitionRoundService(competitionRoundDao, factory);
-        this.gameService = new GameService(gameDao, factory);
-        this.gameAppearanceService = new GameAppearanceService(gameAppearanceDao, factory);
-        this.gameLineUpService = new GameLineupService(gameLineupDao, factory);
-        this.gameEventService = new GameEventService(gameEventDao, factory);
-        this.stadiumService = new StadiumService(stadiumDao, factory);
-        this.playerValuationService = new PlayerValuationService(playerValuationDao, factory);
+        this.cityService = new CityService(em);
+        this.countryService = new CountryService(em);
+        this.urlService = new UrlService(em);
+        this.clubService = new ClubService(em);
+        this.clubGameService = new ClubGameService(em);
+        this.agentService = new AgentService(em);
+        this.playerService = new PlayerService(em);
+        this.competitionService = new CompetitionService(em);
+        this.competitionRoundService = new CompetitionRoundService(em);
+        this.gameService = new GameService(em);
+        this.gameAppearanceService = new GameAppearanceService(em);
+        this.gameLineUpService = new GameLineupService(em);
+        this.gameEventService = new GameEventService(em);
+        this.stadiumService = new StadiumService(em);
+        this.playerValuationService = new PlayerValuationService(em);
     }
 
     public void createEntities()
@@ -92,21 +73,90 @@ public class EntityCreationService
         initializeDtoLists();
 
         //for testing purposes
-        limitListSize();
+//        limitListSize();
 
         //creating sequence
         treatPlayerDTO();
         treatGameDTO();
         treatCompetitionDTO();
         treatClubDTO();
+        treatGameLineup();
+        treatAppearance();
         treatGameEvent();
 
     }
 
-    private void treatGameEvent() {}
+    private void treatAppearance()
+    {
+        LOGGER.info("Starting persistence from AppearanceDTO");
+        for (AppearanceDTO dto : appearanceDTOList)
+        {
+            runInTransaction(() ->
+            {
+                Player player = playerService.findForAppearance(dto);
+                Game game = gameService.findForAppearance(dto);
+                if (player != null && game != null)
+                {
+                    GameAppearance gameAppearance = gameAppearanceService.findOrCreate(dto, game, player);
+
+                    em.persist(gameAppearance);
+                }
+            }, em);
+        }
+    }
+
+    private void treatGameLineup()
+    {
+        LOGGER.info("Starting persistence from GameLineupDTO");
+        for (GameLineupDTO dto : gameLineupDTOList)
+        {
+            runInTransaction(() ->
+            {
+
+                Player player = playerService.findForGameLineup(dto);
+                Game game = gameService.findForGameLineup(dto);
+                if (player != null && game != null)
+                {
+                    GameLineup gameLineup = gameLineUpService.findOrCreate(dto, game, player);
+                    em.persist(gameLineup);
+                }
+
+
+            }, em);
+            em.clear();
+        }
+
+
+    }
+
+    private void treatGameEvent()
+    {
+        LOGGER.info("Starting persistence from GameEventDTO");
+        for (GameEventDTO dto : gameEventDTOList)
+        {
+            runInTransaction(() ->
+            {
+                Player playerMain = playerService.findForGameEvent(dto);
+                Game game = gameService.findForGameEvent(dto);
+
+                if (playerMain != null && game != null)
+                {
+
+                    GameEvent gameEvent = gameEventService.findOrCreate(dto, playerService);
+                    gameEvent.setGame(game);
+                    gameEvent.setPlayerMain(playerMain);
+                    em.persist(gameEvent);
+                }
+
+
+            }, em);
+            em.clear();
+        }
+    }
 
     private void treatClubDTO()
     {
+        LOGGER.info("Starting persistence from ClubDTO");
         for (ClubDTO dto : clubDTOList)
         {
             runInTransaction(() ->
@@ -138,6 +188,7 @@ public class EntityCreationService
 
     private void treatCompetitionDTO()
     {
+        LOGGER.info("Starting persistence from CompetitionDTO");
         for (CompetitionDTO dto : competitionDTOList)
         {
             runInTransaction(() ->
@@ -163,10 +214,12 @@ public class EntityCreationService
 
     private void treatPlayerDTO()
     {
+        LOGGER.info("Starting persistence from PlayerDTO");
         for (PlayerDTO dto : playerDTOList)
         {
             runInTransaction(() ->
             {
+
                 City city = cityService.findOrCreateCity(dto);
                 Country countryBirth = countryService.findOrCreateBirthCountry(dto);
                 Country countryCitizenship = countryService.findOrCreateCitizenshipCountry(dto);
@@ -193,7 +246,7 @@ public class EntityCreationService
 
     private void treatGameDTO()
     {
-
+        LOGGER.info("Starting persistence from GameDTO");
         for (GameDTO dto : gameDTOList)
         {
             runInTransaction(() ->
@@ -239,14 +292,29 @@ public class EntityCreationService
      */
     private void initializeDtoLists()
     {
+        LOGGER.info("Parsing competition.csv");
         this.competitionDTOList = dtoListCreator.createListOfCompetitionDTO("data/1.competitions.csv");
+
+        LOGGER.info("Parsing club.csv");
         this.clubDTOList = dtoListCreator.createListOfClubDTO("data/2.clubs.csv");
+
+        LOGGER.info("Parsing players.csv");
         this.playerDTOList = dtoListCreator.createListOfPlayerDTO("data/3.players.csv");
+
+//        LOGGER.info("Parsing player_valuations.csv");
 //        this.playerValuationList = dtoListCreator.createListOfPlayerValuation("data/4.player_valuations.csv");
+
+        LOGGER.info("Parsing games.csv");
         this.gameDTOList = dtoListCreator.createListOfGameDTO("data/5.games.csv");
-//        this.gameEventDTOList = dtoListCreator.createListOfGameEventDTO("data/6.game_events.csv");
-//        this.gameLineupDTOList = dtoListCreator.createListOfGameLineupDTO("data/7.game_lineups.csv");
-//        this.appearanceDTOList = dtoListCreator.createListOfAppearanceDTO("data/8.appearances.csv");
+
+        LOGGER.info("Parsing game_events.csv");
+        this.gameEventDTOList = dtoListCreator.createListOfGameEventDTO("data/6.game_events.csv");
+
+        LOGGER.info("Parsing game_lineups.csv");
+        this.gameLineupDTOList = dtoListCreator.createListOfGameLineupDTO("data/7.game_lineups.csv");
+
+        LOGGER.info("Parsing appearances.csv");
+        this.appearanceDTOList = dtoListCreator.createListOfAppearanceDTO("data/8.appearances.csv");
     }
 
     /**
@@ -254,16 +322,16 @@ public class EntityCreationService
      */
     private void limitListSize()
     {
-        int size = 300;
+        int size = 30000;
 
         competitionDTOList = competitionDTOList.stream().limit(size).toList();
         clubDTOList = clubDTOList.stream().limit(size).toList();
         playerDTOList = playerDTOList.stream().limit(size).toList();
-//        playerValuationList = playerValuationList.stream().limit(1000).toList();
+        //playerValuationList = playerValuationList.stream().limit(1000).toList();
         gameDTOList = gameDTOList.stream().limit(size).toList();
-//        gameEventDTOList = gameEventDTOList.stream().limit(1000).toList();
-//        gameLineupDTOList = gameLineupDTOList.stream().limit(1000).toList();
-//        appearanceDTOList = appearanceDTOList.stream().limit(1000).toList();
+        gameEventDTOList = gameEventDTOList.stream().limit(size).toList();
+        gameLineupDTOList = gameLineupDTOList.stream().limit(size).toList();
+        appearanceDTOList = appearanceDTOList.stream().limit(size).toList();
     }
 
     /**

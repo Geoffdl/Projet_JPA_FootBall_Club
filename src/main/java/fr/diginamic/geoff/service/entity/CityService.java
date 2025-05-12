@@ -4,18 +4,17 @@ import fr.diginamic.geoff.dao.CityDao;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.City;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
 import java.util.Optional;
 
 public class CityService
 {
     private final CityDao cityDao;
-    private final JpaEntityFactory factory;
 
-    public CityService(CityDao cityDao, JpaEntityFactory factory)
+    public CityService(EntityManager em)
     {
-        this.cityDao = cityDao;
-        this.factory = factory;
+        this.cityDao = new CityDao(em);
     }
 
     public City findOrCreateCity(PlayerDTO dto)
@@ -32,7 +31,7 @@ public class CityService
             return cityOptional.get();
         }
 
-        City city = factory.createCity(dto);
+        City city = JpaEntityFactory.createCity(dto);
         cityDao.save(city);
         return city;
     }
