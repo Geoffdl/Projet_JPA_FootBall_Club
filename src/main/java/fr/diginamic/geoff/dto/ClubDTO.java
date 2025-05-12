@@ -4,7 +4,7 @@ import java.time.Year;
 
 public class ClubDTO
 {
-    private int clubId;
+    private Long clubId;
     private String clubCode;
     private String name;
     private String domesticCompetitionId;
@@ -16,7 +16,7 @@ public class ClubDTO
     private int nationalTeamPlayers;
     private String stadiumName;
     private int stadiumSeats;
-    private int netTransferRecord;
+    private double netTransferRecord;
     private String coachName;
     private Year lastSeason;
     private String url;
@@ -26,32 +26,12 @@ public class ClubDTO
     {
     }
 
-    public ClubDTO(int clubId, String clubCode, String name, String domesticCompetitionId, double totalMarketValue, int squadSize, double averageAge, int foreignersNumber, double foreignerPercentage, int nationalTeamPlayers, String stadiumName, int stadiumSeats, int netTransferRecord, String coachName, Year lastSeason, String url)
-    {
-        this.clubId = clubId;
-        this.clubCode = clubCode;
-        this.name = name;
-        this.domesticCompetitionId = domesticCompetitionId;
-        this.totalMarketValue = totalMarketValue;
-        this.squadSize = squadSize;
-        this.averageAge = averageAge;
-        this.foreignersNumber = foreignersNumber;
-        this.foreignerPercentage = foreignerPercentage;
-        this.nationalTeamPlayers = nationalTeamPlayers;
-        this.stadiumName = stadiumName;
-        this.stadiumSeats = stadiumSeats;
-        this.netTransferRecord = netTransferRecord;
-        this.coachName = coachName;
-        this.lastSeason = lastSeason;
-        this.url = url;
-    }
-
     /**
      * Gets clubId for the class ClubDTO
      *
      * @return value of clubId
      */
-    public int getClubId()
+    public Long getClubId()
     {
         return clubId;
     }
@@ -61,7 +41,7 @@ public class ClubDTO
      *
      * @param clubId value of clubId
      */
-    public void setClubId(int clubId)
+    public void setClubId(Long clubId)
     {
         this.clubId = clubId;
     }
@@ -291,7 +271,7 @@ public class ClubDTO
      *
      * @return value of netTransferRecord
      */
-    public int getNetTransferRecord()
+    public double getNetTransferRecord()
     {
         return netTransferRecord;
     }
@@ -301,7 +281,7 @@ public class ClubDTO
      *
      * @param netTransferRecord value of netTransferRecord
      */
-    public void setNetTransferRecord(int netTransferRecord)
+    public void setNetTransferRecord(double netTransferRecord)
     {
         this.netTransferRecord = netTransferRecord;
     }

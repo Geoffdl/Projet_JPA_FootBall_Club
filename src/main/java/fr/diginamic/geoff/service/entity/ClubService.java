@@ -1,6 +1,7 @@
 package fr.diginamic.geoff.service.entity;
 
 import fr.diginamic.geoff.dao.ClubDao;
+import fr.diginamic.geoff.dto.ClubDTO;
 import fr.diginamic.geoff.dto.GameDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Club;
@@ -39,7 +40,7 @@ public class ClubService
     {
         if (isHome)
         {
-            if (dto.getAwayClubId() == null)
+            if (dto.getHomeClubId() == null)
             {
                 return null;
             }
@@ -62,6 +63,21 @@ public class ClubService
             return clubOptional.get();
         }
         Club club = factory.createClubFromGame(dto, isHome);
+        clubDao.save(club);
+        return club;
+    }
+
+    public Club findOrCreateClubFromClubDTO(ClubDTO dto)
+    {
+        Optional<Club> clubOptional = clubDao.findBySourceId(dto.getClubId());
+        if (clubOptional.isPresent())
+        {
+            clubOptional.get().setClubCode(dto.getClubCode());
+            clubOptional.get().setTransferRecord(dto.getNetTransferRecord());
+            clubDao.save(clubOptional.get());
+            return clubOptional.get();
+        }
+        Club club = factory.createClubFromClub(dto);
         clubDao.save(club);
         return club;
     }

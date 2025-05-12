@@ -39,10 +39,12 @@ public class Competition
     @JoinColumn(name = "country_id", referencedColumnName = "country_id")
     private Country country;
 
-    @OneToMany(mappedBy = "domesticCompetition")
-    private Set<Club> clubs = new HashSet<>();;
+    @ManyToMany(mappedBy = "competitions")
+    private Set<Club> clubs = new HashSet<>();
+    ;
     @OneToMany(mappedBy = "competition")
-    private Set<CompetitionRound> rounds = new HashSet<>();;
+    private Set<CompetitionRound> rounds = new HashSet<>();
+    ;
 
     public Competition()
     {

@@ -20,10 +20,9 @@ public class Stadium
 
     @OneToMany(mappedBy = "stadium")
     private Set<Game> games = new HashSet<>();
-    ;
-    @ManyToOne
-    @JoinColumn(name = "club_id", referencedColumnName = "club_id")
-    private Club club;
+
+    @OneToMany(mappedBy = "homeStadium")
+    private Set<Club> clubs = new HashSet<>();
 
     public Stadium()
     {
@@ -104,18 +103,23 @@ public class Stadium
      *
      * @return value of club
      */
-    public Club getClub()
+    /**
+     * Gets clubs for the class Stadium
+     *
+     * @return value of clubs
+     */
+    public Set<Club> getClubs()
     {
-        return club;
+        return clubs;
     }
 
     /**
-     * Sets club for the class Stadium.
+     * Sets clubs for the class Stadium.
      *
-     * @param club value of club
+     * @param clubs value of clubs
      */
-    public void setClub(Club club)
+    public void setClubs(Set<Club> clubs)
     {
-        this.club = club;
+        this.clubs = clubs;
     }
 }

@@ -35,14 +35,17 @@ public class GameDTOMapper
         clubGame.setClubGameId(id);
         if (isHome)
         {
+            clubGame.setSide(Side.HOME);
             clubGame.setManagerName(dto.getHomeClubManagerName());
             clubGame.setTacticalFormation(dto.getHomeClubFormation());
+        } else
+        {
+            clubGame.setManagerName(dto.getAwayClubManagerName());
+            clubGame.setTacticalFormation(dto.getAwayClubFormation());
+            clubGame.setSide(Side.AWAY);
         }
         clubGame.setClub(club);
         clubGame.setGame(game);
-        clubGame.setManagerName(dto.getAwayClubManagerName());
-        clubGame.setSide(Side.AWAY);
-        clubGame.setTacticalFormation(dto.getAwayClubFormation());
         return clubGame;
     }
 
@@ -72,8 +75,10 @@ public class GameDTOMapper
         if (isHome)
         {
             club.setSourceId(dto.getHomeClubId());
+        } else
+        {
+            club.setSourceId(dto.getAwayClubId());
         }
-        club.setSourceId(dto.getAwayClubId());
         return club;
     }
 

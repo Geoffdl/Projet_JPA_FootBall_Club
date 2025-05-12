@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
+import java.util.List;
 import java.util.Optional;
 
 public class CompetitionDao
@@ -35,5 +36,14 @@ public class CompetitionDao
         {
             return Optional.empty();
         }
+    }
+
+    public List<Competition> findFromDomesticId(String domesticCompetitionId)
+    {
+        TypedQuery<Competition> query = em.createQuery(
+                "SELECT c FROM Competition c WHERE c.domesticLeagueCode = :domesticCompetitionId", Competition.class
+        );
+        query.setParameter("domesticCompetitionId", domesticCompetitionId);
+        return query.getResultList();
     }
 }

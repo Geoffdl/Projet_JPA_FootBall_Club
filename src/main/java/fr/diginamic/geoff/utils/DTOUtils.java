@@ -4,9 +4,11 @@ import fr.diginamic.geoff.exception.CsvFormatException;
 
 public class DTOUtils
 {
-    public static String[] splitDataSourceIntoArray(String line, int expectedLength) throws CsvFormatException {
+    public static String[] splitDataSourceIntoArray(String line, int expectedLength) throws CsvFormatException
+    {
 
-        line = line.replaceAll("\"[^\"]+,[^\"]+\"", "");        line = line.trim();
+        line = line.replaceAll("\"[^\"]+,[^\"]+\"", "");
+        line = line.trim();
         String[] parts = line.split(",");
         if (parts.length != expectedLength)
         {
@@ -16,12 +18,15 @@ public class DTOUtils
         return parts;
     }
 
-    public static String cleanUpForIntConversion(String part){
-        part = part.replace("€", "");
-        part = part.replace("m", "");
-        part = part.replace("k", "");
-        part = part.replace("+", "");
-        part = part.replace("+", "");
+    public static String cleanUpForIntConversion(String part)
+    {
+        part = part.replace("€", "")
+                .replace("m", "")
+                .replace("k", "")
+                .replace("+", "")
+                .replace(",", ".")
+                .trim();
+
 
         return part;
     }

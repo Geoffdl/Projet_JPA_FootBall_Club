@@ -48,8 +48,8 @@ public class Player
     @ManyToOne
     @JoinColumn(name = "country_birth_id", referencedColumnName = "country_id")
     private Country countryOfBirth;
-    @OneToOne
-    @JoinColumn(name = "picture_url_id", referencedColumnName = "url_id")
+    @ManyToOne
+    @JoinColumn(name = "picture_url_id")
     private Url pictureUrl;
     @OneToOne
     @JoinColumn(name = "url_id", referencedColumnName = "url_id")
