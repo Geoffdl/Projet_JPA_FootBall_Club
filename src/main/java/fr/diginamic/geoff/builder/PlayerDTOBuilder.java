@@ -8,6 +8,10 @@ import java.time.Year;
 import static fr.diginamic.geoff.utils.DTOUtils.splitDataSourceIntoArray;
 
 
+/**
+ * Fills dto with parsed data from the csv file
+ */
+
 public class PlayerDTOBuilder implements DTOBuilder<PlayerDTO>
 {
 

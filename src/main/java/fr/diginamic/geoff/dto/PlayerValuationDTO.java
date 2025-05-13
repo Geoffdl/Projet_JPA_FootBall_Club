@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Year;
 
+/**
+ * Contains all related elements from the csv file
+ */
 public class PlayerValuationDTO
 {
     private int playerId;

@@ -6,7 +6,7 @@ import jakarta.persistence.Embeddable;
 import java.util.Objects;
 
 /**
- *
+ * Composite key matching games and players
  */
 @Embeddable
 public class GamePlayerId

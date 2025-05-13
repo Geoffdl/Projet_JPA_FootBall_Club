@@ -1,5 +1,8 @@
 package fr.diginamic.geoff.entity.lookup;
 
+/**
+ * enumeration for position attribute
+ */
 public enum Position
 {
 
@@ -33,6 +36,12 @@ public enum Position
         return csvValue;
     }
 
+    /**
+     * takes in a string from dto object and returns matching event type
+     *
+     * @param value string from dto
+     * @return event type
+     */
     public static Position fromCsvValue(String value)
     {
         for (Position type : values())

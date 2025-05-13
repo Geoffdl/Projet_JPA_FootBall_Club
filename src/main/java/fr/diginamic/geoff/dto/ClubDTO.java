@@ -2,6 +2,9 @@ package fr.diginamic.geoff.dto;
 
 import java.time.Year;
 
+/**
+ * Contains all related elements from the csv file
+ */
 public class ClubDTO
 {
     private Long clubId;

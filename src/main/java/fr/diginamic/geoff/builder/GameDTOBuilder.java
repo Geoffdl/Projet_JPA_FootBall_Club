@@ -6,6 +6,9 @@ import fr.diginamic.geoff.utils.DTOUtils;
 
 import static fr.diginamic.geoff.utils.Deserializer.*;
 
+/**
+ * Fills dto with parsed data from the csv file
+ */
 public class GameDTOBuilder implements DTOBuilder<GameDTO>
 {
     @Override

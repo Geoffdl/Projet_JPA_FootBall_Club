@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Handles DB requests for this entity
+ */
 public class PlayerDao
 {
     EntityManager em;

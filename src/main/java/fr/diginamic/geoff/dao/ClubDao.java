@@ -2,13 +2,14 @@ package fr.diginamic.geoff.dao;
 
 import fr.diginamic.geoff.entity.Club;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
-import java.util.Optional;
 
-public class ClubDao
+/**
+ * Handles DB requests for this entity
+ */
+public class ClubDao implements Dao<Club>
 {
     EntityManager em;
 
@@ -17,31 +18,25 @@ public class ClubDao
         this.em = em;
     }
 
+    @Override
     public void save(Club club)
     {
         em.persist(club);
-
     }
 
-    public Optional<Club> findBySourceId(Long sourceId)
+    @Override
+    public List<Club> findAllById(Long id)
     {
-        if (sourceId == null)
-        {
-            return Optional.empty();
-        }
-        try
-        {
-            TypedQuery<Club> query = em.createQuery(
-                    "SELECT c FROM Club c WHERE c.sourceId = :sourceId", Club.class);
-            query.setParameter("sourceId", sourceId);
-
-            return Optional.of(query.getSingleResult());
-        } catch (NoResultException e)
-        {
-            return Optional.empty();
-        }
+        return List.of();
     }
 
+    @Override
+    public List<Club> findAllByIdString(String id)
+    {
+        return List.of();
+    }
+
+    @Override
     public List<Club> findAll()
     {
         TypedQuery<Club> query = em.createQuery("SELECT c FROM Club c", Club.class);

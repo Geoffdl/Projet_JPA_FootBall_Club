@@ -8,6 +8,9 @@ import java.time.Year;
 
 import static fr.diginamic.geoff.utils.Deserializer.*;
 
+/**
+ * Fills dto with parsed data from the csv file
+ */
 public class ClubDTOBuilder implements DTOBuilder<ClubDTO>
 {
 

@@ -11,6 +11,8 @@ public interface DTOBuilder<T>
     static final Logger LOGGER = LoggerFactory.getLogger(DTOBuilder.class);
 
     /**
+     * creates a list of dto entitys
+     *
      * @param lines
      * @return
      */
@@ -41,13 +43,17 @@ public interface DTOBuilder<T>
 
 
     /**
-     * @param entity
-     * @param line
-     * @throws CsvFormatException
+     * creates DTO entities from each csv line
+     *
+     * @param entity current entity
+     * @param line   csv line
+     * @throws CsvFormatException in case the line doesn't match expectations
      */
     void setAttributes(T entity, String line) throws CsvFormatException;
 
     /**
+     * instantiate empty dto entity
+     *
      * @return
      */
     T createInstance();

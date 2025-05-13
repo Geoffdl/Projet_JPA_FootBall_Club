@@ -1,5 +1,8 @@
 package fr.diginamic.geoff.entity.lookup;
 
+/**
+ * enumeration for game event types
+ */
 public enum EventType
 {
     EVENT("Events"),
@@ -19,6 +22,12 @@ public enum EventType
         return csvValue;
     }
 
+    /**
+     * takes in a string from dto object and returns matching event type
+     *
+     * @param value string from dto
+     * @return event type
+     */
     public static EventType fromCsvValue(String value)
     {
         for (EventType type : values())

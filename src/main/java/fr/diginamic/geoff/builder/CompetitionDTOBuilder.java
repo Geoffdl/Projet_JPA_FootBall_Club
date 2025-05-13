@@ -6,6 +6,9 @@ import fr.diginamic.geoff.exception.CsvFormatException;
 import static fr.diginamic.geoff.utils.DTOUtils.splitDataSourceIntoArray;
 import static fr.diginamic.geoff.utils.Deserializer.stringToLong;
 
+/**
+ * Fills dto with parsed data from the csv file
+ */
 public class CompetitionDTOBuilder implements DTOBuilder<CompetitionDTO>
 {
     public CompetitionDTOBuilder()

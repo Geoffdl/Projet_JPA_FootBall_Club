@@ -1,5 +1,8 @@
 package fr.diginamic.geoff.entity.lookup;
 
+/**
+ * enumeration for game lineup attribute
+ */
 public enum Lineup
 {
     STARTING("starting_lineup"),
@@ -13,6 +16,13 @@ public enum Lineup
         this.csvValue = csvValue;
     }
 
+
+    /**
+     * takes in a string from dto object and returns matching event type
+     *
+     * @param value string from dto
+     * @return event type
+     */
     public static Lineup fromCsvValue(String value)
     {
         for (Lineup type : values())

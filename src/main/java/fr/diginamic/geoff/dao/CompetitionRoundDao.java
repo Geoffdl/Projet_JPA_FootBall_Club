@@ -7,6 +7,9 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Handles DB requests for this entity
+ */
 public class CompetitionRoundDao
 {
     private final EntityManager em;

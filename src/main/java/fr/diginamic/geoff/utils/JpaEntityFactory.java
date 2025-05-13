@@ -4,6 +4,9 @@ import fr.diginamic.geoff.dto.*;
 import fr.diginamic.geoff.entity.*;
 import fr.diginamic.geoff.mapper.*;
 
+/**
+ * Helper class that instantiates entities with the proper data source before being mapped through the matching dto mapper
+ */
 public class JpaEntityFactory
 {
 

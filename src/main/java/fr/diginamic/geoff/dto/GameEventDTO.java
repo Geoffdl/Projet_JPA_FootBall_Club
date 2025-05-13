@@ -2,6 +2,9 @@ package fr.diginamic.geoff.dto;
 
 import java.time.LocalDate;
 
+/**
+ * Contains all related elements from the csv file
+ */
 public class GameEventDTO
 {
     private String gameEventId;

@@ -5,6 +5,9 @@ import fr.diginamic.geoff.exception.CsvFormatException;
 
 import static fr.diginamic.geoff.utils.Deserializer.*;
 
+/**
+ * Fills dto with parsed data from the csv file
+ */
 public class GameEventDTOBuilder implements CsvArrayDTOBuilder<GameEventDTO>
 {
 

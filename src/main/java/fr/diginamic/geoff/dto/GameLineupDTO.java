@@ -1,5 +1,8 @@
 package fr.diginamic.geoff.dto;
 
+/**
+ * Contains all related elements from the csv file
+ */
 public class GameLineupDTO
 {
     private String gameLineUpsId;
