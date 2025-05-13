@@ -13,9 +13,7 @@ import java.util.Map;
 
 public class GameLineupService
 {
-
     private final GameLineupDao gameLineupDao;
-
     private final Map<String, GameLineup> mapOfExisting = new HashMap<>();
 
     public GameLineupService(EntityManager em)
@@ -31,9 +29,9 @@ public class GameLineupService
         {
             return existing;
         }
-
         GameLineup gameLineup = JpaEntityFactory.createGameLineup(dto, game, player);
         mapOfExisting.put(gameLineup.getSourceId(), gameLineup);
+
         return gameLineup;
     }
 

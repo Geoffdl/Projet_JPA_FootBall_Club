@@ -22,6 +22,7 @@ public class ClubGameService
 
     private final ClubGameDao clubGameDao;
 
+
     private final Map<ClubGameId, ClubGame> mapOfExistingClubGames = new HashMap<>();
 
     public ClubGameService(EntityManager em)
@@ -40,7 +41,6 @@ public class ClubGameService
         {
             return existing;
         }
-
 
         ClubGame clubGame = JpaEntityFactory.createClubGame(dto, isHome, club, game);
         clubGame.setClub(club);

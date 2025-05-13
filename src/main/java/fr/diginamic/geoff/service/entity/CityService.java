@@ -4,6 +4,7 @@ import fr.diginamic.geoff.dao.CityDao;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.City;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,14 +12,14 @@ import java.util.Map;
 public class CityService
 {
     private final CityDao cityDao;
-    private final JpaEntityFactory factory;
+
 
     private final Map<String, City> mapOfExistingCities = new HashMap<>();
 
-    public CityService(CityDao cityDao, JpaEntityFactory factory)
+
+    public CityService(EntityManager em)
     {
-        this.cityDao = cityDao;
-        this.factory = factory;
+        this.cityDao = new CityDao(em);
     }
 
     public City findOrCreateCity(PlayerDTO dto)
@@ -35,8 +36,10 @@ public class CityService
             return existing;
         }
 
-        City city = factory.createCity(dto);
         mapOfExistingCities.put(cityName, city);
+
+        City city = JpaEntityFactory.createCity(dto);
+
         cityDao.save(city);
         return city;
     }

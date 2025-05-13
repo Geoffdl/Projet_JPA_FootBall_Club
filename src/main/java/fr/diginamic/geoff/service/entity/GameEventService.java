@@ -13,7 +13,6 @@ import java.util.Map;
 public class GameEventService
 {
     private final GameEventDao gameEventDao;
-
     private final Map<String, GameEvent> mapOfExisting = new HashMap<>();
 
     public GameEventService(EntityManager em)

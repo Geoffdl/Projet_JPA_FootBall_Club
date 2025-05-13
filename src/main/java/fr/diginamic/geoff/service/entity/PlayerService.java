@@ -14,9 +14,7 @@ import java.util.Map;
 
 public class PlayerService
 {
-
     private final PlayerDao playerDao;
-
 
     private final Map<Long, Player> mapOfExistingPlayers = new HashMap<>();
 
@@ -28,17 +26,14 @@ public class PlayerService
     public Player findOrCreatePlayer(PlayerDTO dto)
     {
         Long sourceId = dto.getPlayerId();
-
         Player existing = mapOfExistingPlayers.get(sourceId);
         if (existing != null)
         {
             return existing;
         }
-
         Player player = JpaEntityFactory.createPlayer(dto);
         mapOfExistingPlayers.put(sourceId, player);
         playerDao.save(player);
-
         return player;
     }
 

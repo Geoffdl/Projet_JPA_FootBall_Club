@@ -13,6 +13,7 @@ import java.util.*;
 public class CompetitionService
 {
     private final CompetitionDao competitionDao;
+
     private final Map<String, Competition> mapOfExistingCompetitions = new HashMap<>();
     private final Map<String, List<Competition>> competitionsBydomesticId = new HashMap<>();
 
@@ -32,7 +33,9 @@ public class CompetitionService
         }
 
         Competition competition = JpaEntityFactory.createCompetition(dto);
+
         mapOfExistingCompetitions.put(competition.getSourceId(), competition);
+
         competitionDao.save(competition);
 
         return competition;

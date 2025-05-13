@@ -30,7 +30,6 @@ public class GameAppearanceService
         {
             return existing;
         }
-
         GameAppearance gameAppearance = JpaEntityFactory.createGameAppearance(dto, game, player);
         mapOfExisting.put(gameAppearance.getSourceId(), gameAppearance);
         return gameAppearance;

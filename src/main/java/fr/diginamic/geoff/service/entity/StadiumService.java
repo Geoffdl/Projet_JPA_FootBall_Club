@@ -13,7 +13,6 @@ import java.util.Map;
 public class StadiumService
 {
     private final StadiumDao stadiumDao;
-
     private final Map<String, Stadium> mapOfExistingStadiums = new HashMap<>();
 
     public StadiumService(EntityManager em)
@@ -31,6 +30,7 @@ public class StadiumService
         }
         Stadium stadium = JpaEntityFactory.createStadium(dto);
         mapOfExistingStadiums.put(sourceName, stadium);
+
         stadiumDao.save(stadium);
 
         return stadium;

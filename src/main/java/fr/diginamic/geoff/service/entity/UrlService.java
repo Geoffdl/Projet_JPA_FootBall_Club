@@ -15,7 +15,6 @@ import java.util.Map;
 public class UrlService
 {
     private final UrlDao urlDao;
-
     private final Map<String, Url> mapOfExistingPlayerUrl = new HashMap<>();
     private final Map<String, Url> mapOfExistingCompetitionUrls = new HashMap<>();
     private final Map<String, Url> mapOfExistingClubUrls = new HashMap<>();
@@ -23,7 +22,6 @@ public class UrlService
     public UrlService(EntityManager em)
     {
         this.urlDao = new UrlDao(em);
-
     }
 
     public Url findOrCreateUrl(PlayerDTO dto, boolean isImage)
@@ -55,13 +53,11 @@ public class UrlService
     public Url findOrCreateCompetitionUrl(CompetitionDTO dto)
     {
         String urlString = dto.getUrl();
-
         Url existing = mapOfExistingCompetitionUrls.get(urlString);
         if (existing != null)
         {
             return existing;
         }
-
         Url url = JpaEntityFactory.createUrlFromCompetition(dto);
         urlDao.save(url);
         mapOfExistingCompetitionUrls.put(urlString, url);

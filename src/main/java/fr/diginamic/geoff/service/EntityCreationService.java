@@ -54,6 +54,7 @@ public class EntityCreationService
         this.urlService = new UrlService(em);
         this.clubService = new ClubService(em);
         this.clubGameService = new ClubGameService(em);
+
         this.playerService = new PlayerService(em);
         this.competitionService = new CompetitionService(em);
         this.competitionRoundService = new CompetitionRoundService(em);
@@ -257,9 +258,11 @@ public class EntityCreationService
         {
             for (PlayerDTO dto : playerDTOList)
             {
+
                 Club club = clubService.findOrCreateClub(dto);
                 Country countryBirth = countryService.findOrCreateCountry(dto, true);
                 Country countryCitizenship = countryService.findOrCreateCountry(dto, false);
+
                 Url url = urlService.findOrCreateUrl(dto, false);
                 Url imgUrl = urlService.findOrCreateUrl(dto, true);
                 Player player = playerService.findOrCreatePlayer(dto);
@@ -340,18 +343,25 @@ public class EntityCreationService
     {
         LOGGER.info("Parsing competition.csv");
         this.competitionDTOList = dtoListCreator.createListOfCompetitionDTO("data/1.competitions.csv");
+
         LOGGER.info("Parsing club.csv");
         this.clubDTOList = dtoListCreator.createListOfClubDTO("data/2.clubs.csv");
+
         LOGGER.info("Parsing players.csv");
         this.playerDTOList = dtoListCreator.createListOfPlayerDTO("data/3.players.csv");
+
 //        LOGGER.info("Parsing player_valuations.csv");
 //        this.playerValuationList = dtoListCreator.createListOfPlayerValuation("data/4.player_valuations.csv");
+
         LOGGER.info("Parsing games.csv");
         this.gameDTOList = dtoListCreator.createListOfGameDTO("data/5.games.csv");
+
         LOGGER.info("Parsing game_events.csv");
         this.gameEventDTOList = dtoListCreator.createListOfGameEventDTO("data/6.game_events.csv");
+
         LOGGER.info("Parsing game_lineups.csv");
         this.gameLineupDTOList = dtoListCreator.createListOfGameLineupDTO("data/7.game_lineups.csv");
+
         LOGGER.info("Parsing appearances.csv");
         this.appearanceDTOList = dtoListCreator.createListOfAppearanceDTO("data/8.appearances.csv");
     }

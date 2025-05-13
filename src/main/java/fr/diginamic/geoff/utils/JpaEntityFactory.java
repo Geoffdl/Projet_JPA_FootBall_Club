@@ -56,7 +56,6 @@ public class JpaEntityFactory
         return club;
     }
 
-
     public static Game createGame(GameDTO dto)
     {
         Game game = new Game();

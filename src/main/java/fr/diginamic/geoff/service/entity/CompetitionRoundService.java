@@ -12,11 +12,13 @@ import java.util.Map;
 public class CompetitionRoundService
 {
     private final CompetitionRoundDao competitionRoundDao;
+
     private final Map<String, CompetitionRound> mapOfExistingRound = new HashMap<>();
 
     public CompetitionRoundService(EntityManager em)
     {
         this.competitionRoundDao = new CompetitionRoundDao(em);
+
     }
 
     public CompetitionRound findOrCreateCompetitionRound(GameDTO dto)
@@ -28,9 +30,9 @@ public class CompetitionRoundService
             return existing;
         }
 
-
         CompetitionRound competitionRound = JpaEntityFactory.createCompetitionRound(dto);
         mapOfExistingRound.put(competitionRound.getRound(), competitionRound);
+
         competitionRoundDao.save(competitionRound);
 
         return competitionRound;

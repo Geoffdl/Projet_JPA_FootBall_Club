@@ -16,13 +16,13 @@ import java.util.Objects;
 public class CountryService
 {
     private final CountryDao countryDao;
+
     private final Map<String, Country> mapOfExistingCountries = new HashMap<>();
     private final Map<String, Country> mapOfExistingCountriesByDomesticId = new HashMap<>();
 
     public CountryService(EntityManager em)
     {
         this.countryDao = new CountryDao(em);
-
     }
 
 
@@ -39,7 +39,6 @@ public class CountryService
             }
             return existing;
         }
-
         Country country = JpaEntityFactory.createCountryFromCompetition(dto);
         countryDao.save(country);
         mapOfExistingCountries.put(sourceName, country);
@@ -50,7 +49,6 @@ public class CountryService
     {
         String sourceId = dto.getDomesticCompetitionId();
         return mapOfExistingCountriesByDomesticId.get(sourceId);
-
     }
 
 
@@ -70,6 +68,7 @@ public class CountryService
             return existing;
         }
         Country country = JpaEntityFactory.createCountry(dto, isBirth);
+
         countryDao.save(country);
         mapOfExistingCountries.put(sourceName, country);
         return country;

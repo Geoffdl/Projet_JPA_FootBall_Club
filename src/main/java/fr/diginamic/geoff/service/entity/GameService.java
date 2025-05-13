@@ -15,7 +15,6 @@ import java.util.Map;
 public class GameService
 {
     private final GameDao gameDao;
-
     private final Map<Long, Game> mapOfExisting = new HashMap<>();
 
     public GameService(EntityManager em)
@@ -31,7 +30,6 @@ public class GameService
         {
             return existing;
         }
-
         Game game = JpaEntityFactory.createGame(dto);
         mapOfExisting.put(sourceId, game);
         gameDao.save(game);

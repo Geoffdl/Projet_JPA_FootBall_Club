@@ -50,8 +50,10 @@ public class ClubService
         Long sourceId;
         if (isHome)
         {
+
             sourceId = dto.getHomeClubId();
         } else
+
         {
             sourceId = dto.getAwayClubId();
         }
@@ -60,9 +62,9 @@ public class ClubService
         {
             return existing;
         }
-
         Club club = JpaEntityFactory.createClubFromGame(dto, isHome);
         mapOfExistingClubs.put(sourceId, club);
+
         clubDao.save(club);
         return club;
     }
