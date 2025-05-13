@@ -14,9 +14,11 @@ public class GameEvent
     @Column(name = "source_id", unique = true)
     private String sourceId;
 
+    @Column(name = "event_minute")
     private int eventMinute;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "event_type")
     private EventType eventType;
     private String description;
 

@@ -28,6 +28,7 @@ public class Competition
     private String competitionSubtype;
     @Column(name = "domestic_league_code")
     private String domesticLeagueCode;
+
     private String confederation;
 
 

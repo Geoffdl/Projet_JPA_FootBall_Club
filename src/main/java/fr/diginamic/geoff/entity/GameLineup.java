@@ -15,10 +15,13 @@ public class GameLineup
     @Column(name = "source_id", unique = true)
     private String sourceId;
 
+    @Column(name = "player_number")
     private int playerNumber;
+    @Column(name = "is_team_captain")
     private boolean isTeamCaptain;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "starting_lineup")
     private Lineup startingLineup;
     @Enumerated(EnumType.STRING)
     private Position position;

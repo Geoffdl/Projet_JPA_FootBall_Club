@@ -16,10 +16,12 @@ public class CompetitionRound
     private Long roundId;
 
     private Year season;
+
     private String round;
 
     @OneToMany(mappedBy = "round")
-    private Set<Game> games = new HashSet<>();;
+    private Set<Game> games = new HashSet<>();
+    ;
     @ManyToOne
     @JoinColumn(name = "competition_id", referencedColumnName = "competition_id")
     private Competition competition;

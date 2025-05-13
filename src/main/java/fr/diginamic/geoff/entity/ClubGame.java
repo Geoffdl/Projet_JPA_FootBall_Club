@@ -20,7 +20,9 @@ public class ClubGame
     @Column(name = "tactical_formation")
     private String tacticalFormation;
 
+    @Column(name = "source_club_id")
     private Long sourceClubId;
+    @Column(name = "source_game_id")
     private Long sourceGameId;
 
     @ManyToOne

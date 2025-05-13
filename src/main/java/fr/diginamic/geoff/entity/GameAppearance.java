@@ -13,10 +13,15 @@ public class GameAppearance
     @Column(name = "source_id", unique = true)
     private Long sourceId;
 
+    @Column(name = "yellow_cards")
     private Integer yellowCards;
+    @Column(name = "red_cards")
     private Integer redCards;
+    @Column(name = "goals")
     private Integer goals;
+    @Column(name = "assists")
     private Integer assists;
+    @Column(name = "minutes_played")
     private Integer minutesPlayed;
 
     @ManyToOne

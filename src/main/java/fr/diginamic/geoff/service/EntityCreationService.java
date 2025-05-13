@@ -85,11 +85,11 @@ public class EntityCreationService
         treatGameDTO();
         treatCompetitionDTO();
         treatClubDTO();
-//
-//        loadPlayersAndGames();
-//        treatGameLineup();
-//        treatAppearance();
-//        treatGameEvent();
+
+        loadPlayersAndGames();
+        treatGameLineup();
+        treatAppearance();
+        treatGameEvent();
     }
 
     /**

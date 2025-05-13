@@ -16,6 +16,7 @@ public class Url
     private String url;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "entity_type")
     private EntityType entityType;
 
     @OneToOne(mappedBy = "url")

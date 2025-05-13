@@ -27,7 +27,9 @@ public class Player
     private String playerCode;
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
+    @Column(name = "city_of_birth")
     private String cityOfBirth;
+    @Column(name = "agent_name")
     private String agentName;
     @Column(name = "height")
     private Integer height;

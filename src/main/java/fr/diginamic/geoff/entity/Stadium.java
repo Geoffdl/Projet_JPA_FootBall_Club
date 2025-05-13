@@ -16,6 +16,7 @@ public class Stadium
     @Column(unique = true)
     private String name;
 
+    @Column(name = "number_of_seats")
     private int seats;
 
     @OneToMany(mappedBy = "stadium")
