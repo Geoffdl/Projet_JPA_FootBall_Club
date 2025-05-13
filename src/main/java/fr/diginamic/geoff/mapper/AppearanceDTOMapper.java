@@ -17,7 +17,6 @@ public class AppearanceDTOMapper
 
     public GameAppearance mapToGameAppearance(GameAppearance gameAppearance, Game game, Player player)
     {
-
         //actual composite id
         GamePlayerId id = new GamePlayerId(game.getGameId(), player.getPlayerId());
         gameAppearance.setGameAppearanceId(id);

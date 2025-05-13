@@ -14,7 +14,10 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * This class orchestrates daos and mappers to generate entities and persist them in the database
+ * It implements a caching method using a sourceId from the data and an instance of the object, either created or fetched from the database if existing
+ */
 public class ClubGameService
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClubGameService.class);

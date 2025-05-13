@@ -1,7 +1,10 @@
 package fr.diginamic.geoff.mapper;
 
 import fr.diginamic.geoff.dto.PlayerDTO;
-import fr.diginamic.geoff.entity.*;
+import fr.diginamic.geoff.entity.Club;
+import fr.diginamic.geoff.entity.Country;
+import fr.diginamic.geoff.entity.Player;
+import fr.diginamic.geoff.entity.Url;
 
 /**
  *
@@ -30,19 +33,6 @@ public class PlayerDTOMapper
         player.setPositionFavored(playerDTO.getPosition());
         player.setContractExpirationDate(playerDTO.getContractExpirationDate());
         return player;
-    }
-
-    public Agent mapToAgent(Agent agent)
-    {
-
-        agent.setName(playerDTO.getAgentName());
-        return agent;
-    }
-
-    public City mapToCity(City city)
-    {
-        city.setName(playerDTO.getCityOfBirth());
-        return city;
     }
 
     public Url mapToUrl(Url url, boolean isImage)

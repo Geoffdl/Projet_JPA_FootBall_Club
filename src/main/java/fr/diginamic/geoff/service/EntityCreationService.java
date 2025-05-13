@@ -12,6 +12,11 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * This is the main orchestrator than handles service classes and data lists for persistence
+ * It process sequentially and parses through each csv one by one. Each lines are converted into DTOs, mapped to a JPA entity or fetched from the database and persisted.
+ * It handles a caching mechanism using hashmaps or sourceId and entities to check for existence before persisting
+ */
 public class EntityCreationService
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityCreationService.class);
@@ -42,6 +47,12 @@ public class EntityCreationService
     private List<GameLineupDTO> gameLineupDTOList;
     private List<AppearanceDTO> appearanceDTOList;
 
+    /**
+     * instance of all the sub services
+     *
+     * @param em             entity manager
+     * @param dtoListCreator helper to generate data lists
+     */
     public EntityCreationService(EntityManager em, DTOListCreator dtoListCreator)
     {
         this.em = em;
@@ -62,26 +73,28 @@ public class EntityCreationService
         this.playerValuationService = new PlayerValuationService(em);
     }
 
+    /**
+     * Calls all the private methods in sequence to persist the data. It is split into one operation per csv file
+     */
     public void createEntities()
     {
         // get data from dump
         initializeDtoLists();
-
-        //for testing purposes
-//        limitListSize();
-
         //creation sequence
         treatPlayerDTO();
         treatGameDTO();
         treatCompetitionDTO();
         treatClubDTO();
-
-        loadPlayersAndGames();
-        treatGameLineup();
-        treatAppearance();
-        treatGameEvent();
+//
+//        loadPlayersAndGames();
+//        treatGameLineup();
+//        treatAppearance();
+//        treatGameEvent();
     }
 
+    /**
+     * Calls caching for players and game to speed up appearance, lineup and game event insertions/verification
+     */
     private void loadPlayersAndGames()
     {
         LOGGER.info(".....\tcaching players and games");
@@ -89,6 +102,9 @@ public class EntityCreationService
         gameService.loadExistingGames();
     }
 
+    /**
+     * Handles all the verification/insertion for this dto
+     */
     private void treatAppearance()
     {
         LOGGER.info("----------------------- Starting persistence from AppearanceDTO -----------------------");
@@ -115,6 +131,9 @@ public class EntityCreationService
         gameAppearanceService.clear();
     }
 
+    /**
+     * Handles all the verification/insertion for this dto
+     */
     private void treatGameLineup()
     {
         LOGGER.info("----------------------- Starting persistence from GameLineupDTO -----------------------");
@@ -142,6 +161,9 @@ public class EntityCreationService
         gameLineUpService.clear();
     }
 
+    /**
+     * Handles all the verification/insertion for this dto
+     */
     private void treatGameEvent()
     {
         LOGGER.info("----------------------- Starting persistence from GameEventDTO -----------------------");
@@ -155,7 +177,6 @@ public class EntityCreationService
             {
                 Player playerMain = playerService.findForGameEvent(dto);
                 Game game = gameService.findForGameEvent(dto);
-
                 if (playerMain != null && game != null)
                 {
                     GameEvent gameEvent = gameEventService.findOrCreate(dto, playerService);
@@ -166,12 +187,15 @@ public class EntityCreationService
                 count.getAndIncrement();
             }
         }, em);
-        LOGGER.info("Finished persistence of {} gameLineUps", count);
+        LOGGER.info("Finished persistence of {} game events", count);
         LOGGER.info(".....\tclearing cache");
         gameEventService.clear();
         em.clear();
     }
 
+    /**
+     * Handles all the verification/insertion for this dto
+     */
     private void treatClubDTO()
     {
         LOGGER.info("----------------------- Starting persistence from ClubDTO -----------------------");
@@ -210,6 +234,9 @@ public class EntityCreationService
         em.clear();
     }
 
+    /**
+     * Handles all the verification/insertion for this dto
+     */
     private void treatCompetitionDTO()
     {
         LOGGER.info("----------------------- Starting persistence from CompetitionDTO -----------------------");
@@ -240,6 +267,9 @@ public class EntityCreationService
         em.clear();
     }
 
+    /**
+     * Handles all the verification/insertion for this dto
+     */
     private void treatPlayerDTO()
     {
         LOGGER.info("----------------------- Starting persistence from PlayerDTO -----------------------");
@@ -279,6 +309,9 @@ public class EntityCreationService
         urlService.clearCache();
     }
 
+    /**
+     * Handles all the verification/insertion for this dto
+     */
     private void treatGameDTO()
     {
         LOGGER.info("----------------------- Starting persistence from GameDTO -----------------------");
@@ -331,7 +364,7 @@ public class EntityCreationService
     }
 
     /**
-     *
+     * initialize all lists of DTOs from the csv files
      */
     private void initializeDtoLists()
     {
@@ -341,8 +374,8 @@ public class EntityCreationService
         this.clubDTOList = dtoListCreator.createListOfClubDTO("data/2.clubs.csv");
         LOGGER.info("Parsing players.csv");
         this.playerDTOList = dtoListCreator.createListOfPlayerDTO("data/3.players.csv");
-//        LOGGER.info("Parsing player_valuations.csv");
-//        this.playerValuationList = dtoListCreator.createListOfPlayerValuation("data/4.player_valuations.csv");
+        //LOGGER.info("Parsing player_valuations.csv");
+        //this.playerValuationList = dtoListCreator.createListOfPlayerValuation("data/4.player_valuations.csv");
         LOGGER.info("Parsing games.csv");
         this.gameDTOList = dtoListCreator.createListOfGameDTO("data/5.games.csv");
         LOGGER.info("Parsing game_events.csv");
@@ -354,7 +387,7 @@ public class EntityCreationService
     }
 
     /**
-     *
+     * Used during development to reduce the size of the lists
      */
     private void limitListSize()
     {
@@ -370,8 +403,10 @@ public class EntityCreationService
     }
 
     /**
-     * @param action
-     * @param em
+     * Implementation of the runnable interface to handle transactions
+     *
+     * @param action the main operations of finding element from base or creation and persistence
+     * @param em     entity manager
      */
     private void runInTransaction(Runnable action, EntityManager em)
     {
@@ -381,7 +416,7 @@ public class EntityCreationService
             if (!transaction.isActive()) transaction.begin();
             action.run();
             transaction.commit();
-            System.out.println("Transaction commited successfully");
+            LOGGER.info("Transaction commited successfully");
         } catch (Exception e)
         {
             if (transaction.isActive()) transaction.rollback();

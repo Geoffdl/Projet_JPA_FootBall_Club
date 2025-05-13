@@ -15,12 +15,21 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * reader for csv to data conversion
+ */
 public class CsvDataParser
 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CsvDataParser.class);
 
 
+    /**
+     * standard implementation, takes in a file absolute path and converts into list of lines
+     *
+     * @param fileUrl absolute path
+     * @return list of lines
+     */
     public static List<String> readFile(String fileUrl)
     {
         Path path = Paths.get(fileUrl);
@@ -35,6 +44,12 @@ public class CsvDataParser
         return List.of();
     }
 
+    /**
+     * secondary implementation using OpenCsv to help with data containing multiple split elements
+     *
+     * @param fileUrl absolute path
+     * @return list of lines
+     */
     public static List<String> readFileWithReader(String fileUrl)
     {
         List<String> lines = new ArrayList<>();

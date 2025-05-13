@@ -10,6 +10,10 @@ import jakarta.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class orchestrates Dao and mappers to generate entities and persist them in the database
+ * It implements a caching method using a sourceId from the data and an instance of the object, either created or fetched from the database if existing
+ */
 public class StadiumService
 {
     private final StadiumDao stadiumDao;
@@ -42,6 +46,7 @@ public class StadiumService
         Stadium existing = mapOfExistingStadiums.get(sourceName);
         if (existing != null)
         {
+            existing.setSeats(dto.getStadiumSeats());
             return existing;
         }
         Stadium stadium = JpaEntityFactory.createStadiumFromClub(dto);

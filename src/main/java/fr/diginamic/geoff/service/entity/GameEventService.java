@@ -10,6 +10,10 @@ import jakarta.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class orchestrates daos and mappers to generate entities and persist them in the database
+ * It implements a caching method using a sourceId from the data and an instance of the object, either created or fetched from the database if existing
+ */
 public class GameEventService
 {
     private final GameEventDao gameEventDao;
@@ -38,11 +42,11 @@ public class GameEventService
             Player playerIn = playerService.findSecondaryPlayerForGameEvent(playerInId);
             gameEvent.setPlayerIn(playerIn);
         }
-        Long playerAssist = dto.getPlayerAssistId();
-        if (playerAssist != null)
+        Long playerAssistId = dto.getPlayerAssistId();
+        if (playerAssistId != null)
         {
-            Player playerIn = playerService.findSecondaryPlayerForGameEvent(playerAssist);
-            gameEvent.setPlayerIn(playerIn);
+            Player playerAssist = playerService.findSecondaryPlayerForGameEvent(playerAssistId);
+            gameEvent.setPlayerAssist(playerAssist);
         }
 
         gameEventDao.save(gameEvent);

@@ -17,20 +17,6 @@ public class JpaEntityFactory
         return mapper.mapToPlayer(player);
     }
 
-    public static Agent createAgent(PlayerDTO playerDTO)
-    {
-        Agent agent = new Agent();
-        PlayerDTOMapper mapper = new PlayerDTOMapper(playerDTO);
-        return mapper.mapToAgent(agent);
-    }
-
-    public static City createCity(PlayerDTO playerDTO)
-    {
-        City city = new City();
-        PlayerDTOMapper mapper = new PlayerDTOMapper(playerDTO);
-        return mapper.mapToCity(city);
-    }
-
     public static Url createUrl(PlayerDTO playerDTO, boolean isImage)
     {
         Url url = new Url();
