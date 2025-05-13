@@ -44,7 +44,7 @@ public class Competition
     private Set<Club> clubs = new HashSet<>();
     ;
     @OneToMany(mappedBy = "competition")
-    private Set<CompetitionRound> rounds = new HashSet<>();
+    private Set<Game> games = new HashSet<>();
     ;
 
     public Competition()
@@ -262,23 +262,22 @@ public class Competition
     }
 
     /**
-     * Gets rounds for the class Competition
+     * Gets games for the class Competition
      *
-     * @return value of rounds
+     * @return value of games
      */
-    public Set<CompetitionRound> getRounds()
+    public Set<Game> getGames()
     {
-        return rounds;
+        return games;
     }
 
     /**
-     * Sets rounds for the class Competition.
+     * Sets games for the class Competition.
      *
-     * @param rounds value of rounds
+     * @param games value of games
      */
-    public void setRounds(Set<CompetitionRound> rounds)
+    public void setGames(Set<Game> games)
     {
-        this.rounds = rounds;
+        this.games = games;
     }
-
 }

@@ -30,7 +30,7 @@ public class EntityCreationService
     private final ClubService clubService;
     private final ClubGameService clubGameService;
     private final CompetitionService competitionService;
-    private final CompetitionRoundService competitionRoundService;
+    //    private final CompetitionRoundService competitionRoundService;
     private final GameService gameService;
     private final GameAppearanceService gameAppearanceService;
     private final GameEventService gameEventService;
@@ -64,7 +64,7 @@ public class EntityCreationService
         this.clubGameService = new ClubGameService(em);
         this.playerService = new PlayerService(em);
         this.competitionService = new CompetitionService(em);
-        this.competitionRoundService = new CompetitionRoundService(em);
+//        this.competitionRoundService = new CompetitionRoundService(em);
         this.gameService = new GameService(em);
         this.gameAppearanceService = new GameAppearanceService(em);
         this.gameLineUpService = new GameLineupService(em);
@@ -320,7 +320,7 @@ public class EntityCreationService
         clubService.loadExistingClubs();
         stadiumService.loadExistingStadiums();
         competitionService.loadExistingCompetitions();
-        competitionRoundService.loadExistingCompetitionrounds();
+//        competitionRoundService.loadExistingCompetitionrounds();
         clubGameService.loadExistingClubGames();
         LOGGER.info(".....\tinserting");
         AtomicInteger count = new AtomicInteger();
@@ -330,15 +330,16 @@ public class EntityCreationService
             {
                 Game game = gameService.findOrCreateGame(dto);
                 Stadium stadium = stadiumService.findOrCreateStadium(dto);
-                CompetitionRound round = competitionRoundService.findOrCreateCompetitionRound(dto);
+//                CompetitionRound round = competitionRoundService.findOrCreateCompetitionRound(dto);
                 Competition competition = competitionService.findOrCreateCompetition(dto);
                 Club clubHome = clubService.findOrCreateClubFromGame(dto, true);
                 Club clubAway = clubService.findOrCreateClubFromGame(dto, false);
                 game.setStadium(stadium);
-                game.setRound(round);
-                competition.getRounds().add(round);
+                game.setCompetition(competition);
+//                game.setRound(round);
+//                competition.getRounds().add(round);
                 em.persist(competition);
-                round.setCompetition(competition);
+//                round.setCompetition(competition);
                 em.persist(game);
                 em.persist(clubAway);
                 em.persist(clubHome);
@@ -354,7 +355,7 @@ public class EntityCreationService
         }, em);
         LOGGER.info("Finished persistence of {} gameDTO lines", count);
         LOGGER.info(".....\tclearing cache");
-        competitionRoundService.clearCache();
+//        competitionRoundService.clearCache();
         stadiumService.clearCache();
         competitionService.clearCache();
         clubService.clearCache();

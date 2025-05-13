@@ -3,6 +3,7 @@ package fr.diginamic.geoff.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,6 +29,10 @@ public class Game
     @Column(name = "away_team_score")
     private Integer awayTeamScore;
 
+    @Column(name = "round")
+    private String round;
+    @Column(name = "season")
+    private Year season;
     @OneToMany(mappedBy = "game")
     private Set<ClubGame> clubGames = new HashSet<>();
 
@@ -36,14 +41,16 @@ public class Game
     @JoinColumn(name = "stadium_id", referencedColumnName = "stadium_id")
     private Stadium stadium;
     @ManyToOne
-    @JoinColumn(name = "round_id", referencedColumnName = "round_id")
-    private CompetitionRound round;
+    @JoinColumn(name = "competition_id", referencedColumnName = "competition_id")
+    private Competition competition;
 
 
     @OneToMany(mappedBy = "game")
-    private Set<GameEvent> gameEvents = new HashSet<>();;
+    private Set<GameEvent> gameEvents = new HashSet<>();
+    ;
     @OneToMany(mappedBy = "game")
-    private Set<GameAppearance> gameAppearances = new HashSet<>();;
+    private Set<GameAppearance> gameAppearances = new HashSet<>();
+    ;
     @OneToMany(mappedBy = "game")
     private Set<GameLineup> gameLineups = new HashSet<>();
 
@@ -212,23 +219,63 @@ public class Game
     }
 
     /**
-     * Gets round for the class Game
+     * Gets roud for the class Game
      *
-     * @return value of round
+     * @return value of roud
      */
-    public CompetitionRound getRound()
+    public String getRound()
     {
         return round;
     }
 
     /**
-     * Sets round for the class Game.
+     * Sets roud for the class Game.
      *
-     * @param round value of round
+     * @param roud value of roud
      */
-    public void setRound(CompetitionRound round)
+    public void setRound(String roud)
     {
-        this.round = round;
+        this.round = roud;
+    }
+
+    /**
+     * Gets season for the class Game
+     *
+     * @return value of season
+     */
+    public Year getSeason()
+    {
+        return season;
+    }
+
+    /**
+     * Sets season for the class Game.
+     *
+     * @param season value of season
+     */
+    public void setSeason(Year season)
+    {
+        this.season = season;
+    }
+
+    /**
+     * Gets competition for the class Game
+     *
+     * @return value of competition
+     */
+    public Competition getCompetition()
+    {
+        return competition;
+    }
+
+    /**
+     * Sets competition for the class Game.
+     *
+     * @param competition value of competition
+     */
+    public void setCompetition(Competition competition)
+    {
+        this.competition = competition;
     }
 
     /**

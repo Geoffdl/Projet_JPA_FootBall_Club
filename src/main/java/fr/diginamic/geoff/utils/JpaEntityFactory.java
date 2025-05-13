@@ -68,12 +68,12 @@ public class JpaEntityFactory
         return mapper.mapToStadium(stadium);
     }
 
-    public static CompetitionRound createCompetitionRound(GameDTO dto)
-    {
-        CompetitionRound competitionRound = new CompetitionRound();
-        GameDTOMapper mapper = new GameDTOMapper(dto);
-        return mapper.mapToCompetitionRound(competitionRound);
-    }
+//    public static CompetitionRound createCompetitionRound(GameDTO dto)
+//    {
+//        CompetitionRound competitionRound = new CompetitionRound();
+//        GameDTOMapper mapper = new GameDTOMapper(dto);
+//        return mapper.mapToCompetitionRound(competitionRound);
+//    }
 
     public static Competition createCompetition(GameDTO dto)
     {

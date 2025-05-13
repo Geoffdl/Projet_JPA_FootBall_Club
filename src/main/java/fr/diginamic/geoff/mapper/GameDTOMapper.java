@@ -21,6 +21,8 @@ public class GameDTOMapper
     {
         game.setSourceId(dto.getGameId());
         game.setGameDate(dto.getDate());
+        game.setRound(dto.getRound());
+        game.setSeason(dto.getSeason());
         game.setAttendanceCount(dto.getAttendance());
         game.setRefereeName(dto.getRefereeName());
         game.setHomeTeamScore(dto.getHomeClubGoals());
@@ -67,12 +69,12 @@ public class GameDTOMapper
         return stadium;
     }
 
-    public CompetitionRound mapToCompetitionRound(CompetitionRound round)
-    {
-        round.setRound(dto.getRound());
-        round.setSeason(dto.getSeason());
-        return round;
-    }
+//    public CompetitionRound mapToCompetitionRound(CompetitionRound round)
+//    {
+//        round.setRound(dto.getRound());
+//        round.setSeason(dto.getSeason());
+//        return round;
+//    }
 
     public Competition mapToCompetition(Competition competition)
     {

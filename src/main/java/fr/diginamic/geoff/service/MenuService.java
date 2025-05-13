@@ -1,16 +1,19 @@
 package fr.diginamic.geoff.service;
 
 import fr.diginamic.geoff.utils.InputHelper;
+import jakarta.persistence.EntityManager;
 
 import java.util.Scanner;
 
 public class MenuService
 {
-    Scanner sc;
+    private final Scanner sc;
+    private final EntityManager em;
 
-    public MenuService()
+    public MenuService(EntityManager em, Scanner sc)
     {
-        this.sc = new Scanner(System.in);
+        this.sc = sc;
+        this.em = em;
     }
 
     public void start()
@@ -23,7 +26,7 @@ public class MenuService
             switch (choice)
             {
                 case 1:
-                    EntityCreationServiceInitializer dataPersister = new EntityCreationServiceInitializer();
+                    EntityCreationServiceInitializer dataPersister = new EntityCreationServiceInitializer(em);
                     dataPersister.initiatePersistence();
                     break;
                 case 2:
@@ -40,7 +43,7 @@ public class MenuService
 
     private void openQueryMenu()
     {
-        QueryService queryService = new QueryService(sc);
+        QueryService queryService = new QueryService(em, sc);
         while (true)
         {
             displayOptions();

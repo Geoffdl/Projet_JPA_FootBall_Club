@@ -8,13 +8,14 @@ public class InputHelper
     {
         while (true)
         {
-            sc.nextLine();
             try
             {
-                return sc.nextInt();
+                String line = sc.nextLine();
+                return Deserializer.stringToInt(line);
             } catch (Exception e)
             {
                 System.out.println("input a valid number");
+                sc.nextLine();
             }
         }
     }
