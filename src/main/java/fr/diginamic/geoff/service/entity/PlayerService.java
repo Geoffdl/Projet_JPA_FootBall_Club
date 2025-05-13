@@ -7,62 +7,73 @@ import fr.diginamic.geoff.dto.GameLineupDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Player;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlayerService
 {
+
     private final PlayerDao playerDao;
-    private final JpaEntityFactory factory;
 
 
-    public PlayerService(PlayerDao playerDao, JpaEntityFactory factory)
+    private final Map<Long, Player> mapOfExistingPlayers = new HashMap<>();
+
+    public PlayerService(EntityManager em)
     {
-        this.playerDao = playerDao;
-        this.factory = factory;
+        this.playerDao = new PlayerDao(em);
     }
 
-
-    /**
-     * @param dto
-     * @return
-     */
     public Player findOrCreatePlayer(PlayerDTO dto)
     {
-        Optional<Player> playerOptional = playerDao.findBySourceId(dto.getPlayerId());
+        Long sourceId = dto.getPlayerId();
 
-        if (playerOptional.isPresent())
+        Player existing = mapOfExistingPlayers.get(sourceId);
+        if (existing != null)
         {
-            return playerOptional.get();
+            return existing;
         }
 
-        Player player = factory.createPlayer(dto);
+        Player player = JpaEntityFactory.createPlayer(dto);
+        mapOfExistingPlayers.put(sourceId, player);
         playerDao.save(player);
 
         return player;
     }
 
+    public void loadExistingPlayers()
+    {
+        for (Player player : playerDao.findAll())
+        {
+            mapOfExistingPlayers.put(player.getSourceId(), player);
+        }
+    }
+
     public Player findForGameEvent(GameEventDTO dto)
     {
-        Optional<Player> playerOptional = playerDao.findBySourceId(dto.getPlayerId());
-        return playerOptional.orElse(null);
+        return mapOfExistingPlayers.get(dto.getPlayerId());
     }
 
     public Player findSecondaryPlayerForGameEvent(Long sourceId)
     {
-        Optional<Player> playerOptional = playerDao.findBySourceId(sourceId);
-        return playerOptional.orElse(null);
+        return mapOfExistingPlayers.get(sourceId);
     }
 
     public Player findForGameLineup(GameLineupDTO dto)
     {
-        Optional<Player> playerOptional = playerDao.findBySourceId(dto.getPlayerId());
-        return playerOptional.orElse(null);
+        Long sourceId = dto.getPlayerId();
+        return mapOfExistingPlayers.get(sourceId);
     }
 
     public Player findForAppearance(AppearanceDTO dto)
     {
-        Optional<Player> playerOptional = playerDao.findBySourceId(dto.getPlayerId());
-        return playerOptional.orElse(null);
+        Long sourceId = dto.getPlayerId();
+        return mapOfExistingPlayers.get(sourceId);
+    }
+
+    public void clearCache()
+    {
+        mapOfExistingPlayers.clear();
     }
 }

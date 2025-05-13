@@ -36,4 +36,10 @@ public class CompetitionRoundDao
         }
         return Optional.empty();
     }
+
+    public List<CompetitionRound> findAll()
+    {
+        TypedQuery<CompetitionRound> query = em.createQuery("SELECT cr FROM CompetitionRound  cr", CompetitionRound.class);
+        return query.getResultList();
+    }
 }

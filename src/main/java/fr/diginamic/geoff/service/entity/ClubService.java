@@ -6,79 +6,93 @@ import fr.diginamic.geoff.dto.GameDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Club;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class ClubService
 {
+    private final Map<Long, Club> mapOfExistingClubs = new HashMap<>();
     private final ClubDao clubDao;
-    private final JpaEntityFactory factory;
 
-    public ClubService(ClubDao clubDao, JpaEntityFactory factory)
+    public ClubService(EntityManager em)
     {
-        this.clubDao = clubDao;
-        this.factory = factory;
+        this.clubDao = new ClubDao(em);
+    }
+
+    public void loadExistingClubs()
+    {
+        for (Club club : clubDao.findAll())
+        {
+            mapOfExistingClubs.put(club.getSourceId(), club);
+        }
     }
 
     public Club findOrCreateClub(PlayerDTO dto)
     {
-        if (dto.getCurrentClubId() == null)
+        Long sourceId = dto.getCurrentClubId();
+        Club existing = mapOfExistingClubs.get(sourceId);
+        if (existing != null)
         {
-            return null;
+            return existing;
         }
-        Optional<Club> clubOptional = clubDao.findBySourceId(dto.getCurrentClubId());
-        if (clubOptional.isPresent())
-        {
-            return clubOptional.get();
-        }
-        Club club = factory.createClub(dto);
+
+        Club club = JpaEntityFactory.createClub(dto);
         clubDao.save(club);
+        mapOfExistingClubs.put(sourceId, club);
         return club;
     }
 
-    public Club findOrCreateClubFromHomeGame(GameDTO dto, boolean isHome)
+    public Club findOrCreateClubFromGame(GameDTO dto, boolean isHome)
     {
+        Long sourceId;
         if (isHome)
         {
-            if (dto.getHomeClubId() == null)
-            {
-                return null;
-            }
-            Optional<Club> clubOptional = clubDao.findBySourceId(dto.getHomeClubId());
-            if (clubOptional.isPresent())
-            {
-                return clubOptional.get();
-            }
-            Club club = factory.createClubFromGame(dto, isHome);
-            clubDao.save(club);
-            return club;
-        }
-        if (dto.getAwayClubId() == null)
+            sourceId = dto.getHomeClubId();
+        } else
         {
-            return null;
+            sourceId = dto.getAwayClubId();
         }
-        Optional<Club> clubOptional = clubDao.findBySourceId(dto.getAwayClubId());
-        if (clubOptional.isPresent())
+        Club existing = mapOfExistingClubs.get(sourceId);
+        if (existing != null)
         {
-            return clubOptional.get();
+            return existing;
         }
-        Club club = factory.createClubFromGame(dto, isHome);
+
+        Club club = JpaEntityFactory.createClubFromGame(dto, isHome);
+        mapOfExistingClubs.put(sourceId, club);
         clubDao.save(club);
         return club;
     }
 
     public Club findOrCreateClubFromClubDTO(ClubDTO dto)
     {
-        Optional<Club> clubOptional = clubDao.findBySourceId(dto.getClubId());
-        if (clubOptional.isPresent())
+        Long sourceId = dto.getClubId();
+        Club existing = mapOfExistingClubs.get(sourceId);
+        if (existing != null)
         {
-            clubOptional.get().setClubCode(dto.getClubCode());
-            clubOptional.get().setTransferRecord(dto.getNetTransferRecord());
-            clubDao.save(clubOptional.get());
-            return clubOptional.get();
+            if (!Objects.equals(existing.getClubCode(), dto.getClubCode()))
+            {
+                existing.setClubCode(dto.getClubCode());
+            }
+            if (existing.getTransferRecord() != dto.getNetTransferRecord())
+            {
+                existing.setTransferRecord(dto.getNetTransferRecord());
+            }
+            return existing;
         }
-        Club club = factory.createClubFromClub(dto);
+
+        Club club = JpaEntityFactory.createClubFromClub(dto);
         clubDao.save(club);
+        mapOfExistingClubs.put(sourceId, club);
         return club;
+    }
+
+
+    public void clearCache()
+    {
+        mapOfExistingClubs.clear();
     }
 }

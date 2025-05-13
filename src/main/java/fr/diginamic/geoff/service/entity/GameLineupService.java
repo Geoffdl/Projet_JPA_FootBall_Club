@@ -6,30 +6,47 @@ import fr.diginamic.geoff.entity.Game;
 import fr.diginamic.geoff.entity.GameLineup;
 import fr.diginamic.geoff.entity.Player;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameLineupService
 {
 
     private final GameLineupDao gameLineupDao;
-    private final JpaEntityFactory factory;
 
-    public GameLineupService(GameLineupDao gameLineupDao, JpaEntityFactory factory)
+    private final Map<String, GameLineup> mapOfExisting = new HashMap<>();
+
+    public GameLineupService(EntityManager em)
     {
-        this.gameLineupDao = gameLineupDao;
-        this.factory = factory;
+        this.gameLineupDao = new GameLineupDao(em);
     }
 
     public GameLineup findOrCreate(GameLineupDTO dto, Game game, Player player)
     {
-
-        Optional<GameLineup> gameLineupOptional = gameLineupDao.findBySourceId(dto.getGameLineUpsId());
-        if (gameLineupOptional.isPresent())
+        String sourceId = dto.getGameLineUpsId();
+        GameLineup existing = mapOfExisting.get(sourceId);
+        if (existing != null)
         {
-            return gameLineupOptional.get();
+            return existing;
         }
-        GameLineup gameLineup = factory.createGameLineup(dto, game, player);
+
+        GameLineup gameLineup = JpaEntityFactory.createGameLineup(dto, game, player);
+        mapOfExisting.put(gameLineup.getSourceId(), gameLineup);
         return gameLineup;
+    }
+
+    public void loadExisting()
+    {
+        for (GameLineup gameLineup : gameLineupDao.findAll())
+        {
+            mapOfExisting.put(gameLineup.getSourceId(), gameLineup);
+        }
+    }
+
+    public void clear()
+    {
+        mapOfExisting.clear();
     }
 }

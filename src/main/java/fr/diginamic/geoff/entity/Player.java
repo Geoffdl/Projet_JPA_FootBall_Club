@@ -27,6 +27,8 @@ public class Player
     private String playerCode;
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
+    private String cityOfBirth;
+    private String agentName;
     @Column(name = "height")
     private Integer height;
     @Column(name = "shooting_foot")
@@ -39,9 +41,9 @@ public class Player
     @ManyToOne
     @JoinColumn(name = "club_id", referencedColumnName = "club_id")
     private Club currentClub;
-    @ManyToOne
-    @JoinColumn(name = "city_id", referencedColumnName = "city_id")
-    private City cityOfBirth;
+    //    @ManyToOne
+//    @JoinColumn(name = "city_id", referencedColumnName = "city_id")
+//    private City cityOfBirth;
     @ManyToOne
     @JoinColumn(name = "country_citizenship_id", referencedColumnName = "country_id")
     private Country countryOfCitizenship;
@@ -54,9 +56,9 @@ public class Player
     @OneToOne
     @JoinColumn(name = "url_id", referencedColumnName = "url_id")
     private Url dataUrl;
-    @ManyToOne
-    @JoinColumn(name = "agent_id", referencedColumnName = "agent_id")
-    private Agent agent;
+//    @ManyToOne
+//    @JoinColumn(name = "agent_id", referencedColumnName = "agent_id")
+//    private Agent agent;
 
     @OneToMany(mappedBy = "playerMain")
     private Set<GameEvent> gameEventsMain = new HashSet<>();
@@ -286,25 +288,25 @@ public class Player
         this.currentClub = currentClub;
     }
 
-    /**
-     * Gets cityOfBirth for the class Player
-     *
-     * @return value of cityOfBirth
-     */
-    public City getCityOfBirth()
-    {
-        return cityOfBirth;
-    }
-
-    /**
-     * Sets cityOfBirth for the class Player.
-     *
-     * @param cityOfBirth value of cityOfBirth
-     */
-    public void setCityOfBirth(City cityOfBirth)
-    {
-        this.cityOfBirth = cityOfBirth;
-    }
+//    /**
+//     * Gets cityOfBirth for the class Player
+//     *
+//     * @return value of cityOfBirth
+//     */
+//    public City getCityOfBirth()
+//    {
+//        return cityOfBirth;
+//    }
+//
+//    /**
+//     * Sets cityOfBirth for the class Player.
+//     *
+//     * @param cityOfBirth value of cityOfBirth
+//     */
+//    public void setCityOfBirth(City cityOfBirth)
+//    {
+//        this.cityOfBirth = cityOfBirth;
+//    }
 
     /**
      * Gets countryOfCitizenship for the class Player
@@ -385,26 +387,26 @@ public class Player
     {
         this.dataUrl = dataUrl;
     }
-
-    /**
-     * Gets agent for the class Player
-     *
-     * @return value of agent
-     */
-    public Agent getAgent()
-    {
-        return agent;
-    }
-
-    /**
-     * Sets agent for the class Player.
-     *
-     * @param agent value of agent
-     */
-    public void setAgent(Agent agent)
-    {
-        this.agent = agent;
-    }
+//
+//    /**
+//     * Gets agent for the class Player
+//     *
+//     * @return value of agent
+//     */
+//    public Agent getAgent()
+//    {
+//        return agent;
+//    }
+//
+//    /**
+//     * Sets agent for the class Player.
+//     *
+//     * @param agent value of agent
+//     */
+//    public void setAgent(Agent agent)
+//    {
+//        this.agent = agent;
+//    }
 
     /**
      * Gets gameEventsMain for the class Player
@@ -526,34 +528,43 @@ public class Player
         this.gameLineups = gameLineups;
     }
 
-    @Override
-    public String toString()
+    /**
+     * Gets cityOfBirth for the class Player
+     *
+     * @return value of cityOfBirth
+     */
+    public String getCityOfBirth()
     {
-        final StringBuilder sb = new StringBuilder("Player{");
-        sb.append("playerId=").append(playerId);
-        sb.append(", sourceId=").append(sourceId);
-        sb.append(", firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", playerCode='").append(playerCode).append('\'');
-        sb.append(", dateOfBirth=").append(dateOfBirth);
-        sb.append(", height=").append(height);
-        sb.append(", shooting_foot='").append(shootingFoot).append('\'');
-        sb.append(", positionFavored='").append(positionFavored).append('\'');
-        sb.append(", contractExpirationDate=").append(contractExpirationDate);
-        sb.append(", currentClub=").append(currentClub);
-        sb.append(", cityOfBirth=").append(cityOfBirth);
-        sb.append(", countryOfCitizenship=").append(countryOfCitizenship);
-        sb.append(", countryOfBirth=").append(countryOfBirth);
-        sb.append(", pictureUrl=").append(pictureUrl);
-        sb.append(", dataUrl=").append(dataUrl);
-        sb.append(", agent=").append(agent);
-        sb.append(", gameEventsMain=").append(gameEventsMain);
-        sb.append(", gameEventsIn=").append(gameEventsIn);
-        sb.append(", gameEventsAssist=").append(gameEventsAssist);
-        sb.append(", appearances=").append(appearances);
-        sb.append(", valuations=").append(valuations);
-        sb.append(", gameLineups=").append(gameLineups);
-        sb.append('}');
-        return sb.toString();
+        return cityOfBirth;
+    }
+
+    /**
+     * Sets cityOfBirth for the class Player.
+     *
+     * @param cityOfBirth value of cityOfBirth
+     */
+    public void setCityOfBirth(String cityOfBirth)
+    {
+        this.cityOfBirth = cityOfBirth;
+    }
+
+    /**
+     * Gets agentName for the class Player
+     *
+     * @return value of agentName
+     */
+    public String getAgentName()
+    {
+        return agentName;
+    }
+
+    /**
+     * Sets agentName for the class Player.
+     *
+     * @param agentName value of agentName
+     */
+    public void setAgentName(String agentName)
+    {
+        this.agentName = agentName;
     }
 }

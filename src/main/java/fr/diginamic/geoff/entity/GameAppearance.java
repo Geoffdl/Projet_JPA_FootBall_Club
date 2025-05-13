@@ -20,11 +20,11 @@ public class GameAppearance
     private Integer minutesPlayed;
 
     @ManyToOne
-    @MapsId("gameId")
-    private Game game;
-    @ManyToOne
     @MapsId("playerId")
     private Player player;
+    @ManyToOne
+    @MapsId("gameId")
+    private Game game;
 
     public GameAppearance()
     {

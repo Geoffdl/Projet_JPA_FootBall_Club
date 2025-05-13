@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ClubGameDao
@@ -37,4 +38,9 @@ public class ClubGameDao
         }
     }
 
+    public List<ClubGame> findAll()
+    {
+        TypedQuery<ClubGame> query = em.createQuery("SELECT cg FROM ClubGame cg", ClubGame.class);
+        return query.getResultList();
+    }
 }

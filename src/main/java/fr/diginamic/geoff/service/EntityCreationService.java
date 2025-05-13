@@ -1,17 +1,16 @@
 package fr.diginamic.geoff.service;
 
-import fr.diginamic.geoff.dao.*;
 import fr.diginamic.geoff.dto.*;
 import fr.diginamic.geoff.entity.*;
 import fr.diginamic.geoff.service.entity.*;
 import fr.diginamic.geoff.utils.DTOListCreator;
-import fr.diginamic.geoff.utils.JpaEntityFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class EntityCreationService
 {
@@ -22,9 +21,7 @@ public class EntityCreationService
     // data initializer
     private final DTOListCreator dtoListCreator;
     //services
-    private final AgentService agentService;
     private final PlayerService playerService;
-    private final CityService cityService;
     private final CountryService countryService;
     private final UrlService urlService;
     private final ClubService clubService;
@@ -52,38 +49,20 @@ public class EntityCreationService
     {
         this.em = em;
         this.dtoListCreator = dtoListCreator;
-        AgentDao agentDao = new AgentDao(em);
-        PlayerDao playerDao = new PlayerDao(em);
-        CityDao cityDao = new CityDao(em);
-        CountryDao countryDao = new CountryDao(em);
-        UrlDao urlDao = new UrlDao(em);
-        ClubDao clubDao = new ClubDao(em);
-        ClubGameDao clubGameDao = new ClubGameDao(em);
-        CompetitionDao competitionDao = new CompetitionDao(em);
-        CompetitionRoundDao competitionRoundDao = new CompetitionRoundDao(em);
-        GameDao gameDao = new GameDao(em);
-        GameAppearanceDao gameAppearanceDao = new GameAppearanceDao(em);
-        GameEventDao gameEventDao = new GameEventDao(em);
-        GameLineupDao gameLineupDao = new GameLineupDao(em);
-        StadiumDao stadiumDao = new StadiumDao(em);
-        PlayerValuationDao playerValuationDao = new PlayerValuationDao(em);
 
-        JpaEntityFactory factory = new JpaEntityFactory();
-        this.cityService = new CityService(cityDao, factory);
-        this.countryService = new CountryService(countryDao, factory);
-        this.urlService = new UrlService(urlDao, factory);
-        this.clubService = new ClubService(clubDao, factory);
-        this.clubGameService = new ClubGameService(clubGameDao, factory);
-        this.agentService = new AgentService(agentDao, factory);
-        this.playerService = new PlayerService(playerDao, factory);
-        this.competitionService = new CompetitionService(competitionDao, factory);
-        this.competitionRoundService = new CompetitionRoundService(competitionRoundDao, factory);
-        this.gameService = new GameService(gameDao, factory);
-        this.gameAppearanceService = new GameAppearanceService(gameAppearanceDao, factory);
-        this.gameLineUpService = new GameLineupService(gameLineupDao, factory);
-        this.gameEventService = new GameEventService(gameEventDao, factory);
-        this.stadiumService = new StadiumService(stadiumDao, factory);
-        this.playerValuationService = new PlayerValuationService(playerValuationDao, factory);
+        this.countryService = new CountryService(em);
+        this.urlService = new UrlService(em);
+        this.clubService = new ClubService(em);
+        this.clubGameService = new ClubGameService(em);
+        this.playerService = new PlayerService(em);
+        this.competitionService = new CompetitionService(em);
+        this.competitionRoundService = new CompetitionRoundService(em);
+        this.gameService = new GameService(em);
+        this.gameAppearanceService = new GameAppearanceService(em);
+        this.gameLineUpService = new GameLineupService(em);
+        this.gameEventService = new GameEventService(em);
+        this.stadiumService = new StadiumService(em);
+        this.playerValuationService = new PlayerValuationService(em);
     }
 
     public void createEntities()
@@ -94,44 +73,63 @@ public class EntityCreationService
         //for testing purposes
 //        limitListSize();
 
-        //creating sequence
+        //creation sequence
         treatPlayerDTO();
         treatGameDTO();
         treatCompetitionDTO();
         treatClubDTO();
+
+        loadPlayersAndGames();
         treatGameLineup();
         treatAppearance();
         treatGameEvent();
+    }
 
+    private void loadPlayersAndGames()
+    {
+        LOGGER.info(".....\tcaching players and games");
+        playerService.loadExistingPlayers();
+        gameService.loadExistingGames();
     }
 
     private void treatAppearance()
     {
-        LOGGER.info("Starting persistence from AppearanceDTO");
-        for (AppearanceDTO dto : appearanceDTOList)
+        LOGGER.info("----------------------- Starting persistence from AppearanceDTO -----------------------");
+        LOGGER.info(".....\tcaching existing data");
+        gameAppearanceService.loadExisting();
+        LOGGER.info(".....\tinserting");
+        AtomicInteger count = new AtomicInteger();
+        runInTransaction(() ->
         {
-            runInTransaction(() ->
+            for (AppearanceDTO dto : appearanceDTOList)
             {
                 Player player = playerService.findForAppearance(dto);
                 Game game = gameService.findForAppearance(dto);
                 if (player != null && game != null)
                 {
                     GameAppearance gameAppearance = gameAppearanceService.findOrCreate(dto, game, player);
-
                     em.persist(gameAppearance);
+                    count.getAndIncrement();
                 }
-            }, em);
-        }
+            }
+        }, em);
+        LOGGER.info("Finished persistence of {} gameAppearances", count);
+        LOGGER.info(".....\tclearing cache");
+        gameAppearanceService.clear();
     }
 
     private void treatGameLineup()
     {
-        LOGGER.info("Starting persistence from GameLineupDTO");
-        for (GameLineupDTO dto : gameLineupDTOList)
-        {
-            runInTransaction(() ->
-            {
+        LOGGER.info("----------------------- Starting persistence from GameLineupDTO -----------------------");
+        LOGGER.info(".....\tcaching existing data");
 
+        gameLineUpService.loadExisting();
+        LOGGER.info(".....\tinserting");
+        AtomicInteger count = new AtomicInteger();
+        runInTransaction(() ->
+        {
+            for (GameLineupDTO dto : gameLineupDTOList)
+            {
                 Player player = playerService.findForGameLineup(dto);
                 Game game = gameService.findForGameLineup(dto);
                 if (player != null && game != null)
@@ -139,59 +137,67 @@ public class EntityCreationService
                     GameLineup gameLineup = gameLineUpService.findOrCreate(dto, game, player);
                     em.persist(gameLineup);
                 }
-
-
-            }, em);
-            em.clear();
-        }
-
-
+                count.getAndIncrement();
+            }
+        }, em);
+        LOGGER.info("Finished persistence of {} gameLineUps", count);
+        LOGGER.info(".....\tclearing cache");
+        gameLineUpService.clear();
     }
 
     private void treatGameEvent()
     {
-        LOGGER.info("Starting persistence from GameEventDTO");
-        for (GameEventDTO dto : gameEventDTOList)
+        LOGGER.info("----------------------- Starting persistence from GameEventDTO -----------------------");
+        LOGGER.info(".....\tcaching existing data");
+        gameEventService.loadExisting();
+        LOGGER.info(".....\tinserting");
+        AtomicInteger count = new AtomicInteger();
+        runInTransaction(() ->
         {
-            runInTransaction(() ->
+            for (GameEventDTO dto : gameEventDTOList)
             {
                 Player playerMain = playerService.findForGameEvent(dto);
                 Game game = gameService.findForGameEvent(dto);
 
                 if (playerMain != null && game != null)
                 {
-
                     GameEvent gameEvent = gameEventService.findOrCreate(dto, playerService);
                     gameEvent.setGame(game);
                     gameEvent.setPlayerMain(playerMain);
                     em.persist(gameEvent);
                 }
-
-
-            }, em);
-            em.clear();
-        }
+                count.getAndIncrement();
+            }
+        }, em);
+        LOGGER.info("Finished persistence of {} gameLineUps", count);
+        LOGGER.info(".....\tclearing cache");
+        gameEventService.clear();
+        em.clear();
     }
 
     private void treatClubDTO()
     {
-        LOGGER.info("Starting persistence from ClubDTO");
-        for (ClubDTO dto : clubDTOList)
+        LOGGER.info("----------------------- Starting persistence from ClubDTO -----------------------");
+        LOGGER.info(".....\tcaching existing data");
+        clubService.loadExistingClubs();
+        stadiumService.loadExistingStadiums();
+        urlService.loadExistingClubUrls();
+        competitionService.loadAndGroupCompetitionsbyDomesticId();
+        countryService.loadCountriesByCompetitions();
+        AtomicInteger count = new AtomicInteger();
+        LOGGER.info(".....\tinserting");
+        runInTransaction(() ->
         {
-            runInTransaction(() ->
+            for (ClubDTO dto : clubDTOList)
             {
                 Club club = clubService.findOrCreateClubFromClubDTO(dto);
                 Stadium stadium = stadiumService.findOrCreateStadiumFromClubDTO(dto);
                 Url url = urlService.findOrCreateUrlFromClubDTO(dto);
-
                 club.setUrl(url);
-
-                //not enough data to create here
                 List<Competition> competitionList = competitionService.findFromClubDTO(dto);
-                for (Competition competition : competitionList)
+                if (club.getCompetitions().isEmpty())
                 {
-                    club.getCompetitions().add(competition);
-
+                    club.getCompetitions().addAll(competitionList);
                 }
                 Country country = countryService.findFromClubDTO(dto);
                 if (country != null)
@@ -200,110 +206,132 @@ public class EntityCreationService
                 }
                 club.setHomeStadium(stadium);
                 em.persist(club);
-            }, em);
-        }
+                count.getAndIncrement();
+            }
+        }, em);
+        LOGGER.info("Finished persistence of {} competitions", count);
         em.clear();
     }
 
     private void treatCompetitionDTO()
     {
-        LOGGER.info("Starting persistence from CompetitionDTO");
-        for (CompetitionDTO dto : competitionDTOList)
+        LOGGER.info("----------------------- Starting persistence from CompetitionDTO -----------------------");
+        LOGGER.info(".....\tcaching existing data");
+        competitionService.loadExistingCompetitions();
+        countryService.loadExistingCountries();
+        urlService.loadExistingCompetitionUrls();
+        LOGGER.info(".....\tinserting");
+        AtomicInteger count = new AtomicInteger();
+        runInTransaction(() ->
         {
-            runInTransaction(() ->
+            for (CompetitionDTO dto : competitionDTOList)
             {
                 Competition competition = competitionService.findOrCreateCompetitionFromCompetitionDTO(dto);
-                if (dto.getCountryId() != -1)
-                {
-                    Country country = countryService.findOrCreateCompetitionCountry(dto);
-                    competition.setCountry(country);
-                }
-
+                Country country = countryService.findOrCreateCompetitionCountry(dto);
+                competition.setCountry(country);
                 Url url = urlService.findOrCreateCompetitionUrl(dto);
-
                 competition.setUrl(url);
-
                 em.persist(competition);
-
-            }, em);
-        }
+                count.getAndIncrement();
+            }
+        }, em);
+        LOGGER.info("Finished persistence of {} competitions", count);
+        LOGGER.info(".....\tclearing cache");
+        countryService.clearCache();
+        competitionService.clearCache();
+        urlService.clearCache();
         em.clear();
     }
 
-
     private void treatPlayerDTO()
     {
-        LOGGER.info("Starting persistence from PlayerDTO");
-        for (PlayerDTO dto : playerDTOList)
+        LOGGER.info("----------------------- Starting persistence from PlayerDTO -----------------------");
+        LOGGER.info(".....\tcaching existing data");
+        playerService.loadExistingPlayers();
+        clubService.loadExistingClubs();
+        countryService.loadExistingCountries();
+        urlService.loadExistingPlayerUrls();
+        LOGGER.info(".....\tinserting");
+        AtomicInteger count = new AtomicInteger();
+        runInTransaction(() ->
         {
-            runInTransaction(() ->
+            for (PlayerDTO dto : playerDTOList)
             {
-                City city = cityService.findOrCreateCity(dto);
-                Country countryBirth = countryService.findOrCreateBirthCountry(dto);
-                Country countryCitizenship = countryService.findOrCreateCitizenshipCountry(dto);
+                Club club = clubService.findOrCreateClub(dto);
+                Country countryBirth = countryService.findOrCreateCountry(dto, true);
+                Country countryCitizenship = countryService.findOrCreateCountry(dto, false);
                 Url url = urlService.findOrCreateUrl(dto, false);
                 Url imgUrl = urlService.findOrCreateUrl(dto, true);
-                Club club = clubService.findOrCreateClub(dto);
-                Agent agent = agentService.findOrCreateAgent(dto);
                 Player player = playerService.findOrCreatePlayer(dto);
-
-                player.setAgent(agent);
                 player.setCurrentClub(club);
                 player.setDataUrl(url);
                 player.setPictureUrl(imgUrl);
-                player.setCityOfBirth(city);
                 player.setCountryOfBirth(countryBirth);
                 player.setCountryOfCitizenship(countryCitizenship);
                 em.persist(player);
-
-            }, em);
-
-        }
+                count.getAndIncrement();
+            }
+        }, em);
         em.clear();
+        LOGGER.info("Finished persistence of {} players", count);
+        LOGGER.info(".....\tclearing cache");
+
+        playerService.clearCache();
+        clubService.clearCache();
+        countryService.clearCache();
+        urlService.clearCache();
     }
 
     private void treatGameDTO()
     {
-        LOGGER.info("Starting persistence from GameDTO");
-        for (GameDTO dto : gameDTOList)
+        LOGGER.info("----------------------- Starting persistence from GameDTO -----------------------");
+        LOGGER.info(".....\tcaching existing data");
+        gameService.loadExistingGames();
+        clubService.loadExistingClubs();
+        stadiumService.loadExistingStadiums();
+        competitionService.loadExistingCompetitions();
+        competitionRoundService.loadExistingCompetitionrounds();
+        clubGameService.loadExistingClubGames();
+        LOGGER.info(".....\tinserting");
+        AtomicInteger count = new AtomicInteger();
+        runInTransaction(() ->
         {
-            runInTransaction(() ->
+            for (GameDTO dto : gameDTOList)
             {
                 Game game = gameService.findOrCreateGame(dto);
                 Stadium stadium = stadiumService.findOrCreateStadium(dto);
                 CompetitionRound round = competitionRoundService.findOrCreateCompetitionRound(dto);
                 Competition competition = competitionService.findOrCreateCompetition(dto);
-                Club clubHome = clubService.findOrCreateClubFromHomeGame(dto, true);
-                Club clubAway = clubService.findOrCreateClubFromHomeGame(dto, false);
-
-
+                Club clubHome = clubService.findOrCreateClubFromGame(dto, true);
+                Club clubAway = clubService.findOrCreateClubFromGame(dto, false);
                 game.setStadium(stadium);
                 game.setRound(round);
                 competition.getRounds().add(round);
-
                 em.persist(competition);
-
                 round.setCompetition(competition);
-
                 em.persist(game);
                 em.persist(clubAway);
                 em.persist(clubHome);
-
-                ClubGame clubGameHome = clubGameService.findOrCreateClubGame(dto, true, clubService, game);
-                ClubGame clubGameAway = clubGameService.findOrCreateClubGame(dto, false, clubService, game);
+                ClubGame clubGameHome = clubGameService.findOrCreateClubGame(dto, true, clubHome, game);
+                ClubGame clubGameAway = clubGameService.findOrCreateClubGame(dto, false, clubAway, game);
                 game.getClubGames().add(clubGameHome);
                 game.getClubGames().add(clubGameAway);
                 em.persist(clubGameAway);
                 em.persist(clubGameHome);
                 em.persist(game);
-
-            }, em);
-
-        }
-
+                count.getAndIncrement();
+            }
+        }, em);
+        LOGGER.info("Finished persistence of {} gameDTO lines", count);
+        LOGGER.info(".....\tclearing cache");
+        competitionRoundService.clearCache();
+        stadiumService.clearCache();
+        competitionService.clearCache();
+        clubService.clearCache();
+        gameService.clearCache();
+        clubGameService.clearCache();
         em.clear();
     }
-
 
     /**
      *
@@ -333,8 +361,7 @@ public class EntityCreationService
      */
     private void limitListSize()
     {
-        int size = 30000;
-
+        int size = 1000;
         competitionDTOList = competitionDTOList.stream().limit(size).toList();
         clubDTOList = clubDTOList.stream().limit(size).toList();
         playerDTOList = playerDTOList.stream().limit(size).toList();
@@ -362,8 +389,6 @@ public class EntityCreationService
         {
             if (transaction.isActive()) transaction.rollback();
             LOGGER.error("Transaction Error : {}", e.getMessage());
-
-
         }
     }
 

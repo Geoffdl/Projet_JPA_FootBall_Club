@@ -5,12 +5,15 @@ import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Agent;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AgentService
 {
     private final AgentDao agentDao;
     private final JpaEntityFactory factory;
+
+    private final Map<String, Agent> mapOfExistingAgents = new HashMap<>();
 
     public AgentService(AgentDao agentDao, JpaEntityFactory factory)
     {
@@ -20,21 +23,35 @@ public class AgentService
 
     public Agent findOrCreateAgent(PlayerDTO playerDTO)
     {
-        if (playerDTO.getAgentName() == null || playerDTO.getAgentName().trim().isEmpty())
+        String sourceName = playerDTO.getAgentName();
+        if (sourceName == null || sourceName.trim().isEmpty())
         {
             return null;
         }
 
-        Optional<Agent> agentOptional = agentDao.findByName(playerDTO.getAgentName());
-
-        if (agentOptional.isPresent())
+        Agent existing = mapOfExistingAgents.get(sourceName);
+        if (existing != null)
         {
-            return agentOptional.get();
+            return existing;
         }
 
         Agent agent = factory.createAgent(playerDTO);
         agentDao.save(agent);
+        mapOfExistingAgents.put(sourceName, agent);
         return agent;
     }
 
+    public void loadExistingAgents()
+    {
+        mapOfExistingAgents.clear();
+        for (Agent agent : agentDao.findAll())
+        {
+            mapOfExistingAgents.put(agent.getName(), agent);
+        }
+    }
+
+    public void clearCache()
+    {
+        mapOfExistingAgents.clear();
+    }
 }

@@ -6,31 +6,33 @@ import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.dto.GameDTO;
 import fr.diginamic.geoff.entity.Competition;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class CompetitionService
 {
     private final CompetitionDao competitionDao;
-    private final JpaEntityFactory factory;
+    private final Map<String, Competition> mapOfExistingCompetitions = new HashMap<>();
+    private final Map<String, List<Competition>> competitionsBydomesticId = new HashMap<>();
 
-    public CompetitionService(CompetitionDao competitionDao, JpaEntityFactory factory)
+    public CompetitionService(EntityManager em)
     {
-        this.competitionDao = competitionDao;
-        this.factory = factory;
+        this.competitionDao = new CompetitionDao(em);
+
     }
 
     public Competition findOrCreateCompetition(GameDTO dto)
     {
-        Optional<Competition> competitionOptional = competitionDao.findBySourceId(dto.getCompetitionId());
-
-        if (competitionOptional.isPresent())
+        String sourceId = dto.getCompetitionId();
+        Competition existing = mapOfExistingCompetitions.get(sourceId);
+        if (existing != null)
         {
-            return competitionOptional.get();
+            return existing;
         }
 
-        Competition competition = factory.createCompetition(dto);
+        Competition competition = JpaEntityFactory.createCompetition(dto);
+        mapOfExistingCompetitions.put(competition.getSourceId(), competition);
         competitionDao.save(competition);
 
         return competition;
@@ -38,25 +40,46 @@ public class CompetitionService
 
     public Competition findOrCreateCompetitionFromCompetitionDTO(CompetitionDTO dto)
     {
-        Optional<Competition> competitionOptional = competitionDao.findBySourceId(dto.getCompetitionId());
-        if (competitionOptional.isPresent())
-        {
-            Competition competitionExisting = competitionOptional.get();
-            competitionExisting.setCompetitionCode(dto.getCompetitionCode());
-            competitionExisting.setCompetitionName(dto.getName());
-            competitionExisting.setCompetitionSubtype(dto.getSubType());
-            competitionExisting.setDomesticLeagueCode(dto.getDomesticLeagueCode());
-            competitionExisting.setConfederation(dto.getConfederation());
+        String sourceId = dto.getCompetitionId();
 
-            return competitionOptional.get();
+        Competition existing = mapOfExistingCompetitions.get(sourceId);
+        if (existing != null)
+        {
+            existing.setCompetitionCode(dto.getCompetitionCode());
+            existing.setCompetitionName(dto.getName());
+            existing.setCompetitionSubtype(dto.getSubType());
+            existing.setDomesticLeagueCode(dto.getDomesticLeagueCode());
+            existing.setConfederation(dto.getConfederation());
+            return existing;
         }
-        Competition competition = factory.createCompetitionFromCompetitionDto(dto);
+
+        Competition competition = JpaEntityFactory.createCompetitionFromCompetitionDto(dto);
         competitionDao.save(competition);
+        mapOfExistingCompetitions.put(competition.getSourceId(), competition);
         return competition;
     }
 
     public List<Competition> findFromClubDTO(ClubDTO dto)
     {
-        return competitionDao.findFromDomesticId(dto.getDomesticCompetitionId());
+        return competitionsBydomesticId.getOrDefault(dto.getDomesticCompetitionId(), Collections.emptyList());
     }
+
+    public void loadExistingCompetitions()
+    {
+        for (Competition competition : competitionDao.findAll())
+        {
+            mapOfExistingCompetitions.put(competition.getSourceId(), competition);
+        }
+    }
+
+    public void loadAndGroupCompetitionsbyDomesticId()
+    {
+        for (Competition competition : competitionDao.findAll())
+        {
+            String key = competition.getDomesticLeagueCode();
+            competitionsBydomesticId.computeIfAbsent(key, k -> new ArrayList<>()).add(competition);
+        }
+    }
+
+    public void clearCache() {mapOfExistingCompetitions.clear();}
 }

@@ -5,29 +5,33 @@ import fr.diginamic.geoff.dto.GameEventDTO;
 import fr.diginamic.geoff.entity.GameEvent;
 import fr.diginamic.geoff.entity.Player;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameEventService
 {
     private final GameEventDao gameEventDao;
-    private final JpaEntityFactory factory;
 
-    public GameEventService(GameEventDao gameEventDao, JpaEntityFactory factory)
+    private final Map<String, GameEvent> mapOfExisting = new HashMap<>();
+
+    public GameEventService(EntityManager em)
     {
-        this.gameEventDao = gameEventDao;
-        this.factory = factory;
+        this.gameEventDao = new GameEventDao(em);
+
     }
 
     public GameEvent findOrCreate(GameEventDTO dto, PlayerService playerService)
     {
-        Optional<GameEvent> gameEventOptional = gameEventDao.findBySourceId(dto.getGameEventId());
-        if (gameEventOptional.isPresent())
+        String sourceId = dto.getGameEventId();
+        GameEvent existing = mapOfExisting.get(sourceId);
+        if (existing != null)
         {
-            return gameEventOptional.get();
+            return existing;
         }
 
-        GameEvent gameEvent = factory.createGameEvent(dto);
+        GameEvent gameEvent = JpaEntityFactory.createGameEvent(dto);
         Long playerInId = dto.getPlayerInId();
         if (playerInId != null)
         {
@@ -42,8 +46,21 @@ public class GameEventService
         }
 
         gameEventDao.save(gameEvent);
+        mapOfExisting.put(gameEvent.getSourceId(), gameEvent);
         return gameEvent;
     }
 
 
+    public void clear()
+    {
+        mapOfExisting.clear();
+    }
+
+    public void loadExisting()
+    {
+        for (GameEvent event : gameEventDao.findAll())
+        {
+            mapOfExisting.put(event.getSourceId(), event);
+        }
+    }
 }

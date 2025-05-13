@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
+import java.util.List;
 import java.util.Optional;
 
 public class StadiumDao
@@ -35,5 +36,11 @@ public class StadiumDao
         {
             return Optional.empty();
         }
+    }
+
+    public List<Stadium> findAll()
+    {
+        TypedQuery<Stadium> query = em.createQuery("SELECT s FROM Stadium s", Stadium.class);
+        return query.getResultList();
     }
 }

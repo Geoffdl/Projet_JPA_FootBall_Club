@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
+import java.util.List;
 import java.util.Optional;
 
 public class GameLineupDao
@@ -32,4 +33,10 @@ public class GameLineupDao
     }
 
     public void save(GameLineup gameLineup) {em.persist(gameLineup);}
+
+    public List<GameLineup> findAll()
+    {
+        TypedQuery<GameLineup> query = em.createQuery("SELECT gl FROM GameLineup gl ", GameLineup.class);
+        return query.getResultList();
+    }
 }

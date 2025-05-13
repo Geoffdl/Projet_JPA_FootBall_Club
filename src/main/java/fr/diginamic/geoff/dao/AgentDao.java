@@ -44,4 +44,9 @@ public class AgentDao
     }
 
 
+    public List<Agent> findAll()
+    {
+        TypedQuery<Agent> query = em.createQuery("SELECT a FROM Agent a", Agent.class);
+        return query.getResultList();
+    }
 }

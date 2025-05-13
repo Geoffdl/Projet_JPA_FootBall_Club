@@ -8,7 +8,7 @@ public class ClubDTO
     private String clubCode;
     private String name;
     private String domesticCompetitionId;
-    private double totalMarketValue;
+    private Double totalMarketValue;
     private int squadSize;
     private double averageAge;
     private int foreignersNumber;
@@ -271,7 +271,7 @@ public class ClubDTO
      *
      * @return value of netTransferRecord
      */
-    public double getNetTransferRecord()
+    public Double getNetTransferRecord()
     {
         return netTransferRecord;
     }
@@ -281,7 +281,7 @@ public class ClubDTO
      *
      * @param netTransferRecord value of netTransferRecord
      */
-    public void setNetTransferRecord(double netTransferRecord)
+    public void setNetTransferRecord(Double netTransferRecord)
     {
         this.netTransferRecord = netTransferRecord;
     }

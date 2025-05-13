@@ -7,50 +7,62 @@ import fr.diginamic.geoff.dto.GameEventDTO;
 import fr.diginamic.geoff.dto.GameLineupDTO;
 import fr.diginamic.geoff.entity.Game;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameService
 {
     private final GameDao gameDao;
-    private final JpaEntityFactory factory;
 
-    public GameService(GameDao gameDao, JpaEntityFactory factory)
+    private final Map<Long, Game> mapOfExisting = new HashMap<>();
+
+    public GameService(EntityManager em)
     {
-        this.gameDao = gameDao;
-        this.factory = factory;
+        this.gameDao = new GameDao(em);
     }
 
     public Game findOrCreateGame(GameDTO dto)
     {
-        Optional<Game> gameOptional = gameDao.findBySourceId(dto.getGameId());
-
-        if (gameOptional.isPresent())
+        Long sourceId = dto.getGameId();
+        Game existing = mapOfExisting.get(sourceId);
+        if (existing != null)
         {
-            return gameOptional.get();
+            return existing;
         }
 
-        Game game = factory.createGame(dto);
+        Game game = JpaEntityFactory.createGame(dto);
+        mapOfExisting.put(sourceId, game);
         gameDao.save(game);
-
         return game;
     }
 
     public Game findForGameEvent(GameEventDTO dto)
     {
-        Optional<Game> gameOptional = gameDao.findBySourceId(dto.getGameId());
-        return gameOptional.orElse(null);
+        return mapOfExisting.get(dto.getGameId());
     }
 
     public Game findForGameLineup(GameLineupDTO dto)
     {
-        Optional<Game> gameOptional = gameDao.findBySourceId(dto.getGameId());
-        return gameOptional.orElse(null);
+        Long sourceId = dto.getGameId();
+        return mapOfExisting.get(sourceId);
     }
 
     public Game findForAppearance(AppearanceDTO dto)
     {
-        Optional<Game> gameOptional = gameDao.findBySourceId(dto.getGameId());
-        return gameOptional.orElse(null);
+        Long sourceId = dto.getGameId();
+        return mapOfExisting.get(sourceId);
     }
+
+    public void loadExistingGames()
+    {
+        mapOfExisting.clear();
+        for (Game game : gameDao.findAll())
+        {
+            mapOfExisting.put(game.getSourceId(), game);
+        }
+    }
+
+    public void clearCache() {mapOfExisting.clear();}
 }

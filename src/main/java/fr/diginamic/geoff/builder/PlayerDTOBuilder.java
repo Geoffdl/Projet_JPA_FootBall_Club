@@ -1,13 +1,9 @@
 package fr.diginamic.geoff.builder;
 
 import fr.diginamic.geoff.dto.PlayerDTO;
-import fr.diginamic.geoff.exception.CsvFormatException;
 import fr.diginamic.geoff.utils.Deserializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Year;
-import java.util.List;
 
 import static fr.diginamic.geoff.utils.DTOUtils.splitDataSourceIntoArray;
 
@@ -25,7 +21,6 @@ public class PlayerDTOBuilder implements DTOBuilder<PlayerDTO>
         String[] parts = splitDataSourceIntoArray(line.trim(), PlayerDTO.class.getDeclaredFields().length);
 
 
-
         playerDTO.setPlayerId(Deserializer.stringToLong(parts[0]));
         playerDTO.setFirstName(parts[1]);
         playerDTO.setLastName(parts[2]);
@@ -34,7 +29,7 @@ public class PlayerDTOBuilder implements DTOBuilder<PlayerDTO>
         playerDTO.setCurrentClubId(Deserializer.stringToLong(parts[5]));
         playerDTO.setPlayerCode(parts[6]);
         playerDTO.setCountryOfBirth(parts[7]);
-        playerDTO.setCityOfBirth(parts[8]);
+        playerDTO.setCityOfBirth((parts[8].trim().toLowerCase()));
         playerDTO.setCountryOfCitizenship(parts[9]);
         playerDTO.setDateOfBirth(Deserializer.stringToLocalDate(parts[10]));
         playerDTO.setSubPosition(parts[11]);

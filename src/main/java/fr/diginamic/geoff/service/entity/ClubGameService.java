@@ -5,11 +5,14 @@ import fr.diginamic.geoff.dto.GameDTO;
 import fr.diginamic.geoff.entity.Club;
 import fr.diginamic.geoff.entity.ClubGame;
 import fr.diginamic.geoff.entity.Game;
+import fr.diginamic.geoff.entity.compositeid.ClubGameId;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ClubGameService
@@ -18,41 +21,44 @@ public class ClubGameService
 
 
     private final ClubGameDao clubGameDao;
-    private final JpaEntityFactory factory;
 
+    private final Map<ClubGameId, ClubGame> mapOfExistingClubGames = new HashMap<>();
 
-    public ClubGameService(ClubGameDao clubGameDao, JpaEntityFactory factory)
+    public ClubGameService(EntityManager em)
     {
-        this.clubGameDao = clubGameDao;
-        this.factory = factory;
+        this.clubGameDao = new ClubGameDao(em);
     }
 
-    public ClubGame findOrCreateClubGame(GameDTO dto, boolean isHome, ClubService clubService, Game game)
+
+    public ClubGame findOrCreateClubGame(GameDTO dto, boolean isHome, Club club, Game game)
     {
-        Club club = clubService.findOrCreateClubFromHomeGame(dto, isHome);
 
+        ClubGameId idFromSource = new ClubGameId(club.getClubId(), game.getGameId());
 
-        Optional<ClubGame> clubGameOptional = clubGameDao.findByGameIdAndClubId(game.getGameId(), club.getClubId());
-        if (clubGameOptional.isPresent())
+        ClubGame existing = mapOfExistingClubGames.get(idFromSource);
+        if (existing != null)
         {
-            ClubGame clubGameExisting = clubGameOptional.get();
-            if (isHome)
-            {
-                clubGameExisting.setTacticalFormation(dto.getHomeClubFormation());
-            } else
-            {
-                clubGameExisting.setTacticalFormation(dto.getAwayClubFormation());
-            }
-
-            return clubGameExisting;
+            return existing;
         }
 
-        ClubGame clubGame = factory.createClubGame(dto, isHome, club, game);
+
+        ClubGame clubGame = JpaEntityFactory.createClubGame(dto, isHome, club, game);
         clubGame.setClub(club);
         clubGameDao.save(clubGame);
+        mapOfExistingClubGames.put(clubGame.getClubGameId(), clubGame);
 
         return clubGame;
 
     }
 
+    public void loadExistingClubGames()
+    {
+        for (ClubGame clubGame : clubGameDao.findAll())
+        {
+
+            mapOfExistingClubGames.put(clubGame.getClubGameId(), clubGame);
+        }
+    }
+
+    public void clearCache() {mapOfExistingClubGames.clear();}
 }

@@ -7,18 +7,23 @@ import fr.diginamic.geoff.dto.PlayerDTO;
 import fr.diginamic.geoff.entity.Url;
 import fr.diginamic.geoff.entity.lookup.EntityType;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UrlService
 {
     private final UrlDao urlDao;
-    private final JpaEntityFactory factory;
 
-    public UrlService(UrlDao urlDao, JpaEntityFactory factory)
+    private final Map<String, Url> mapOfExistingPlayerUrl = new HashMap<>();
+    private final Map<String, Url> mapOfExistingCompetitionUrls = new HashMap<>();
+    private final Map<String, Url> mapOfExistingClubUrls = new HashMap<>();
+
+    public UrlService(EntityManager em)
     {
-        this.urlDao = urlDao;
-        this.factory = factory;
+        this.urlDao = new UrlDao(em);
+
     }
 
     public Url findOrCreateUrl(PlayerDTO dto, boolean isImage)
@@ -31,48 +36,82 @@ public class UrlService
         {
             urlString = dto.getUrl();
         }
-        Optional<Url> urlOptional = urlDao.findByCode(urlString);
-        if (urlOptional.isPresent())
+
+        Url existing = mapOfExistingPlayerUrl.get(urlString);
+        if (existing != null)
         {
-            return urlOptional.get();
+            return existing;
         }
 
-        Url url = factory.createUrl(dto, isImage);
+        Url url = JpaEntityFactory.createUrl(dto, isImage);
         url.setEntityType(EntityType.PLAYER);
+        mapOfExistingPlayerUrl.put(urlString, url);
         urlDao.save(url);
+
         return url;
     }
 
 
     public Url findOrCreateCompetitionUrl(CompetitionDTO dto)
     {
-        if (dto.getUrl() == null)
+        String urlString = dto.getUrl();
+
+        Url existing = mapOfExistingCompetitionUrls.get(urlString);
+        if (existing != null)
         {
-            return null;
+            return existing;
         }
-        Optional<Url> urlOptional = urlDao.findByCode(dto.getUrl());
-        if (urlOptional.isPresent())
-        {
-            return urlOptional.get();
-        }
-        Url url = factory.createUrlFromCompetition(dto);
+
+        Url url = JpaEntityFactory.createUrlFromCompetition(dto);
         urlDao.save(url);
+        mapOfExistingCompetitionUrls.put(urlString, url);
         return url;
     }
 
     public Url findOrCreateUrlFromClubDTO(ClubDTO dto)
     {
-        if (dto.getUrl() == null)
+        String urlString = dto.getUrl();
+        Url existing = mapOfExistingClubUrls.get(urlString);
+        if (existing != null)
         {
-            return null;
+            return existing;
         }
-        Optional<Url> urlOptional = urlDao.findByCode(dto.getUrl());
-        if (urlOptional.isPresent())
-        {
-            return urlOptional.get();
-        }
-        Url url = factory.createUrlFromClub(dto);
+        Url url = JpaEntityFactory.createUrlFromClub(dto);
         urlDao.save(url);
+        mapOfExistingClubUrls.put(urlString, url);
         return url;
+    }
+
+    public void loadExistingPlayerUrls()
+    {
+        mapOfExistingPlayerUrl.clear();
+        for (Url url : urlDao.findAll())
+        {
+            mapOfExistingPlayerUrl.put(url.getUrl(), url);
+        }
+    }
+
+    public void loadExistingCompetitionUrls()
+    {
+        mapOfExistingCompetitionUrls.clear();
+        for (Url url : urlDao.findAllCompetitionUrls())
+        {
+            mapOfExistingCompetitionUrls.put(url.getUrl(), url);
+        }
+    }
+
+    public void clearCache()
+    {
+        mapOfExistingPlayerUrl.clear();
+
+    }
+
+    public void loadExistingClubUrls()
+    {
+        mapOfExistingClubUrls.clear();
+        for (Url url : urlDao.findAllClubUrls())
+        {
+            mapOfExistingClubUrls.put(url.getUrl(), url);
+        }
     }
 }

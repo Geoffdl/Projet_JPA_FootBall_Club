@@ -42,4 +42,11 @@ public class CityDao
         em.persist(city);
     }
 
+    public List<City> findAll()
+    {
+        TypedQuery<City> query = em.createQuery("SELECT c FROM City c", City.class);
+        return query.getResultList();
+    }
+
+    public void flush() {em.flush();}
 }

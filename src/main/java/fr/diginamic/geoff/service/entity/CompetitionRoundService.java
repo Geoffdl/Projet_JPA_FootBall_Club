@@ -4,32 +4,45 @@ import fr.diginamic.geoff.dao.CompetitionRoundDao;
 import fr.diginamic.geoff.dto.GameDTO;
 import fr.diginamic.geoff.entity.CompetitionRound;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CompetitionRoundService
 {
     private final CompetitionRoundDao competitionRoundDao;
-    private final JpaEntityFactory factory;
+    private final Map<String, CompetitionRound> mapOfExistingRound = new HashMap<>();
 
-    public CompetitionRoundService(CompetitionRoundDao competitionRoundDao, JpaEntityFactory factory)
+    public CompetitionRoundService(EntityManager em)
     {
-        this.competitionRoundDao = competitionRoundDao;
-        this.factory = factory;
+        this.competitionRoundDao = new CompetitionRoundDao(em);
     }
 
     public CompetitionRound findOrCreateCompetitionRound(GameDTO dto)
     {
-        Optional<CompetitionRound> competitionRoundOptional = competitionRoundDao.findByRound(dto.getRound());
-
-        if (competitionRoundOptional.isPresent())
+        String sourceId = dto.getRound();
+        CompetitionRound existing = mapOfExistingRound.get(sourceId);
+        if (existing != null)
         {
-            return competitionRoundOptional.get();
+            return existing;
         }
 
-        CompetitionRound competitionRound = factory.createCompetitionRound(dto);
+
+        CompetitionRound competitionRound = JpaEntityFactory.createCompetitionRound(dto);
+        mapOfExistingRound.put(competitionRound.getRound(), competitionRound);
         competitionRoundDao.save(competitionRound);
 
         return competitionRound;
     }
+
+    public void loadExistingCompetitionrounds()
+    {
+        for (CompetitionRound competitionRound : competitionRoundDao.findAll())
+        {
+            mapOfExistingRound.put(competitionRound.getRound(), competitionRound);
+        }
+    }
+
+    public void clearCache() {mapOfExistingRound.clear();}
 }

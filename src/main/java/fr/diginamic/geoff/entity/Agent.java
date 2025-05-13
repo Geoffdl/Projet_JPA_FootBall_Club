@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
+//@Entity
 public class Agent
 {
     @Id

@@ -46,4 +46,10 @@ public class CompetitionDao
         query.setParameter("domesticCompetitionId", domesticCompetitionId);
         return query.getResultList();
     }
+
+    public List<Competition> findAll()
+    {
+        TypedQuery<Competition> query = em.createQuery("SELECT cp FROM Competition cp", Competition.class);
+        return query.getResultList();
+    }
 }

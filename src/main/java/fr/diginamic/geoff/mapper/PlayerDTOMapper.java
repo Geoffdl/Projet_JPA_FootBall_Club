@@ -17,6 +17,9 @@ public class PlayerDTOMapper
 
     public Player mapToPlayer(Player player)
     {
+        player.setAgentName(playerDTO.getAgentName());
+        player.setCityOfBirth(player.getCityOfBirth());
+
         player.setSourceId(playerDTO.getPlayerId());
         player.setFirstName(playerDTO.getFirstName());
         player.setLastName(playerDTO.getLastName());

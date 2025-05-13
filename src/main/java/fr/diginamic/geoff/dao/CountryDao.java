@@ -60,17 +60,17 @@ public class CountryDao
         }
     }
 
-    public Optional<Country> findByCompetitionDomesticId(String domesticCompetitionId)
+    public List<Country> findAllWithCompetitions()
     {
-        try
-        {
-            TypedQuery<Country> query = em.createQuery(
-                    "SELECT c FROM Country c LEFT JOIN c.competitions cp WHERE cp.domesticLeagueCode = :domesticCompetitionId", Country.class);
-            query.setParameter("domesticCompetitionId", domesticCompetitionId);
-            return Optional.of(query.getSingleResult());
-        } catch (NoResultException e)
-        {
-            return Optional.empty();
-        }
+
+        TypedQuery<Country> query = em.createQuery("SELECT DISTINCT c FROM Country c LEFT JOIN FETCH c.competitions", Country.class);
+
+        return query.getResultList();
+    }
+
+    public List<Country> findAll()
+    {
+        TypedQuery<Country> query = em.createQuery("SELECT c FROM Country c", Country.class);
+        return query.getResultList();
     }
 }

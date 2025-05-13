@@ -31,15 +31,26 @@ public class GameDTOMapper
 
     public ClubGame mapToClubGame(ClubGame clubGame, boolean isHome, Club club, Game game)
     {
-        ClubGameId id = new ClubGameId(club.getClubId(), game.getGameId());
-        clubGame.setClubGameId(id);
+        Long sourceclubId;
         if (isHome)
         {
+            sourceclubId = dto.getHomeClubId();
+        } else
+        {
+            sourceclubId = dto.getAwayClubId();
+        }
+        ClubGameId id = new ClubGameId(club.getClubId(), game.getGameId());
+        clubGame.setClubGameId(id);
+        clubGame.setSourceGameId(dto.getGameId());
+        if (isHome)
+        {
+            clubGame.setSourceClubId(dto.getHomeClubId());
             clubGame.setSide(Side.HOME);
             clubGame.setManagerName(dto.getHomeClubManagerName());
             clubGame.setTacticalFormation(dto.getHomeClubFormation());
         } else
         {
+            clubGame.setSourceClubId(dto.getAwayClubId());
             clubGame.setManagerName(dto.getAwayClubManagerName());
             clubGame.setTacticalFormation(dto.getAwayClubFormation());
             clubGame.setSide(Side.AWAY);

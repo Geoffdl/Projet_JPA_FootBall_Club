@@ -44,11 +44,11 @@ public class Deserializer
      * @param part
      * @return
      */
-    public static double stringToDouble(String part)
+    public static Double stringToDouble(String part)
     {
         if (part == null || part.trim().isEmpty())
         {
-            return 0;
+            return (double) 0;
         }
         ;
         return Double.parseDouble(part);

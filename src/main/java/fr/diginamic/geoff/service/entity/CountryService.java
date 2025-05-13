@@ -4,91 +4,101 @@ import fr.diginamic.geoff.dao.CountryDao;
 import fr.diginamic.geoff.dto.ClubDTO;
 import fr.diginamic.geoff.dto.CompetitionDTO;
 import fr.diginamic.geoff.dto.PlayerDTO;
+import fr.diginamic.geoff.entity.Competition;
 import fr.diginamic.geoff.entity.Country;
 import fr.diginamic.geoff.utils.JpaEntityFactory;
+import jakarta.persistence.EntityManager;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class CountryService
 {
     private final CountryDao countryDao;
-    private final JpaEntityFactory factory;
+    private final Map<String, Country> mapOfExistingCountries = new HashMap<>();
+    private final Map<String, Country> mapOfExistingCountriesByDomesticId = new HashMap<>();
 
-    public CountryService(CountryDao countryDao, JpaEntityFactory factory)
+    public CountryService(EntityManager em)
     {
-        this.countryDao = countryDao;
-        this.factory = factory;
+        this.countryDao = new CountryDao(em);
+
     }
 
-    public Country findOrCreateBirthCountry(PlayerDTO dto)
-    {
-        if (dto.getCountryOfBirth() == null)
-        {
-            return null;
-        }
-
-        Optional<Country> countryOptional = countryDao.findByNom(dto.getCountryOfBirth());
-
-        if (countryOptional.isPresent())
-        {
-            return countryOptional.get();
-        }
-
-        Country country = factory.createCountryBirth(dto);
-        countryDao.save(country);
-        return country;
-    }
-
-    public Country findOrCreateCitizenshipCountry(PlayerDTO dto)
-    {
-        if (dto.getCountryOfCitizenship() == null)
-        {
-            return null;
-        }
-
-        Optional<Country> countryOptional = countryDao.findByNom(dto.getCountryOfCitizenship());
-
-        if (countryOptional.isPresent())
-        {
-            return countryOptional.get();
-        }
-
-        Country country = factory.createCountryCitizenship(dto);
-        countryDao.save(country);
-        return country;
-    }
 
     public Country findOrCreateCompetitionCountry(CompetitionDTO dto)
     {
-
-        Optional<Country> countryOptional = countryDao.findByNom(dto.getCountryName());
-        if (countryOptional.isPresent() && dto.getCountryId() != -1)
+        String sourceName = dto.getCountryName();
+        Country existing = mapOfExistingCountries.get(sourceName);
+        if (existing != null)
         {
-            countryOptional.get().setSourceId(dto.getCountryId());
-            countryDao.save(countryOptional.get());
-            return countryOptional.get();
+            if (dto.getCountryId() != -1 && !Objects.equals(existing.getCountryId(), dto.getCountryId()))
+            {
+                existing.setSourceId(dto.getCountryId());
+                countryDao.save(existing);
+            }
+            return existing;
         }
 
-        countryOptional = countryDao.finBySourceId(dto.getCountryId());
-        if (countryOptional.isPresent() && dto.getCountryId() != -1)
-        {
-            countryOptional.get().setSourceId(dto.getCountryId());
-            countryDao.save(countryOptional.get());
-            return countryOptional.get();
-        }
-
-        Country country = factory.createCountryFromCompetition(dto);
+        Country country = JpaEntityFactory.createCountryFromCompetition(dto);
         countryDao.save(country);
+        mapOfExistingCountries.put(sourceName, country);
         return country;
     }
 
     public Country findFromClubDTO(ClubDTO dto)
     {
-        Optional<Country> countryOptional = countryDao.findByCompetitionDomesticId(dto.getDomesticCompetitionId());
-        if (countryOptional.isPresent())
+        String sourceId = dto.getDomesticCompetitionId();
+        return mapOfExistingCountriesByDomesticId.get(sourceId);
+
+    }
+
+
+    public Country findOrCreateCountry(PlayerDTO dto, boolean isBirth)
+    {
+        String sourceName = null;
+        if (isBirth)
         {
-            return countryOptional.get();
+            sourceName = dto.getCountryOfBirth();
+        } else
+        {
+            sourceName = dto.getCountryOfCitizenship();
         }
-        return null;
+        Country existing = mapOfExistingCountries.get(sourceName);
+        if (existing != null)
+        {
+            return existing;
+        }
+        Country country = JpaEntityFactory.createCountry(dto, isBirth);
+        countryDao.save(country);
+        mapOfExistingCountries.put(sourceName, country);
+        return country;
+    }
+
+    public void loadExistingCountries()
+    {
+        mapOfExistingCountries.clear();
+        for (Country country : countryDao.findAll())
+        {
+            mapOfExistingCountries.put(country.getNom(), country);
+        }
+    }
+
+    public void loadCountriesByCompetitions()
+    {
+        mapOfExistingCountriesByDomesticId.clear();
+        for (Country country : countryDao.findAllWithCompetitions())
+        {
+            for (Competition comp : country.getCompetitions())
+            {
+                mapOfExistingCountriesByDomesticId.put(comp.getDomesticLeagueCode(), country);
+            }
+        }
+    }
+
+    public void clearCache()
+    {
+        mapOfExistingCountries.clear();
+        mapOfExistingCountriesByDomesticId.clear();
     }
 }

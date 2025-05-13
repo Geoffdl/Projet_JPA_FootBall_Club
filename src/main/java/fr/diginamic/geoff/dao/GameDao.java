@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
+import java.util.List;
 import java.util.Optional;
 
 public class GameDao
@@ -38,5 +39,13 @@ public class GameDao
     public void save(Game game)
     {
         em.persist(game);
+    }
+
+    public List<Game> findAll()
+    {
+        TypedQuery<Game> query = em.createQuery(
+                "SELECT g FROM Game g", Game.class
+        );
+        return query.getResultList();
     }
 }

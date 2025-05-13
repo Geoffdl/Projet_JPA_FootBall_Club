@@ -20,6 +20,9 @@ public class ClubGame
     @Column(name = "tactical_formation")
     private String tacticalFormation;
 
+    private Long sourceClubId;
+    private Long sourceGameId;
+
     @ManyToOne
     @MapsId("gameId")
     private Game game;
@@ -151,5 +154,59 @@ public class ClubGame
     public void setClub(Club club)
     {
         this.club = club;
+    }
+
+    /**
+     * Gets sourceClubId for the class ClubGame
+     *
+     * @return value of sourceClubId
+     */
+    public Long getSourceClubId()
+    {
+        return sourceClubId;
+    }
+
+    /**
+     * Sets sourceClubId for the class ClubGame.
+     *
+     * @param sourceClubId value of sourceClubId
+     */
+    public void setSourceClubId(Long sourceClubId)
+    {
+        this.sourceClubId = sourceClubId;
+    }
+
+    /**
+     * Gets sourceGameId for the class ClubGame
+     *
+     * @return value of sourceGameId
+     */
+    public Long getSourceGameId()
+    {
+        return sourceGameId;
+    }
+
+    /**
+     * Sets sourceGameId for the class ClubGame.
+     *
+     * @param sourceGameId value of sourceGameId
+     */
+    public void setSourceGameId(Long sourceGameId)
+    {
+        this.sourceGameId = sourceGameId;
+    }
+
+    @Override
+    public String toString()
+    {
+        final StringBuilder sb = new StringBuilder("ClubGame{");
+        sb.append("clubGameId=").append(clubGameId);
+        sb.append(", side=").append(side);
+        sb.append(", managerName='").append(managerName).append('\'');
+        sb.append(", tacticalFormation='").append(tacticalFormation).append('\'');
+        sb.append(", game=").append(game);
+        sb.append(", club=").append(club);
+        sb.append('}');
+        return sb.toString();
     }
 }

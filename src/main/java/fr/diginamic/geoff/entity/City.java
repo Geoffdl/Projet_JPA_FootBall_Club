@@ -3,9 +3,10 @@ package fr.diginamic.geoff.entity;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-@Entity
+//@Entity
 public class City
 {
     @Id
@@ -72,5 +73,18 @@ public class City
     public void setPlayers(Set<Player> players)
     {
         this.players = players;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        if (!(object instanceof City city)) return false;
+        return Objects.equals(name, city.name);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode(name);
     }
 }
