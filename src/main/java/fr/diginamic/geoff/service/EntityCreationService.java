@@ -14,9 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class EntityCreationService
 {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(EntityCreationService.class);
-
     private final EntityManager em;
     // data initializer
     private final DTOListCreator dtoListCreator;
@@ -43,7 +41,6 @@ public class EntityCreationService
     private List<GameEventDTO> gameEventDTOList;
     private List<GameLineupDTO> gameLineupDTOList;
     private List<AppearanceDTO> appearanceDTOList;
-
 
     public EntityCreationService(EntityManager em, DTOListCreator dtoListCreator)
     {

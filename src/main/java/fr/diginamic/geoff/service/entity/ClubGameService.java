@@ -18,10 +18,7 @@ import java.util.Map;
 public class ClubGameService
 {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClubGameService.class);
-
-
     private final ClubGameDao clubGameDao;
-
     private final Map<ClubGameId, ClubGame> mapOfExistingClubGames = new HashMap<>();
 
     public ClubGameService(EntityManager em)
@@ -29,33 +26,25 @@ public class ClubGameService
         this.clubGameDao = new ClubGameDao(em);
     }
 
-
     public ClubGame findOrCreateClubGame(GameDTO dto, boolean isHome, Club club, Game game)
     {
-
         ClubGameId idFromSource = new ClubGameId(club.getClubId(), game.getGameId());
-
         ClubGame existing = mapOfExistingClubGames.get(idFromSource);
         if (existing != null)
         {
             return existing;
         }
-
-
         ClubGame clubGame = JpaEntityFactory.createClubGame(dto, isHome, club, game);
         clubGame.setClub(club);
         clubGameDao.save(clubGame);
         mapOfExistingClubGames.put(clubGame.getClubGameId(), clubGame);
-
         return clubGame;
-
     }
 
     public void loadExistingClubGames()
     {
         for (ClubGame clubGame : clubGameDao.findAll())
         {
-
             mapOfExistingClubGames.put(clubGame.getClubGameId(), clubGame);
         }
     }
