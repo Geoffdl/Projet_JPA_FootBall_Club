@@ -6,7 +6,7 @@ import fr.diginamic.geoff.entity.compositeid.ClubGameId;
 import fr.diginamic.geoff.entity.lookup.Side;
 
 /**
- *
+ * Sets base attributes to new JPA entities from source dto
  */
 public class GameDTOMapper
 {

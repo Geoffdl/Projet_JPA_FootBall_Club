@@ -7,7 +7,7 @@ import fr.diginamic.geoff.entity.Player;
 import fr.diginamic.geoff.entity.Url;
 
 /**
- *
+ * Sets base attributes to new JPA entities from source dto
  */
 public class PlayerDTOMapper
 {

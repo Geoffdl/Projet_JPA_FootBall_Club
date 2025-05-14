@@ -25,6 +25,12 @@ public class StadiumService
         this.stadiumDao = new StadiumDao(em);
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Stadium findOrCreateStadium(GameDTO dto)
     {
         String sourceName = dto.getStadiumName();
@@ -40,6 +46,12 @@ public class StadiumService
         return stadium;
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Stadium findOrCreateStadiumFromClubDTO(ClubDTO dto)
     {
         String sourceName = dto.getStadiumName();
@@ -55,6 +67,9 @@ public class StadiumService
         return stadium;
     }
 
+    /**
+     * loads caching hashmap
+     */
     public void loadExistingStadiums()
     {
         for (Stadium stadium : stadiumDao.findAll())
@@ -63,6 +78,9 @@ public class StadiumService
         }
     }
 
+    /**
+     * clears cache
+     */
     public void clearCache()
     {
         mapOfExistingStadiums.clear();

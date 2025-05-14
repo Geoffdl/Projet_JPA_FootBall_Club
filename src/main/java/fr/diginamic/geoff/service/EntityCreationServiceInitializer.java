@@ -16,6 +16,9 @@ public class EntityCreationServiceInitializer
         this.em = em;
     }
 
+    /**
+     * instantiates the orchestrator for data persistence from csv data files
+     */
     public void initiatePersistence()
     {
         try
@@ -28,6 +31,9 @@ public class EntityCreationServiceInitializer
         }
     }
 
+    /**
+     * loads required dependencies from the orchestrator
+     */
     private EntityCreationService initializeServices(EntityManager em)
     {
         DTOListCreator dtoListCreator = new DTOListCreator();

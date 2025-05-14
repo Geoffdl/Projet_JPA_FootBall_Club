@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
- *
+ * Orchestrates the parsing of a csv file into a list of DTO entities
  */
 public class DTOListCreator
 {
@@ -24,10 +24,13 @@ public class DTOListCreator
 
 
     /**
-     * @param fileUrl
-     * @param dtoBuilder
-     * @param <T>
-     * @return
+     * Generic method
+     * Generate list of DTO using IO library
+     *
+     * @param fileUrl    string absolute path of th efile
+     * @param dtoBuilder an implementation of of the builder Interface for the target entity type
+     * @param <T>        target entity type
+     * @return a list of dto
      */
     private <T> List<T> createListOfDTO(String fileUrl, DTOBuilder<T> dtoBuilder)
     {
@@ -43,10 +46,13 @@ public class DTOListCreator
     }
 
     /**
-     * @param fileUrl
-     * @param dtoBuilder
-     * @param <T>
-     * @return
+     * Generic method
+     * Generate list of DTO using OpenCsv
+     *
+     * @param fileUrl    string absolute path of th efile
+     * @param dtoBuilder an implementation of of the builder Interface for the target entity type
+     * @param <T>        target entity type
+     * @return a list of dto
      */
     private <T> List<T> createListOfDTOWithOpenCsv(String fileUrl, CsvArrayDTOBuilder<T> dtoBuilder)
     {
@@ -63,8 +69,10 @@ public class DTOListCreator
 
 
     /**
-     * @param fileUrl
-     * @return
+     * Returns a list of DTO
+     *
+     * @param fileUrl absolute path
+     * @return list of DTO
      */
     public List<AppearanceDTO> createListOfAppearanceDTO(String fileUrl)
     {
@@ -72,8 +80,10 @@ public class DTOListCreator
     }
 
     /**
-     * @param fileUrl
-     * @return
+     * Returns a list of DTO
+     *
+     * @param fileUrl absolute path
+     * @return list of DTO
      */
     public List<ClubDTO> createListOfClubDTO(String fileUrl)
     {
@@ -81,8 +91,10 @@ public class DTOListCreator
     }
 
     /**
-     * @param fileUrl
-     * @return
+     * Returns a list of DTO
+     *
+     * @param fileUrl absolute path
+     * @return list of DTO
      */
     public List<CompetitionDTO> createListOfCompetitionDTO(String fileUrl)
     {
@@ -95,8 +107,10 @@ public class DTOListCreator
     }
 
     /**
-     * @param fileUrl
-     * @return
+     * Returns a list of DTO
+     *
+     * @param fileUrl absolute path
+     * @return list of DTO
      */
     public List<GameEventDTO> createListOfGameEventDTO(String fileUrl)
     {
@@ -104,8 +118,10 @@ public class DTOListCreator
     }
 
     /**
-     * @param fileUrl
-     * @return
+     * Returns a list of DTO
+     *
+     * @param fileUrl absolute path
+     * @return list of DTO
      */
     public List<GameLineupDTO> createListOfGameLineupDTO(String fileUrl)
     {
@@ -113,8 +129,10 @@ public class DTOListCreator
     }
 
     /**
-     * @param fileUrl
-     * @return
+     * Returns a list of DTO
+     *
+     * @param fileUrl absolute path
+     * @return list of DTO
      */
     public List<PlayerDTO> createListOfPlayerDTO(String fileUrl)
     {
@@ -122,8 +140,10 @@ public class DTOListCreator
     }
 
     /**
-     * @param fileUrl
-     * @return
+     * Returns a list of DTO
+     *
+     * @param fileUrl absolute path
+     * @return list of DTO
      */
     public List<PlayerValuationDTO> createListOfPlayerValuation(String fileUrl)
     {

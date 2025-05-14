@@ -26,6 +26,12 @@ public class GameEventService
 
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public GameEvent findOrCreate(GameEventDTO dto, PlayerService playerService)
     {
         String sourceId = dto.getGameEventId();
@@ -34,7 +40,6 @@ public class GameEventService
         {
             return existing;
         }
-
         GameEvent gameEvent = JpaEntityFactory.createGameEvent(dto);
         Long playerInId = dto.getPlayerInId();
         if (playerInId != null)
@@ -54,12 +59,17 @@ public class GameEventService
         return gameEvent;
     }
 
-
+    /**
+     * clear cache
+     */
     public void clear()
     {
         mapOfExisting.clear();
     }
 
+    /**
+     * loads caching hashmap
+     */
     public void loadExisting()
     {
         for (GameEvent event : gameEventDao.findAll())

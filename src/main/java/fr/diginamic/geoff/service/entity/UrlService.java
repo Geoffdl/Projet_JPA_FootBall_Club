@@ -30,6 +30,12 @@ public class UrlService
 
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Url findOrCreateUrl(PlayerDTO dto, boolean isImage)
     {
         String urlString;
@@ -56,6 +62,12 @@ public class UrlService
     }
 
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Url findOrCreateCompetitionUrl(CompetitionDTO dto)
     {
         String urlString = dto.getUrl();
@@ -72,6 +84,12 @@ public class UrlService
         return url;
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Url findOrCreateUrlFromClubDTO(ClubDTO dto)
     {
         String urlString = dto.getUrl();
@@ -86,6 +104,9 @@ public class UrlService
         return url;
     }
 
+    /**
+     * loads caching hashmap
+     */
     public void loadExistingPlayerUrls()
     {
         mapOfExistingPlayerUrl.clear();
@@ -95,6 +116,9 @@ public class UrlService
         }
     }
 
+    /**
+     * loads caching hashmap
+     */
     public void loadExistingCompetitionUrls()
     {
         mapOfExistingCompetitionUrls.clear();
@@ -104,12 +128,18 @@ public class UrlService
         }
     }
 
+    /**
+     * clears cache
+     */
     public void clearCache()
     {
         mapOfExistingPlayerUrl.clear();
 
     }
 
+    /**
+     * loads caching hashmap
+     */
     public void loadExistingClubUrls()
     {
         mapOfExistingClubUrls.clear();

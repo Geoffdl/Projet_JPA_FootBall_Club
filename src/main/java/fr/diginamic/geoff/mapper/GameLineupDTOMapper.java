@@ -8,6 +8,9 @@ import fr.diginamic.geoff.entity.compositeid.GamePlayerId;
 import fr.diginamic.geoff.entity.lookup.Lineup;
 import fr.diginamic.geoff.entity.lookup.Position;
 
+/**
+ * Sets base attributes to new JPA entities from source dto
+ */
 public class GameLineupDTOMapper
 {
     private final GameLineupDTO dto;

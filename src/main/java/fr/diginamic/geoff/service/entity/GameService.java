@@ -27,6 +27,12 @@ public class GameService
         this.gameDao = new GameDao(em);
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Game findOrCreateGame(GameDTO dto)
     {
         Long sourceId = dto.getGameId();
@@ -42,23 +48,44 @@ public class GameService
         return game;
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Game findForGameEvent(GameEventDTO dto)
     {
         return mapOfExisting.get(dto.getGameId());
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Game findForGameLineup(GameLineupDTO dto)
     {
         Long sourceId = dto.getGameId();
         return mapOfExisting.get(sourceId);
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Game findForAppearance(AppearanceDTO dto)
     {
         Long sourceId = dto.getGameId();
         return mapOfExisting.get(sourceId);
     }
 
+    /**
+     * loads caching hashmap
+     */
     public void loadExistingGames()
     {
         mapOfExisting.clear();
@@ -68,5 +95,8 @@ public class GameService
         }
     }
 
+    /**
+     * clear cache
+     */
     public void clearCache() {mapOfExisting.clear();}
 }

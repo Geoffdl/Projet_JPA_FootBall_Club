@@ -6,6 +6,9 @@ import fr.diginamic.geoff.entity.GameAppearance;
 import fr.diginamic.geoff.entity.Player;
 import fr.diginamic.geoff.entity.compositeid.GamePlayerId;
 
+/**
+ * Sets base attributes to new JPA entities from source dto
+ */
 public class AppearanceDTOMapper
 {
     private final AppearanceDTO dto;
@@ -14,6 +17,7 @@ public class AppearanceDTOMapper
     {
         this.dto = dto;
     }
+
 
     public GameAppearance mapToGameAppearance(GameAppearance gameAppearance, Game game, Player player)
     {

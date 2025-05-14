@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class orchestrates daos and mappers to generate entities and persist them in the database
+ * This class orchestrates dao and mappers to generate entities and persist them in the database
  * It implements a caching method using a sourceId from the data and an instance of the object, either created or fetched from the database if existing
  */
 public class GameLineupService
@@ -27,6 +27,12 @@ public class GameLineupService
         this.gameLineupDao = new GameLineupDao(em);
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public GameLineup findOrCreate(GameLineupDTO dto, Game game, Player player)
     {
         String sourceId = dto.getGameLineUpsId();
@@ -41,6 +47,9 @@ public class GameLineupService
         return gameLineup;
     }
 
+    /**
+     * loads caching hashmap
+     */
     public void loadExisting()
     {
         for (GameLineup gameLineup : gameLineupDao.findAll())

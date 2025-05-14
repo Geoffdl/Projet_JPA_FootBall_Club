@@ -4,6 +4,9 @@ import fr.diginamic.geoff.dto.GameEventDTO;
 import fr.diginamic.geoff.entity.GameEvent;
 import fr.diginamic.geoff.entity.lookup.EventType;
 
+/**
+ * Sets base attributes to new JPA entities from source dto
+ */
 public class GameEventDtoMapper
 {
     private final GameEventDTO dto;

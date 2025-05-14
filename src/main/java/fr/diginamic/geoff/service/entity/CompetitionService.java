@@ -11,14 +11,14 @@ import jakarta.persistence.EntityManager;
 import java.util.*;
 
 /**
- * This class orchestrates daos and mappers to generate entities and persist them in the database
+ * This class orchestrates dao and mappers to generate entities and persist them in the database
  * It implements a caching method using a sourceId from the data and an instance of the object, either created or fetched from the database if existing
  */
 public class CompetitionService
 {
     private final CompetitionDao competitionDao;
     private final Map<String, Competition> mapOfExistingCompetitions = new HashMap<>();
-    private final Map<String, List<Competition>> competitionsBydomesticId = new HashMap<>();
+    private final Map<String, List<Competition>> competitionsByDomesticId = new HashMap<>();
 
     public CompetitionService(EntityManager em)
     {
@@ -26,6 +26,12 @@ public class CompetitionService
 
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Competition findOrCreateCompetition(GameDTO dto)
     {
         String sourceId = dto.getCompetitionId();
@@ -42,10 +48,15 @@ public class CompetitionService
         return competition;
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Competition findOrCreateCompetitionFromCompetitionDTO(CompetitionDTO dto)
     {
         String sourceId = dto.getCompetitionId();
-
         Competition existing = mapOfExistingCompetitions.get(sourceId);
         if (existing != null)
         {
@@ -56,18 +67,26 @@ public class CompetitionService
             existing.setConfederation(dto.getConfederation());
             return existing;
         }
-
         Competition competition = JpaEntityFactory.createCompetitionFromCompetitionDto(dto);
         competitionDao.save(competition);
         mapOfExistingCompetitions.put(competition.getSourceId(), competition);
         return competition;
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public List<Competition> findFromClubDTO(ClubDTO dto)
     {
-        return competitionsBydomesticId.getOrDefault(dto.getDomesticCompetitionId(), Collections.emptyList());
+        return competitionsByDomesticId.getOrDefault(dto.getDomesticCompetitionId(), Collections.emptyList());
     }
 
+    /**
+     * loads caching hashmap
+     */
     public void loadExistingCompetitions()
     {
         for (Competition competition : competitionDao.findAll())
@@ -76,14 +95,20 @@ public class CompetitionService
         }
     }
 
-    public void loadAndGroupCompetitionsbyDomesticId()
+    /**
+     * loads caching hashmap
+     */
+    public void loadAndGroupCompetitionsByDomesticId()
     {
         for (Competition competition : competitionDao.findAll())
         {
             String key = competition.getDomesticLeagueCode();
-            competitionsBydomesticId.computeIfAbsent(key, k -> new ArrayList<>()).add(competition);
+            competitionsByDomesticId.computeIfAbsent(key, k -> new ArrayList<>()).add(competition);
         }
     }
 
+    /**
+     * clears cache
+     */
     public void clearCache() {mapOfExistingCompetitions.clear();}
 }

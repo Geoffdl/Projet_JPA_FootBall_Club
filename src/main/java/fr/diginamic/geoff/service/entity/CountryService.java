@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class orchestrates daos and mappers to generate entities and persist them in the database
+ * This class orchestrates dao and mappers to generate entities and persist them in the database
  * It implements a caching method using a sourceId from the data and an instance of the object, either created or fetched from the database if existing
  */
 public class CountryService
@@ -29,7 +29,12 @@ public class CountryService
 
     }
 
-
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Country findOrCreateCompetitionCountry(CompetitionDTO dto)
     {
         String sourceName = dto.getCountryName();
@@ -57,10 +62,15 @@ public class CountryService
 
     }
 
-
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Country findOrCreateCountry(PlayerDTO dto, boolean isBirth)
     {
-        String sourceName = null;
+        String sourceName;
         if (isBirth)
         {
             sourceName = dto.getCountryOfBirth();
@@ -79,6 +89,9 @@ public class CountryService
         return country;
     }
 
+    /**
+     * loads caching hashmap
+     */
     public void loadExistingCountries()
     {
         mapOfExistingCountries.clear();
@@ -88,6 +101,9 @@ public class CountryService
         }
     }
 
+    /**
+     * loads caching hashmap
+     */
     public void loadCountriesByCompetitions()
     {
         mapOfExistingCountriesByDomesticId.clear();
@@ -100,6 +116,9 @@ public class CountryService
         }
     }
 
+    /**
+     * clears cache
+     */
     public void clearCache()
     {
         mapOfExistingCountries.clear();

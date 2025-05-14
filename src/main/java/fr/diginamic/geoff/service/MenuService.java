@@ -5,6 +5,9 @@ import jakarta.persistence.EntityManager;
 
 import java.util.Scanner;
 
+/**
+ * main app menu sending the user toward dedicated services
+ */
 public class MenuService
 {
     private final Scanner sc;
@@ -16,6 +19,9 @@ public class MenuService
         this.em = em;
     }
 
+    /**
+     * main app loop
+     */
     public void start()
     {
         while (true)
@@ -41,6 +47,9 @@ public class MenuService
     }
 
 
+    /**
+     * query menu loop
+     */
     private void openQueryMenu()
     {
         QueryService queryService = new QueryService(em, sc);
@@ -70,12 +79,18 @@ public class MenuService
         }
     }
 
+    /**
+     * menu display - exit
+     */
     private void goodBye()
     {
         System.out.println("\nThank you for using Football Manager!");
         System.out.println("Goodbye!");
     }
 
+    /**
+     * menu display - queries
+     */
     private void displayOptions()
     {
         System.out.println("\n========== Query Menu ==========");
@@ -87,6 +102,9 @@ public class MenuService
         System.out.print("Your choice: ");
     }
 
+    /**
+     * menu display - main
+     */
     private void welcome()
     {
         System.out.println("=====================================");

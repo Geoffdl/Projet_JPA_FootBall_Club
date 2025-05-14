@@ -36,7 +36,7 @@ public class EntityCreationService
     private final GameEventService gameEventService;
     private final GameLineupService gameLineUpService;
     private final StadiumService stadiumService;
-    private final PlayerValuationService playerValuationService;
+//    private final PlayerValuationService playerValuationService;
 
     private List<PlayerDTO> playerDTOList;
     private List<GameDTO> gameDTOList;
@@ -70,7 +70,7 @@ public class EntityCreationService
         this.gameLineUpService = new GameLineupService(em);
         this.gameEventService = new GameEventService(em);
         this.stadiumService = new StadiumService(em);
-        this.playerValuationService = new PlayerValuationService(em);
+//        this.playerValuationService = new PlayerValuationService(em);
     }
 
     /**
@@ -203,7 +203,7 @@ public class EntityCreationService
         clubService.loadExistingClubs();
         stadiumService.loadExistingStadiums();
         urlService.loadExistingClubUrls();
-        competitionService.loadAndGroupCompetitionsbyDomesticId();
+        competitionService.loadAndGroupCompetitionsByDomesticId();
         countryService.loadCountriesByCompetitions();
         AtomicInteger count = new AtomicInteger();
         LOGGER.info(".....\tinserting");

@@ -8,13 +8,15 @@ import java.time.format.DateTimeFormatter;
 import static java.lang.Integer.parseInt;
 
 /**
- *
+ * Contains a sample of helper methods to convert Strings into another Type
  */
 public class Deserializer
 {
     /**
-     * @param part
-     * @return
+     * String to Int
+     *
+     * @param part element of a String
+     * @return int
      */
     public static int stringToInt(String part)
     {
@@ -22,13 +24,14 @@ public class Deserializer
         {
             return 0;
         }
-        ;
         return parseInt(part);
     }
 
     /**
-     * @param part
-     * @return
+     * String to long
+     *
+     * @param part element of a String
+     * @return Long
      */
     public static Long stringToLong(String part)
     {
@@ -36,13 +39,14 @@ public class Deserializer
         {
             return 0L;
         }
-        ;
         return Long.parseLong(part);
     }
 
     /**
-     * @param part
-     * @return
+     * String to Double
+     *
+     * @param part element of a String
+     * @return Double
      */
     public static Double stringToDouble(String part)
     {
@@ -50,13 +54,14 @@ public class Deserializer
         {
             return (double) 0;
         }
-        ;
         return Double.parseDouble(part);
     }
 
     /**
-     * @param part
-     * @return
+     * String to LocalDate
+     *
+     * @param part element of a String
+     * @return LocalDate
      */
     public static LocalDate stringToLocalDate(String part)
     {
@@ -64,15 +69,14 @@ public class Deserializer
         {
             return LocalDate.of(1900, 1, 1);
         }
-        ;
-
         return LocalDate.parse(part.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
-
     /**
-     * @param part
-     * @return
+     * String to LocaleDatetime
+     *
+     * @param part element of a String
+     * @return LocalDateTime
      */
     public static LocalDateTime stringToLocalDateTime(String part)
     {
@@ -80,14 +84,14 @@ public class Deserializer
         {
             return LocalDateTime.of(1900, 1, 1, 0, 0, 0);
         }
-        ;
-
         return LocalDateTime.parse(part.trim(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     /**
-     * @param part
-     * @return
+     * String to Year
+     *
+     * @param part element of a String
+     * @return Year
      */
     public static Year stringToYear(String part)
     {
@@ -95,14 +99,14 @@ public class Deserializer
         {
             return Year.of(1900);
         }
-        ;
-
         return Year.of(stringToInt(part));
     }
 
     /**
-     * @param part
-     * @return
+     * String to Boolean
+     *
+     * @param part element of a String
+     * @return Boolean
      */
     public static boolean stringToBoolean(String part)
     {
@@ -110,9 +114,6 @@ public class Deserializer
         {
             return false;
         }
-        ;
-
         return stringToInt(part) != 0;
-
     }
 }

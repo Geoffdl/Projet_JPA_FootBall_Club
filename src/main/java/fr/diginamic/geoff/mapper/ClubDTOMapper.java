@@ -6,6 +6,9 @@ import fr.diginamic.geoff.entity.Stadium;
 import fr.diginamic.geoff.entity.Url;
 import fr.diginamic.geoff.entity.lookup.EntityType;
 
+/**
+ * Sets base attributes to new JPA entities from source dto
+ */
 public class ClubDTOMapper
 {
     private final ClubDTO dto;

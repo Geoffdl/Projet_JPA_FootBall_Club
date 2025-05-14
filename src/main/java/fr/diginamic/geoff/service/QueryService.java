@@ -10,7 +10,9 @@ import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Scanner;
 
-
+/**
+ * Service class containing a set of queries for the user to ask to the database
+ */
 public class QueryService
 {
     EntityManager em;
@@ -22,7 +24,9 @@ public class QueryService
         this.sc = sc;
     }
 
-
+    /**
+     * List of best strikers by given year
+     */
     public void bestStrikersByYear()
     {
         System.out.print("\nEnter year: ");
@@ -43,6 +47,9 @@ public class QueryService
         System.out.println("\n");
     }
 
+    /**
+     * List of best strikers for a given contest for a given year
+     */
     public void bestStrikerForContestByYear()
     {
         System.out.print("\nEnter competition name: ");
@@ -72,7 +79,9 @@ public class QueryService
 
     }
 
-
+    /**
+     * list of best strikers for a given club for a given year
+     */
     public void bestStrikerByClubByYear()
     {
 
@@ -102,6 +111,9 @@ public class QueryService
         }
     }
 
+    /**
+     * list of matches between two teams and their track record
+     */
     public void allMatchsBetweenTwoTeamsWithWinPercentage()
     {
         System.out.print("\nEnter first club name: ");

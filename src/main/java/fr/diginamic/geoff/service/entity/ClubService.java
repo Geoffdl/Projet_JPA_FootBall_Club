@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class orchestrates daos and mappers to generate entities and persist them in the database
+ * This class orchestrates dao and mappers to generate entities and persist them in the database
  * It implements a caching method using a sourceId from the data and an instance of the object, either created or fetched from the database if existing
  */
 public class ClubService
@@ -26,6 +26,9 @@ public class ClubService
         this.clubDao = new ClubDao(em);
     }
 
+    /**
+     * loads caching hashmap
+     */
     public void loadExistingClubs()
     {
         for (Club club : clubDao.findAll())
@@ -34,6 +37,12 @@ public class ClubService
         }
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Club findOrCreateClub(PlayerDTO dto)
     {
         Long sourceId = dto.getCurrentClubId();
@@ -49,6 +58,12 @@ public class ClubService
         return club;
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Club findOrCreateClubFromGame(GameDTO dto, boolean isHome)
     {
         Long sourceId;
@@ -71,6 +86,12 @@ public class ClubService
         return club;
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Club findOrCreateClubFromClubDTO(ClubDTO dto)
     {
         Long sourceId = dto.getClubId();
@@ -81,7 +102,7 @@ public class ClubService
             {
                 existing.setClubCode(dto.getClubCode());
             }
-            if (existing.getTransferRecord() != dto.getNetTransferRecord())
+            if (!Objects.equals(existing.getTransferRecord(), dto.getNetTransferRecord()))
             {
                 existing.setTransferRecord(dto.getNetTransferRecord());
             }

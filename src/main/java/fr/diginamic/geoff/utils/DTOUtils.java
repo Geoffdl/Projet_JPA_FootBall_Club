@@ -5,10 +5,12 @@ import fr.diginamic.geoff.exception.CsvFormatException;
 public class DTOUtils
 {
     /**
-     * @param line
-     * @param expectedLength
-     * @return
-     * @throws CsvFormatException
+     * Splits a line from a csv into an array of elements
+     *
+     * @param line           line from csv file
+     * @param expectedLength the number of fields in the target entity
+     * @return an array of elements
+     * @throws CsvFormatException if result isn't the expected size
      */
     public static String[] splitDataSourceIntoArray(String line, int expectedLength) throws CsvFormatException
     {
@@ -25,8 +27,10 @@ public class DTOUtils
     }
 
     /**
-     * @param part
-     * @return
+     * cleans up a string for number conversion
+     *
+     * @param part part of a line
+     * @return a string ready for conversion
      */
     public static String cleanUpForIntConversion(String part)
     {

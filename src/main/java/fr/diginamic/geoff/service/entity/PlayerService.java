@@ -29,6 +29,12 @@ public class PlayerService
         this.playerDao = new PlayerDao(em);
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing, if not create a new one from the DTO
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Player findOrCreatePlayer(PlayerDTO dto)
     {
         Long sourceId = dto.getPlayerId();
@@ -46,6 +52,9 @@ public class PlayerService
         return player;
     }
 
+    /**
+     * loads caching hashmap
+     */
     public void loadExistingPlayers()
     {
         for (Player player : playerDao.findAll())
@@ -54,28 +63,55 @@ public class PlayerService
         }
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Player findForGameEvent(GameEventDTO dto)
     {
         return mapOfExistingPlayers.get(dto.getPlayerId());
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing
+     *
+     * @param sourceId raw source data matching sourceId
+     * @return jpa entity
+     */
     public Player findSecondaryPlayerForGameEvent(Long sourceId)
     {
         return mapOfExistingPlayers.get(sourceId);
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Player findForGameLineup(GameLineupDTO dto)
     {
         Long sourceId = dto.getPlayerId();
         return mapOfExistingPlayers.get(sourceId);
     }
 
+    /**
+     * Takes an instance of DTO, compares it to existing entity, if present in base return existing
+     *
+     * @param dto raw source entity
+     * @return jpa entity
+     */
     public Player findForAppearance(AppearanceDTO dto)
     {
         Long sourceId = dto.getPlayerId();
         return mapOfExistingPlayers.get(sourceId);
     }
 
+    /**
+     * clear cache
+     */
     public void clearCache()
     {
         mapOfExistingPlayers.clear();
