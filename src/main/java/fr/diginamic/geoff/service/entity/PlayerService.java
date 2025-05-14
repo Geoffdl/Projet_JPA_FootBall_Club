@@ -24,6 +24,16 @@ public class PlayerService
 
     private final Map<Long, Player> mapOfExistingPlayers = new HashMap<>();
 
+    /**
+     * testing constructor
+     *
+     * @param playerDao dao
+     */
+    public PlayerService(PlayerDao playerDao)
+    {
+        this.playerDao = playerDao;
+    }
+
     public PlayerService(EntityManager em)
     {
         this.playerDao = new PlayerDao(em);
@@ -42,6 +52,7 @@ public class PlayerService
         Player existing = mapOfExistingPlayers.get(sourceId);
         if (existing != null)
         {
+            existing.setCityOfBirth(dto.getCityOfBirth());
             return existing;
         }
 
