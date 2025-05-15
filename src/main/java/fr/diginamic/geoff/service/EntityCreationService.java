@@ -388,22 +388,6 @@ public class EntityCreationService
     }
 
     /**
-     * Used during development to reduce the size of the lists
-     */
-    private void limitListSize()
-    {
-        int size = 1000;
-        competitionDTOList = competitionDTOList.stream().limit(size).toList();
-        clubDTOList = clubDTOList.stream().limit(size).toList();
-        playerDTOList = playerDTOList.stream().limit(size).toList();
-        //playerValuationList = playerValuationList.stream().limit(1000).toList();
-        gameDTOList = gameDTOList.stream().limit(size).toList();
-        gameEventDTOList = gameEventDTOList.stream().limit(size).toList();
-        gameLineupDTOList = gameLineupDTOList.stream().limit(size).toList();
-        appearanceDTOList = appearanceDTOList.stream().limit(size).toList();
-    }
-
-    /**
      * Implementation of the runnable interface to handle transactions
      *
      * @param action the main operations of finding element from base or creation and persistence
