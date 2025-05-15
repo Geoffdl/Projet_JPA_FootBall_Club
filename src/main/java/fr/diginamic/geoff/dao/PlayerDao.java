@@ -15,7 +15,7 @@ import java.util.Set;
  */
 public class PlayerDao
 {
-    EntityManager em;
+    final EntityManager em;
 
     public PlayerDao(EntityManager em)
     {

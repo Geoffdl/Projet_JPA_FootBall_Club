@@ -1,6 +1,5 @@
 package fr.diginamic.geoff.entity.compositeid;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.util.Objects;
@@ -11,9 +10,9 @@ import java.util.Objects;
 @Embeddable
 public class ClubGameId
 {
-    @Column(name = "club_id")
+
     private Long clubId;
-    @Column(name = "game_id")
+
     private Long gameId;
 
     public ClubGameId()

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "competition", indexes = {@Index(name = "idx_comp_name", columnList = "name"), @Index(name = "idx_comp_code", columnList = "competition_code")})
 public class Competition
 {
     @Id
@@ -42,10 +43,8 @@ public class Competition
 
     @ManyToMany(mappedBy = "competitions")
     private Set<Club> clubs = new HashSet<>();
-    ;
     @OneToMany(mappedBy = "competition")
     private Set<Game> games = new HashSet<>();
-    ;
 
     public Competition()
     {

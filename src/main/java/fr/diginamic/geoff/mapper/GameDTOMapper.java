@@ -33,26 +33,25 @@ public class GameDTOMapper
 
     public ClubGame mapToClubGame(ClubGame clubGame, boolean isHome, Club club, Game game)
     {
-        Long sourceclubId;
+        Long sourceClubId;
         if (isHome)
         {
-            sourceclubId = dto.getHomeClubId();
+            sourceClubId = dto.getHomeClubId();
         } else
         {
-            sourceclubId = dto.getAwayClubId();
+            sourceClubId = dto.getAwayClubId();
         }
         ClubGameId id = new ClubGameId(club.getClubId(), game.getGameId());
         clubGame.setClubGameId(id);
         clubGame.setSourceGameId(dto.getGameId());
+        clubGame.setSourceClubId(sourceClubId);
         if (isHome)
         {
-            clubGame.setSourceClubId(dto.getHomeClubId());
             clubGame.setSide(Side.HOME);
             clubGame.setManagerName(dto.getHomeClubManagerName());
             clubGame.setTacticalFormation(dto.getHomeClubFormation());
         } else
         {
-            clubGame.setSourceClubId(dto.getAwayClubId());
             clubGame.setManagerName(dto.getAwayClubManagerName());
             clubGame.setTacticalFormation(dto.getAwayClubFormation());
             clubGame.setSide(Side.AWAY);
@@ -68,13 +67,6 @@ public class GameDTOMapper
 
         return stadium;
     }
-
-//    public CompetitionRound mapToCompetitionRound(CompetitionRound round)
-//    {
-//        round.setRound(dto.getRound());
-//        round.setSeason(dto.getSeason());
-//        return round;
-//    }
 
     public Competition mapToCompetition(Competition competition)
     {

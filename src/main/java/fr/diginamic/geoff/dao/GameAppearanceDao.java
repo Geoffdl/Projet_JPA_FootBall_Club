@@ -13,7 +13,7 @@ import java.util.Optional;
  */
 public class GameAppearanceDao
 {
-    EntityManager em;
+    final EntityManager em;
 
     public GameAppearanceDao(EntityManager em)
     {

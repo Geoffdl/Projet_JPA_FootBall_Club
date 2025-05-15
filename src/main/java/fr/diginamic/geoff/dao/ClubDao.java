@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class ClubDao implements Dao<Club>
 {
-    EntityManager em;
+    final EntityManager em;
 
     public ClubDao(EntityManager em)
     {

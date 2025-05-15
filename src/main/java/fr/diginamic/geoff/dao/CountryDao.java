@@ -13,7 +13,7 @@ import java.util.Optional;
  */
 public class CountryDao
 {
-    EntityManager em;
+    final EntityManager em;
 
     public CountryDao(EntityManager em)
     {

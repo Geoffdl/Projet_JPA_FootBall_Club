@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "game",
+        indexes = @Index(name = "idx_game_date", columnList = "game_date"))
 public class Game
 {
     @Id
@@ -47,10 +49,8 @@ public class Game
 
     @OneToMany(mappedBy = "game")
     private Set<GameEvent> gameEvents = new HashSet<>();
-    ;
     @OneToMany(mappedBy = "game")
     private Set<GameAppearance> gameAppearances = new HashSet<>();
-    ;
     @OneToMany(mappedBy = "game")
     private Set<GameLineup> gameLineups = new HashSet<>();
 
@@ -219,9 +219,9 @@ public class Game
     }
 
     /**
-     * Gets roud for the class Game
+     * Gets round for the class Game
      *
-     * @return value of roud
+     * @return value of round
      */
     public String getRound()
     {
@@ -229,13 +229,13 @@ public class Game
     }
 
     /**
-     * Sets roud for the class Game.
+     * Sets round for the class Game.
      *
-     * @param roud value of roud
+     * @param round value of round
      */
-    public void setRound(String roud)
+    public void setRound(String round)
     {
-        this.round = roud;
+        this.round = round;
     }
 
     /**

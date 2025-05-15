@@ -13,7 +13,7 @@ import java.util.Optional;
  */
 public class GameDao
 {
-    EntityManager em;
+    final EntityManager em;
 
     public GameDao(EntityManager em)
     {

@@ -380,9 +380,9 @@ public class PlayerDTO
     }
 
     /**
-     * Gets highestMaketValue for the class PlayerDTO
+     * Gets highestMarketValue for the class PlayerDTO
      *
-     * @return value of highestMaketValue
+     * @return value of highestMarketValue
      */
     public double getHighestMarketValue()
     {
@@ -390,9 +390,9 @@ public class PlayerDTO
     }
 
     /**
-     * Sets highestMaketValue for the class PlayerDTO.
+     * Sets highestMarketValue for the class PlayerDTO.
      *
-     * @param highestMarketValue value of highestMaketValue
+     * @param highestMarketValue value of highestMarketValue
      */
     public void setHighestMarketValue(double highestMarketValue)
     {

@@ -15,8 +15,8 @@ import java.util.Scanner;
  */
 public class QueryService
 {
-    EntityManager em;
-    Scanner sc;
+    final EntityManager em;
+    final Scanner sc;
 
     public QueryService(EntityManager em, Scanner sc)
     {

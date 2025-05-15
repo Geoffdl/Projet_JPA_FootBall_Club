@@ -11,7 +11,7 @@ public interface DTOBuilder<T>
     static final Logger LOGGER = LoggerFactory.getLogger(DTOBuilder.class);
 
     /**
-     * creates a list of dto entitys
+     * creates a list of dto entities
      *
      * @param lines
      * @return

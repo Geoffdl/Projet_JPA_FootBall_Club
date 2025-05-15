@@ -27,7 +27,7 @@ public class DTOListCreator
      * Generic method
      * Generate list of DTO using IO library
      *
-     * @param fileUrl    string absolute path of th efile
+     * @param fileUrl    string absolute path of the file
      * @param dtoBuilder an implementation of of the builder Interface for the target entity type
      * @param <T>        target entity type
      * @return a list of dto
@@ -49,7 +49,7 @@ public class DTOListCreator
      * Generic method
      * Generate list of DTO using OpenCsv
      *
-     * @param fileUrl    string absolute path of th efile
+     * @param fileUrl    string absolute path of the file
      * @param dtoBuilder an implementation of of the builder Interface for the target entity type
      * @param <T>        target entity type
      * @return a list of dto

@@ -21,18 +21,14 @@ public class Country
 
     @OneToMany(mappedBy = "country")
     private Set<Competition> competitions = new HashSet<>();
-    ;
 
     @OneToMany(mappedBy = "countryOfCitizenship")
     private Set<Player> playersCitizenship = new HashSet<>();
-    ;
     @OneToMany(mappedBy = "countryOfBirth")
     private Set<Player> playersBirth = new HashSet<>();
-    ;
 
     @OneToMany(mappedBy = "country")
     private Set<Club> clubs = new HashSet<>();
-    ;
 
     public Country()
     {

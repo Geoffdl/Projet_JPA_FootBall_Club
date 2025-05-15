@@ -19,7 +19,7 @@ public class Main
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("soccer");
         Scanner sc = new Scanner(System.in);
 
-        try (EntityManager em = emf.createEntityManager();)
+        try (EntityManager em = emf.createEntityManager())
         {
             MenuService menuService = new MenuService(em, sc);
             menuService.start();

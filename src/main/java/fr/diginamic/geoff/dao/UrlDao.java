@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 public class UrlDao
 {
-    EntityManager em;
+    final EntityManager em;
 
     public UrlDao(EntityManager em)
     {

@@ -23,10 +23,10 @@ class DTOBuilderTest
         );
 
         PlayerDTOBuilder builder = new PlayerDTOBuilder();
-        List<PlayerDTO> dtos = builder.buildDTOList(lines);
+        List<PlayerDTO> dtoList = builder.buildDTOList(lines);
 
-        assertEquals(1, dtos.size());
-        PlayerDTO dto = dtos.getFirst();
+        assertEquals(1, dtoList.size());
+        PlayerDTO dto = dtoList.getFirst();
 
         assertEquals(1L, dto.getPlayerId());
         assertEquals("John", dto.getFirstName());

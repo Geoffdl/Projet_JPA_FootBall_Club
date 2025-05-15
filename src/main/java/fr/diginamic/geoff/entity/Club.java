@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "club",
+        indexes = {@Index(name = "idx_club_name", columnList = "club_name")})
 public class Club
 {
     @Id

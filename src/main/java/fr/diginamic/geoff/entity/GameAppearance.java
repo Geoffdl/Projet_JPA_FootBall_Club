@@ -4,7 +4,8 @@ import fr.diginamic.geoff.entity.compositeid.GamePlayerId;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "game_appearance")
+@Table(name = "game_appearance",
+        indexes = {@Index(name = "idx_goals", columnList = "goals")})
 public class GameAppearance
 {
     @EmbeddedId
