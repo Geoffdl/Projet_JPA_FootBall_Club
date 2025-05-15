@@ -35,8 +35,8 @@ public class EntityCreationService
     private final GameEventService gameEventService;
     private final GameLineupService gameLineUpService;
     private final StadiumService stadiumService;
-//    private final PlayerValuationService playerValuationService;
-
+    //    private final PlayerValuationService playerValuationService;
+    
     private List<PlayerDTO> playerDTOList;
     private List<GameDTO> gameDTOList;
     private List<CompetitionDTO> competitionDTOList;
@@ -45,7 +45,7 @@ public class EntityCreationService
     private List<GameEventDTO> gameEventDTOList;
     private List<GameLineupDTO> gameLineupDTOList;
     private List<AppearanceDTO> appearanceDTOList;
-
+    
     /**
      * instance of all the sub services
      *
@@ -56,7 +56,7 @@ public class EntityCreationService
     {
         this.em = em;
         this.dtoListCreator = dtoListCreator;
-
+        
         this.countryService = new CountryService(em);
         this.urlService = new UrlService(em);
         this.clubService = new ClubService(em);
@@ -68,9 +68,9 @@ public class EntityCreationService
         this.gameLineUpService = new GameLineupService(em);
         this.gameEventService = new GameEventService(em);
         this.stadiumService = new StadiumService(em);
-//        this.playerValuationService = new PlayerValuationService(em);
+        //        this.playerValuationService = new PlayerValuationService(em);
     }
-
+    
     /**
      * Calls all the private methods in sequence to persist the data. It is split into one operation per csv file
      */
@@ -83,13 +83,13 @@ public class EntityCreationService
         treatGameDTO();
         treatCompetitionDTO();
         treatClubDTO();
-
+        
         loadPlayersAndGames();
         treatGameLineup();
         treatAppearance();
         treatGameEvent();
     }
-
+    
     /**
      * Calls caching for players and game to speed up appearance, lineup and game event insertions/verification
      */
@@ -99,7 +99,7 @@ public class EntityCreationService
         playerService.loadExistingPlayers();
         gameService.loadExistingGames();
     }
-
+    
     /**
      * Handles all the verification/insertion for this dto
      */
@@ -128,7 +128,7 @@ public class EntityCreationService
         LOGGER.info(".....\tclearing cache");
         gameAppearanceService.clear();
     }
-
+    
     /**
      * Handles all the verification/insertion for this dto
      */
@@ -136,7 +136,7 @@ public class EntityCreationService
     {
         LOGGER.info("----------------------- Starting persistence from GameLineupDTO -----------------------");
         LOGGER.info(".....\tcaching existing data");
-
+        
         gameLineUpService.loadExisting();
         LOGGER.info(".....\tinserting");
         AtomicInteger count = new AtomicInteger();
@@ -158,7 +158,7 @@ public class EntityCreationService
         LOGGER.info(".....\tclearing cache");
         gameLineUpService.clear();
     }
-
+    
     /**
      * Handles all the verification/insertion for this dto
      */
@@ -190,7 +190,7 @@ public class EntityCreationService
         gameEventService.clear();
         em.clear();
     }
-
+    
     /**
      * Handles all the verification/insertion for this dto
      */
@@ -231,7 +231,7 @@ public class EntityCreationService
         LOGGER.info("Finished persistence of {} competitions", count);
         em.clear();
     }
-
+    
     /**
      * Handles all the verification/insertion for this dto
      */
@@ -264,7 +264,7 @@ public class EntityCreationService
         urlService.clearCache();
         em.clear();
     }
-
+    
     /**
      * Handles all the verification/insertion for this dto
      */
@@ -300,13 +300,13 @@ public class EntityCreationService
         em.clear();
         LOGGER.info("Finished persistence of {} players", count);
         LOGGER.info(".....\tclearing cache");
-
+        
         playerService.clearCache();
         clubService.clearCache();
         countryService.clearCache();
         urlService.clearCache();
     }
-
+    
     /**
      * Handles all the verification/insertion for this dto
      */
@@ -355,7 +355,7 @@ public class EntityCreationService
         clubGameService.clearCache();
         em.clear();
     }
-
+    
     /**
      * initialize all lists of DTOs from the csv files
      */
@@ -378,7 +378,7 @@ public class EntityCreationService
         LOGGER.info("Parsing appearances.csv");
         this.appearanceDTOList = dtoListCreator.createListOfAppearanceDTO("data/8.appearances.csv");
     }
-
+    
     /**
      * Implementation of the runnable interface to handle transactions
      *
@@ -390,15 +390,22 @@ public class EntityCreationService
         EntityTransaction transaction = em.getTransaction();
         try
         {
-            if (!transaction.isActive()) transaction.begin();
+            if (!transaction.isActive())
+            {
+                transaction.begin();
+            }
             action.run();
             transaction.commit();
             LOGGER.info("Transaction commited successfully");
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
-            if (transaction.isActive()) transaction.rollback();
+            if (transaction.isActive())
+            {
+                transaction.rollback();
+            }
             LOGGER.error("Transaction Error : {}", e.getMessage());
         }
     }
-
+    
 }
